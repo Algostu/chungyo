@@ -1,9 +1,4 @@
-# README
-
-## Introduction  
-Hello guys! This project is just started and is about PT(personal trainer) who help you to learn in exercise.  
-We know that PT is really helpful when you started and learned to exercise. **But It costs a lot!!**  
-So we tried to invent some usefull tools that can help and prevent you from getting hurts during exercise. It is desktop-version app now, but we will make it to be used in your phone.
+# pose-difference
 ---
 ## Installation
 **Test environment**
