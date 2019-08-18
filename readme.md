@@ -1,4 +1,6 @@
 # README
+
+## Introduction  
 Hello guys! This project is just started and is about PT(personal trainer) who help you to learn in exercise.  
 We know that PT is really helpful when you started and learned to exercise. **But It costs a lot!!**  
 So we tried to invent some usefull tools that can help and prevent you from getting hurts during exercise. It is desktop-version app now, but we will make it to be used in your phone.
@@ -12,7 +14,7 @@ So we tried to invent some usefull tools that can help and prevent you from gett
 + tf-pose-estimation
 + openpose(only for extracting example from video Images)
 
-**Install from gitHub**
+**Install from gitHub**  
 You can simply download it from gitHub. Type this in your git command(or bash)
 ````
 git clone https://github.com/I-Love-IU/pose-difference.git
@@ -43,7 +45,7 @@ hello daan-world
 hello seungmin-world
 ````
 
-***Purpose***
+***Purpose***  
 Purpose of this document is mainly for me to be get used to MarkDown Language. And most contents of this document will be edited when it comes to become public README.MD so dont worry about it. There is another reason for writting it, which is this document could help us to concentrate on developing on project. ***So please Read it thoroughly!!***
 
 We are a student, not a professional one. So please dont get any pressure from forcing you to do it. We are doing this, cause we want to become more experienced and get more fun. But we can learn from it as much as do. So if we want to become more better programmer by doing it, we should be eager to learn something. It is depend on your choice whether you can get good results in any forms(skills, aptitude for programming, or relationship) or not!
@@ -53,11 +55,11 @@ Okay if you read until now, you are ready to start. The most important thing in 
 ---
 ## Development Rules
 1) **How to Commit to Main Repository**
-    * **push to repo**
+    * **push to repo**  
         *This section should be updated in the future.*
-    * **pull from repo**
+    * **pull from repo**  
         *This section should be updated in the future.*
-    * **how to write commit message**
+    * **how to write commit message**  
         Commit message is important when you want to corporate with others. There are two tips: write better commit message, how to read others commit message. This is not a tutorial for commit message, but just give you important note that should be followed in our projects. First, you should check how other well-known repository's commit message works. These are examples: [linux][9], [spring][10]. If you check these site, please read below guide lines.
         + Separate subject from body with a blank line
         + Limit the subject line to 50 characters
@@ -69,7 +71,7 @@ Okay if you read until now, you are ready to start. The most important thing in 
 
         Among these guide lines, we only follow rules related to subject, cause we write document about body. So you can write your commit message body as you want to. Second, you should check others commit message. There are many other ways to learn about it. So Google it or please check [This site][8].
 
-    * **Bugs and Issues**
+    * **Bugs and Issues**  
         You just ask to any person via kakao message, but there are more better way to ask your questions. If you want to ask via message, we are gonna be very happy if you upload your question link instead of pictures.
 
         If you want to ask your question only for us, just use github issue form.
@@ -78,14 +80,14 @@ Okay if you read until now, you are ready to start. The most important thing in 
 
 2) **Comments and Coding Rules**
     * **Coding Rules**
-        1. **Naming Convention**
+        1. **Naming Convention**  
             There are numerous ways in naming convetions. But we only follow these : *it should be Meaningful and if you choose to change your variable name, please update it to your document.* Below list are type of name convention python usually follow. (search for details)
             * Function Name : Underscore
             * Class Name : Camel case
             * Variable Name : Underscore
             * Parameter Name : Underscore
-        2. **Test Unit**
-            *This section should be updated in the future.*
+        2. **Test Unit**  
+            *This section should be updated in the future.*  
             Before using any tools, I recommend you test your code like below sample code.(I mean testing your program by unit of modules)
             ````
             # any_modules_you_made.py
@@ -97,7 +99,7 @@ Okay if you read until now, you are ready to start. The most important thing in 
                 test_var_1, test_var_2 = 1, 2
                 print(increase(test_var_1, test_var_2))
             ````
-        3. **How to Start Coding and Which Part should I touch First?**
+        3. **How to Start Coding and Which Part should I touch First?**  
             I know you are not going to read this document thoroughly, but please give attention to this part, cause if you dont know about it, you just cant start coding and it could let you down badly :(
 
             First, check where your part is. To do this, classes and flow chart are provided in our [trello][5]. There are explanation about basic structure about our project, such className, method usage, parameter, etc. So you can start with readin those document and image files.
@@ -105,7 +107,7 @@ Okay if you read until now, you are ready to start. The most important thing in 
             Second, after you check your part, you can write your code in your local machine. Each person's working directory is specified in *Current Working Parts* section. Input of each function maybe improper or not ready to use. That is because our project is too small to devide it enough not to touch other's working part. So if you find any bugs in input, leave issues in our git repo and tell person who are responsible of.
 
             Third, modify and complete documents while developing. The classes diagram and flow charts are not complete yet. They wait you to complete. Please update it and notify it to others.
-    * **Comments Rules**
+    * **Comments Rules**  
     There are two type of comments you must write. Others are optional, but these two types must be written in order to make source file read easily by not only other people, but mainly yourself.
     First, write comments per files(moduel). This comments has form to follow, So just copy, paste and modify it.
         ````
@@ -123,8 +125,8 @@ Okay if you read until now, you are ready to start. The most important thing in 
             # define your function here
         ````
         Last, you should not feel any anxiety for writing english comments.(best parts, isnt it?) we are damm korean. **I LOVE KING SEJONG!!!**
-3) **Writing Document**
-    *This section should be updated in the future.*
+3) **Writing Document**  
+    *This section should be updated in the future.*  
     There are two types of document you should write. First, classes diagram and flow char diagram.(not exact words) Second, Readme.md of your modules. Readme.md of your modules includes explanation of functions and classes. Each Explanation has follwing fortmats.
 
     > moduleName.functionName(param1, param2, param3):
@@ -150,6 +152,7 @@ Okay if you read until now, you are ready to start. The most important thing in 
 [3]: https://github.com/CMU-Perceptual-Computing-Lab/openpose
 [4]: https://github.com/stevenzchen/pose-trainer
 [5]: https://trello.com/b/Jn1NikPt/sw-opensource-2019
+[6]: /docs/issues.png
 [7]: https://stackoverflow.com/
 [8]: https://chris.beams.io/posts/git-commit/
 [9]: https://github.com/torvalds/linux/commits/master
