@@ -131,7 +131,8 @@ Okay if you read until now, you are ready to start. The most important thing in 
 
 
 ---
-## Current Working Parts
+## Current Working Parts  
+*This section should be updated in the future.* 
 + hankyul
 + seungmin
 + daani
