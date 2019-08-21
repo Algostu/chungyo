@@ -16,7 +16,7 @@ list1 = np.array([[x1,y1],[x2,y2],[x3,y3],[x4,y4],[x5,y5]])
 
 ---
 
-####def create
+#### def create
 
 input으로 들어온 함수 값에 color라는 제 3요소 추가
 
