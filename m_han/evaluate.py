@@ -69,10 +69,11 @@ def _pull_up(pose_seq):
     b_vecs = source2_vecs-source1_vecs
     c_vecs = source3_vecs-source2_vecs
 
-    # shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
-    #
+    shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(a_vecs, c_vecs), axis=1), -1.0, 1.0)))
+    upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(b_vecs, c_vecs), axis=1), -1.0, 1.0)))
+    upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(a_vecs, c_vecs), axis=1), -1.0, 1.0)))
+
+    return shoulder_angles,upper_arm_forearm_angles, upper_arm_torso_angles
     # # use thresholds learned from analysis
     # upper_arm_torso_range = np.max(upper_arm_torso_angles) - np.min(upper_arm_torso_angles)
     # upper_arm_forearm_min = np.min(upper_arm_forearm_angles)
@@ -96,7 +97,7 @@ def _pull_up(pose_seq):
     #     return (correct, 'Exercise performed correctly! Weight was lifted fully up, and upper arm did not move significantly.')
     # else:
     #     return (correct, feedback)
-    return 'it should be ', 'deleted'
+    # return 'it should be ', 'deleted'
 def _bicep_curl(pose_seq):
     # find the arm that is seen most consistently
     poses = pose_seq.poses
