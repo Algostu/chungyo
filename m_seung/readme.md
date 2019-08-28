@@ -26,6 +26,6 @@ Using cv2.putText, we show to user a several things.
 > * display_times
 > * display_msg
 > * display_angle
-> '''
+> ````
 > cv2.putText(img, text, location, font, fontScale, color, thickness)
-> '''
+> ````
