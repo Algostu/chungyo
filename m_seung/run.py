@@ -1,10 +1,13 @@
 from screen import Screen
+from pose_diff import angle_difference
 import cv2
 import numpy as np
 
 if __name__ == '__main__':
     img = "image.jpg"
-    points = np.load("skeleton.npy")
+    # points = np.load("skeleton1.npy")
+    exercise = 'pullup'
+    points = angle_difference(exercise)
     length = int(len(points))
     accuracy = [i+1 for i in range(length)]
     angle = [i + 1 for i in range(length)]
@@ -28,7 +31,9 @@ if __name__ == '__main__':
         screen.display_times()
         screen.display_fps()
         screen.display_msg()
-        screen.display_angle(3)
+        for i in range(0,18):
+            screen.display_angle(i)
+
         #float screen
         cv2.imshow("imshow", screen.img)
     cv2.destroyAllWindows()
