@@ -65,4 +65,4 @@ class FeedBackMassage:
 if __name__ == "__main__":
     test_class = FeedBackMassage()
     list = [[-8,-19],[5,19],[-1,-16,0,1,16],0]  # test list
-    result = test_class.give_feedback_about_difference(15, list) # input값을 제한해서 받는 방법(?)
+    result = test_class.give_feedback_about_difference(15, list)
