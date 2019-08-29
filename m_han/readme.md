@@ -1,3 +1,8 @@
-# videos
+# m_han
 ---
-This folder is for store video files, no matter the type of videos. 
+## Basic Usage  
+
+1. Register User Info  
+````
+python main.py --user u --sys 1
+````
