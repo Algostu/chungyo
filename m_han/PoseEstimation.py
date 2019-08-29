@@ -13,7 +13,7 @@ import numpy as np
 import cv2
 
 from m_da.PoseDiff import PoseDiff
-from m_seung.Screen import Screen
+# from m_seung.Screen import Screen
 from m_han.Common import Common
 
 # from trainer.parse import load_ps
@@ -29,7 +29,7 @@ from m_han.Common import Common
 class PoseEstimation():
     def __init__(self):
         self.common = Common()
-        self.screen = Screen()
+        # self.screen = Screen()
         self.pose_diff = PoseDiff()
         self.post_procedure_call_list = [
             "OpenPose로 동영상 분석해서 skeleton.npy저장"
@@ -55,6 +55,7 @@ class PoseEstimation():
         subprocess.call([openpose_path,
                         '--model_pose', model,
                         '--video', os.path.join('..',input_folder),
+                        '--write_video', os.path.join(output_path, 'result.avi'),
                         '--write_json', output_path])
         os.chdir('..')
 
@@ -92,17 +93,31 @@ class PoseEstimation():
         skeleton = np.load(input_skeleton)
         static_skeleton = skeleton[0]
         dynamic_skeleton = np.load(output_skeleton)
-        print(dynamic_skeleton)
+        # print(dynamic_skeleton)
         accuracy, body_part = self.common.check_accuracy(dynamic_skeleton, 3, 0)
         l_f = 0
         for part in body_part[1]:
             if part == 1:
                 l_f += 1
 
-        
-
+        res = self.common.calculate_trainer(ex_type, static_skeleton, body_part[0], body_part[1])
+        print(res)
+        np.save(output_vector, res)
         return True
 
+    def train_exercise(self, ex_type, input_skeleton, input_vector, output_coordinates):
+        # print('ex_type : %d' % ex_type)
+        # print('input_skeleton : %s' % input_skeleton)
+        print('input_vector : %s' % input_vector)
+        # print('output_coordinates : %s' % output_coordinates)
+        length = np.load(input_skeleton)
+        vector = np.load(input_vector)
+        res = self.common.apply_vector(ex_type, length, vector)
+        np.save(output_coordinates, res)
+        return True
+
+
+        return True
     def check_procedure_list(self, option_list):
         if len(option_list) != 5:
             raise MyException('Procedure List length should be 5')
