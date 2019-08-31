@@ -42,16 +42,16 @@ def angle_difference(trainer,user,exercise):
     if exercise == 'pullup': #The coordinates indicated vary depending on the type of exercise
         i=0                  #pullup assumes necessary body parts as rsholder(x),relbow(y),rwrist(z) : (2,3,4)
         while True:
-            if (user_x[i] == None or user_y[i]==None or trainer_x[i]==None or trainer_y[i]==None or i==120): #frame_filtering이 완성되면 i==120 대체
+            if i>len(user):
                 break
 
-            if (trainer_x[i]+1<user_x[i] or trainer_x[i]-1>user_x[i]):
+            if trainer_x[i]+1<user_x[i] or trainer_x[i]-1>user_x[i]:
                 angle_np[i][2][2] = 0
 
-            elif (trainer_y[i]+1<user_y[i] or trainer_y[i]-1>user_y[i]):
+            elif trainer_y[i]+1<user_y[i] or trainer_y[i]-1>user_y[i]:
                 angle_np[i][3][2] = 0
 
-            elif (trainer_z[i]+1<user_z[i] or trainer_z[i]-1>user_z[i]):
+            elif trainer_z[i]+1<user_z[i] or trainer_z[i]-1>user_z[i]:
                 angle_np[i][4][2] = 0
             else:
                 angle_np[i][4][2] = 1
@@ -69,16 +69,16 @@ def point_difference(trainer, user, exercise):
     if exercise == 'pullup':  # The coordinates indicated vary depending on the type of exercise
         i = 0  # pullup assumes necessary body parts as rsholder(x),relbow(y),rwrist(z) : (2,3,4)
         while True:
-            if (user_x[i] == None or user_y[i] == None or trainer_x[i] == None or trainer_y[i] == None or i == 120):  # frame_filtering이 완성되면 i==120 대체
+            if i > len(user):
                 break
 
-            if (trainer_x[i] + 0.5 < user_x[i] or trainer_x[i] - 0.5 > user_x[i]):
+            if trainer_x[i] + 0.5 < user_x[i] or trainer_x[i] - 0.5 > user_x[i]:
                 point_np[i][2][2] = 0
 
-            elif (trainer_y[i] + 0.5 < user_y[i] or trainer_y[i] - 0.5 > user_y[i]):
+            elif trainer_y[i] + 0.5 < user_y[i] or trainer_y[i] - 0.5 > user_y[i]:
                 point_np[i][3][2] = 0
 
-            elif (trainer_z[i] + 0.5 < user_z[i] or trainer_z[i] - 0.5 > user_z[i]):
+            elif trainer_z[i] + 0.5 < user_z[i] or trainer_z[i] - 0.5 > user_z[i]:
                 point_np[i][4][2] = 0
             else:
                 point_np[i][4][2] = 1
@@ -86,8 +86,6 @@ def point_difference(trainer, user, exercise):
     return point_np
 
 def diffing(trainer_npy,user_npy,exercise):
-    user_npy = "C:/Users\Rhcsky\Desktop\SW_developer/skeleton1.npy"
-    trainer_npy = "C:/Users\Rhcsky\Desktop\SW_developer/skeleton2.npy"
     user = np.load(user_npy)
     trainer = np.load(trainer_npy)
     recom, resize = frame_filtering(user, trainer)

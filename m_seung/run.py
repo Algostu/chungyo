@@ -8,10 +8,6 @@ if __name__ == '__main__':
 
 class Video:
     def __init__(self,trainer_npy,user_npy,exercise):
-        trainer_npy = "C:/Users\Rhcsky\Desktop\SW_developer/skeleton1.npy"
-        user_npy = "C:/Users\Rhcsky\Desktop\SW_developer/skeleton2.npy"
-        exercise = 'pullup'
-
         trainer = np.load(trainer_npy)
         user = np.load(user_npy)
         user,trainer = diffing(trainer,user,exercise)
