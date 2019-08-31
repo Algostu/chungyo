@@ -1,5 +1,5 @@
-import coco as Coco
-from coco import CocoPart
+import m_seung.coco as Coco
+from m_seung.coco import CocoPart
 import cv2
 import numpy as np
 
@@ -24,7 +24,7 @@ class Screen:
         pass
 
     # points: list, ex) points = [(x,y), (x1,y1), ...]
-    def draw_human(self,point):
+    def draw_human(self,point,form):
         centers = {}
         colors = {}
         num = 0
@@ -41,18 +41,22 @@ class Screen:
             num = num + 1
 
         # draw line
-        for pair_order, pair in enumerate(Coco.CocoPairsRender):
-            # colors 1 : Green  , colors 0 : Red
-            if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0): #disable Trash value
-                continue
-            # if colors[pair_order] == 1:
-            #     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
-            # elif colors[pair_order] == 0:
-            #     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
-            # else:
-            #     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
-
-            cv2.line(self.img, centers[pair[0]], centers[pair[1]], Coco.CocoColors[pair_order], 3)
+        if form == 'Real_time':
+            for pair_order, pair in enumerate(Coco.CocoPairsRender):
+                if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0): #disable Trash value
+                    continue
+                cv2.line(self.img, centers[pair[0]], centers[pair[1]], Coco.CocoColors[pair_order], 3)
+        else:
+            for pair_order, pair in enumerate(Coco.CocoPairsRender):
+                # colors 1 : Green  , colors 0 : Red
+                if centers[pair[0]] == (0, 0) or centers[pair[1]] == (0, 0):  # disable Trash value
+                    continue
+                if colors[pair_order] == 1:
+                    cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
+                elif colors[pair_order] == 0:
+                    cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
+                else:
+                    cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
 
     def display_accuracy(self):
         location_x, location_y = self.width - 140, 30
