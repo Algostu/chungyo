@@ -10,7 +10,7 @@ import json
 import numpy as np
 import os
 
-from m_han.pose import Pose, Part, PoseSequence
+from m_han.trainer.pose import Pose, Part, PoseSequence
 from pprint import pprint
 
 

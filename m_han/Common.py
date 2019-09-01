@@ -6,9 +6,9 @@ class Common():
     def __init__(self):
         self.PART_NAMES = ['nose', 'neck',  'rshoulder', 'relbow', 'rwrist', 'lshoulder', 'lelbow', 'lwrist', 'rhip', 'rknee', 'rankle', 'lhip', 'lknee', 'lankle', 'reye', 'leye', 'rear', 'lear']
         # 각 부위별 인식률
-        self.initial_parts = [0.6 for i in range(18)]
+        self.initial_parts = [0.6 for i in range(14)] + [0, 0, 0, 0]
         # 전체 인식률 (한 프레임)
-        self.accuracy = .75
+        self.accuracy = [1.0, 0.72, .72, .72, .72]
         # 전체 인식률 (동영상 전체)
         self.agv_accuracy = 0.8
         # ex_parts 와 ex_pairs는 동일한 같은 점 집합으로 생성해야 한다.
@@ -40,7 +40,7 @@ class Common():
         # pp(basic_length)
 
         n = 0
-        for i in range(frames_len-200):
+        for i in range(frames_len):
             frames.append([(0, 0, 0) for i in range(18)])
             # neck (x, y, 0)신뢰도는 0으로 고정
             frames[i][1] = tuple(vector[i][0])
@@ -121,6 +121,7 @@ class Common():
         # print(point)
         vector = (norm_vector_and_size[0], norm_vector_and_size[1])
         size = norm_vector_and_size[2]
+        # print(size*fixed)
         coor = tuple(np.add(point, np.multiply(vector, size*fixed))) + (0.0,)
         # print(coor)
         return coor
@@ -132,10 +133,10 @@ class Common():
     def check_accuracy(self, frames, exercise_type, exit_flags):
         if exercise_type == -1:
             required_parts = self.initial_parts[:]
-            avg_acc = self.accuracy
+            avg_acc = self.accuracy[0]
         elif exercise_type > 0:
             required_parts = self.ex_parts[exercise_type][:]
-            avg_acc = self.accuracy
+            avg_acc = self.accuracy[exercise_type]
         else:
             raise MyException('exercise_type are between 0 and 5')
 
@@ -184,7 +185,7 @@ class Common():
         body_movement_vector = [[] for i in range(pairs_len)]
 
         for idx,pairs in enumerate(target_pairs):
-            body_measurements.append(self.distance(static_skeleton[pairs[0]-1], static_skeleton[pairs[1]-1]))
+            body_measurements.append(self.distance(static_skeleton[pairs[0]], static_skeleton[pairs[1]]))
             fixed_len = body_measurements[idx]
             # for debug
             # m_num = 0

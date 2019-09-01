@@ -21,7 +21,7 @@ class PoseSystem():
         self.initial = 'initial_video'
         self.skeleton = 'skeleton'
         self.initial_skeleton = 'initial_skeleton'
-        self.trained_skeleton = '8888888888888`````````88`8`'
+        self.trained_skeleton = 'trained_skeleton'
         self.vector = 'vector'
         self.size = 'size'
         self.ex = [type[3:] for type in self.exercise_types]

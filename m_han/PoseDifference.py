@@ -7,7 +7,7 @@ class PoseDifference():
     def __init__(self):
         self.pose_system=None
 
-    def choose_sys_and_option(self, user_type, sys_type):
+    def choose_sys_and_option(self, user_type, sys_type, input_type=None):
         u, s = user_type, sys_type
 
         if s == 0 or u == '':
@@ -26,7 +26,7 @@ class PoseDifference():
                 self.pose_system.user_info.set_user_id("Enter User Name(wiil be stored into this user's folder):")
             else:
                 self.pose_system.user_info.set_user_id("Enter Trainer Name(wiil be stored into trainer's folder):")
-            self.pose_system.regist_skeleton()
+            self.pose_system.regist_skeleton(input_type)
 
         elif s == 3:
             self.pose_system = TrainSystem(u)
@@ -43,6 +43,8 @@ class PoseDifference():
             self.pose_system.analysis_trainer_skeleton()
         elif s == 5:
             self.pose_system = FeedbackSystem(u)
+            self.pose_system.user_info.set_user_id("Enter User Name(where output files are stored into):")
+            self.pose_system.user_info.set_preferred_exercise_type([self.pose_system.exercise_types,"Enter which exercise you want to learn:"])
             self.pose_system.get_real_time_feedback()
             # 이후에 계속 추가
         else:

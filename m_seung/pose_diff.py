@@ -107,4 +107,5 @@ def diffing(trainer_npy,user_npy,exercise):
                 if a[i][2] == 0 and b[i][2]==0:
                     user[i][2] = 0
 
+
     return user,trainer
