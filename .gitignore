@@ -1,3 +1,6 @@
 **/__pycache__/
 openpose/**
 *.mp4
+*.png
+*.jpg
+*.avi

@@ -18,7 +18,7 @@ class RegisterSystem(PoseSystem):
             print('Fail')
             raise MyException('create_user() fail, because this user already exist!')
 
-    def regist_skeleton(self):
+    def regist_skeleton(self, input_type):
         # User와 Trainer따로 구분하는 부분
         input = ""
         output = ""
@@ -49,10 +49,18 @@ class RegisterSystem(PoseSystem):
         if os.path.isdir(base) == False:
             os.mkdir(base)
 
-        if input == "":
+        if input == "" and input_type == None:
             raise MyException("initial_video file does not exist")
 
         # self.pose_estimation.check_procedure_list([0,0,0,0,0])
+        if input_type != None:
+            res = self.pose_estimation.parse_picture(self.user_info.user_id, path, os.path.join(base, 'initial_skeleton'))
+            if res == True:
+                print("Done")
+                print("Successfully stored initial_skeleton.npy into /data/%s/%s/base folder" % (type, self.user_info.user_id))
+                return True
+            else:
+                raise MyException('parse_picture failed for some reason')
 
         if os.path.isfile(output_folder) == False:
             res = self.pose_estimation.parse_video(self.user_info.user_id, input, output)

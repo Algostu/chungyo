@@ -1,8 +1,8 @@
 import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import numpy as np
-from m_han.parse import load_ps
-from m_han.evaluate import evaluate_pose
+from m_han.trainer.parse import load_ps
+from m_han.trainer.evaluate import evaluate_pose
 ## 오차범위 가중치 처음과 끝;; 유저의 시간을 트레이너에게 맞추기
 
 def frame_filtering():

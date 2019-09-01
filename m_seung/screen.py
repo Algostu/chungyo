@@ -1,5 +1,5 @@
-import coco as Coco
-from coco import CocoPart
+import m_seung.coco as Coco
+from m_seung.coco import CocoPart
 import cv2
 import numpy as np
 
@@ -32,7 +32,7 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx*0.001*self.width), int(body_party*0.001*self.height))
+            center = (int(body_partx*0.002*self.width), int(body_party*0.002*self.height))
             centers[num] = center
             if center == (0,0): #disable Trash value
                 num = num + 1

@@ -69,9 +69,9 @@ def _pull_up(pose_seq):
     b_vecs = source2_vecs-source1_vecs
     c_vecs = source3_vecs-source2_vecs
 
-    shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
-    upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
-    upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
+    # shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
+    # upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
+    # upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
     #
     # # use thresholds learned from analysis
     # upper_arm_torso_range = np.max(upper_arm_torso_angles) - np.min(upper_arm_torso_angles)

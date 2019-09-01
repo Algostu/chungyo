@@ -1,5 +1,5 @@
-from screen import Screen
-from pose_diff import angle_difference
+from m_seung.screen import Screen
+from m_seung.pose_diff import angle_difference
 import cv2
 import numpy as np
 
@@ -61,7 +61,7 @@ class run:
         for screen in screens:
             # draw_human
             screen.draw_human(screen.point)
-            if cv2.waitKey(100) == 27:
+            if cv2.waitKey(1000) == 27:
                 break
             # display_things
             screen.display_accuracy()
