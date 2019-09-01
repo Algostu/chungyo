@@ -13,7 +13,7 @@ Enter User Name(will create folder with this name):testUser
 Creating User folder...Done
 ````
 
-2. Register User skeleton
+2. Register User skeleton  
 This command will store user's basic skeleton from either video or picture, which will be used for resizing one's exercise motion. To choose input type between *video and picture*, use **'--type [fileName]'** command, which makes openpose to parse your input picture, not video file. The *draw back* issues are related to file name. Input file name is fixed now, not decided on user's choice. So this issues should be fixed quickly.  
 ````
 python main.py --user u --sys 2 # for video whose name is 'initial_video' at '/data/type/userName/'
@@ -36,7 +36,7 @@ Done
 Successfully stored initial_skeleton.npy into /data/user/testUser/base folder
 ````
 
-3. Train User skeleton
+3. Train User skeleton  
 This command will makes applied exercise skeleton based on user skeleton and trainer's exercise skeleton. The *draw back* issues are two things: size and direction problem and test unit problem. Size and direction problem is that each output's size and direction are different so that user skeleton is captured in different environment. We should regularize out's size and direction. Next, test unit problem simply means that there are no test tools to test performance of resizing function.  
 ````
 python main.py --user u --sys 3 # apply exercise vector to user skeleton
