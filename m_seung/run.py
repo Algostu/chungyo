@@ -67,13 +67,10 @@ class Real_time:
         for screen in screens:
             # draw_human
 
-            screen.draw_human(screen.point)
-            if cv2.waitKey(1000) == 27:
-
             screen.draw_human(screen.point,"Real_time")
             if cv2.waitKey(100) == 27:
-
                 break
+
             # display_things
             screen.display_accuracy()
             screen.display_times()
