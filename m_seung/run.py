@@ -66,6 +66,7 @@ class Real_time:
 
         for screen in screens:
             # draw_human
+
             screen.draw_human(screen.point)
             if cv2.waitKey(1000) == 27:
 
