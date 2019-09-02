@@ -60,8 +60,13 @@ class run:
 
         for screen in screens:
             # draw_human
+<<<<<<< Updated upstream
             screen.draw_human(screen.point)
             if cv2.waitKey(1000) == 27:
+=======
+            screen.draw_human(screen.point,"Real_time")
+            if cv2.waitKey(100) == 27:
+>>>>>>> Stashed changes
                 break
             # display_things
             screen.display_accuracy()
