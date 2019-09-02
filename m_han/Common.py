@@ -178,6 +178,7 @@ class Common():
     # angle 추가하기 + 운동별로 다르게 하기
     def calculate_trainer(self, ex_type, static_skeleton, dynamic_skeleton, dynamic_num):
         target_pairs = self.ex_pairs[ex_type][:]
+
         pairs_len = len(target_pairs)
 
         body_measurements = []
@@ -244,7 +245,7 @@ class Common():
 
         self.cal_blank(centers, 3)
         # pp(centers)
-        print(len(centers))
+        # print(len(centers))
         # x, y, length
         final_orders = []
         for i in range(frame_len):

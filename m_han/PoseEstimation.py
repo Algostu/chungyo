@@ -16,7 +16,7 @@ import cv2
 # from m_seung.Screen import Screen
 from m_han.Screen import Screen
 from m_han.Common import Common
-from m_seung.run import run
+# from m_seung.run import run
 
 # from trainer.parse import load_ps
 # from trainer.evaluate import evaluate_pose
@@ -136,7 +136,7 @@ class PoseEstimation():
                 l_f += 1
 
         res = self.common.calculate_trainer(ex_type, static_skeleton, body_part[0], body_part[1])
-        print(res)
+        # print(res)
         np.save(output_vector, res)
         return True
 

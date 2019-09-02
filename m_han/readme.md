@@ -2,6 +2,11 @@
 ---
 ## Basic Usage  
 
+**Basic Option Explanation  
+--user [user name]
+--sys [1~6]
+--type [anything] : optional. use only if you use sys 2 and want to parse video.
+
 1. Register User Info  
 This command will create userNameFolder/ at data/user/ or data/trainer/ directory (depend on user type)
 ````
@@ -67,5 +72,26 @@ Done
 Successfully stored trainded_skeleton.npy into /data/u/testUser/walk folder
 ````
 
-4. Analyze trainer skeleton
-*comming soon*  
+4. Analyze trainer skeleton  
+Analyzing skeleton require two things: target person's basic skeleton and target exercise's skeleton performed by the same person. So if you want to analyze an exercise, you should enter above info.  
+````
+python main.py --user t --sys 4 # only for user
+````  
+***Output***
+````
+Enter Trainer Name(where output file will be stored into):IU
+--------------Exercise List-----------
+1. shoulder_press
+2. pull_up
+3. dead_lift
+4. walk
+--------------------------------------
+Enter which exercise you want to anaysis:4
+Check target folder exist... Done
+Check if trainer skeletons are analized... Done
+Target exercise are analized before..? Yes!
+Processing analyze_exercise...
+This frames accuracy is 0.931361
+Done
+Successfully stored vector.npy into /data/t/IU/walk folder
+````
