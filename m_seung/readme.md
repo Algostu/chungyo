@@ -39,6 +39,40 @@ else:
 
 -----
 
+> ### frame_upcaling *cloned*
+> 
+> - user, trainer : npy file
+> 
+> Increase the number of smaller frames of the two frames to equal the number of larger frames. Replicate fewer fames in the number of larger frames step by step
+
+`code`
+````
+if trainer_frame > user_frame:
+    recom = "user"
+    resize = np.zeros(trainer.shape)
+    split = trainer_frame / user_frame
+    num=0
+    while 1:
+        for i in range(round(split*num,0.1),round(split*(num+1),0.1)):
+            resize[i] = user[num]
+            num = num +1
+
+elif trainer_frame < user_frame:
+    recom = "trainer"
+    resize = np.zeros(user.shape)
+    split = user_frame / trainer_frame
+    num = 0
+    while 1:
+        for i in range(round(split*num,0.1),round(split*(num+1),0.1)):
+            resize[i] = trainer[num]
+            num = num + 1
+else:
+    recom = "no"
+    resize = "no"
+````
+
+-----
+
 ## angle_difference(trainer,user,exercise)
 
 It is a method that checks the error of the trainer and the user with angle. *angle_difference* get the type of exercise and decide the body part to be calculated. It calculates the angle using *evaluate_pose* and compares their.
@@ -71,23 +105,23 @@ if exercise == 'pullup':
 
 This method is almost the same as above. Check the error of the trainer and the user with point. The margin of error is 0.5 and also the frame beyond the margin of error is changed the color section into 0(RED)
 ````
-if exercise == 'pullup': 
+if exercise == 'pullup':
+    i = 0
     while True:
-        if (user_x[i] == None or user_y[i] == None or trainer_x[i] == None or trainer_y[i] == None or i == 120):
+        if i > len(user)-1:
             break
 
-        if (trainer_x[i] + 0.5 < user_x[i] or trainer_x[i] - 0.5 > user_x[i]):
-            point_np[i][2][2] = 0
+        if trainer[i][2][0] + 0.5 < user[i][2][0] or trainer[i][2][0] - 0.5 > user[i][2][0]:
+            point_np[i][2][2] = 1
 
-        elif (trainer_y[i] + 0.5 < user_y[i] or trainer_y[i] - 0.5 > user_y[i]):
-            point_np[i][3][2] = 0
+        elif trainer[i][3][1] + 0.5 < user[i][3][1] or trainer[i][3][1] - 0.5 > user[i][3][1]:
+            point_np[i][3][2] = 1
 
-        elif (trainer_z[i] + 0.5 < user_z[i] or trainer_z[i] - 0.5 > user_z[i]):
-            point_np[i][4][2] = 0
         else:
-            point_np[i][4][2] = 1
+            point_np[i][2][2] = 0
+            point_np[i][3][2] = 0
+            point_np[i][4][2] = 0
         i = i + 1
-return point_np
 ````
 
 ----
@@ -102,6 +136,7 @@ The changer the user and trainer npy file using above methods. It consists of th
 
 ````
 recom, resize = frame_filtering(user, trainer)
+# recom, resize = frame_upscaling(trainer,user)
 
 if recom == "trainer":
     trainer = resize
