@@ -16,7 +16,7 @@ import cv2
 # from m_seung.Screen import Screen
 from m_han.Screen import Screen
 from m_han.Common import Common
-from m_seung.run import run
+from m_seung import run
 
 # from trainer.parse import load_ps
 # from trainer.evaluate import evaluate_pose

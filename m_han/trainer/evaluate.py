@@ -34,44 +34,80 @@ def evaluate_pose(pose_seq, exercise):
         return (False, "Exercise string not recognized.")
 
 
-
 def _pull_up(pose_seq):
-    # find the arm that is seen most consistently
     poses = pose_seq.poses
     right_present = [1 for pose in poses
-            if pose.neck.exists and pose.rshoulder.exists and pose.relbow.exists and pose.rwrist.exists]
+                     if pose.rshoulder.exists and pose.relbow.exists and pose.rwrist.exists]
     left_present = [1 for pose in poses
-            if pose.neck.exists and pose.lshoulder.exists and pose.lelbow.exists and pose.lwrist.exists]
+                    if pose.lshoulder.exists and pose.lelbow.exists and pose.lwrist.exists]
     right_count = sum(right_present)
     left_count = sum(left_present)
     side = 'right' if right_count > left_count else 'left'
 
-    print('Exercise arm detected as: {}.'.format(side))
 
     if side == 'right':
-        joints = [(pose.rshoulder, pose.relbow, pose.rwrist, pose.neck) for pose in poses]
+        joints = [(pose.rshoulder, pose.relbow, pose.rwrist, pose.rhip, pose.neck) for pose in poses]
     else:
-        joints = [(pose.lshoulder, pose.lelbow, pose.lwrist, pose.neck) for pose in poses]
+        joints = [(pose.lshoulder, pose.lelbow, pose.lwrist, pose.lhip, pose.neck) for pose in poses]
 
     # filter out data points where a part does not exist
     joints = [joint for joint in joints if all(part.exists for part in joint)]
 
-    source1_vecs= np.array([(joint[0].x - joint[3].x, joint[0].y - joint[3].y) for joint in joints])
-    source2_vecs = np.array([(joint[1].x - joint[3].x, joint[1].y - joint[3].y) for joint in joints])
-    source3_vecs = np.array([(joint[2].x - joint[3].x, joint[2].y - joint[3].y) for joint in joints])
 
+    upper_arm_vecs = np.array([(joint[0].x - joint[1].x, joint[0].y - joint[1].y) for joint in joints])
+    torso_vecs = np.array([(joint[4].x - joint[3].x, joint[4].y - joint[3].y) for joint in joints])
+    forearm_vecs = np.array([(joint[2].x - joint[1].x, joint[2].y - joint[1].y) for joint in joints])
+    print(upper_arm_vecs)
     # normalize vectors
-    source1_vecs = source1_vecs / np.expand_dims(np.linalg.norm(source1_vecs, axis=1), axis=1)
-    source2_vecs = source2_vecs / np.expand_dims(np.linalg.norm(source2_vecs, axis=1), axis=1)
-    source3_vecs = source3_vecs / np.expand_dims(np.linalg.norm(source3_vecs, axis=1), axis=1)
+    upper_arm_vecs = upper_arm_vecs / np.expand_dims(np.linalg.norm(upper_arm_vecs, axis=1), axis=1)
+    torso_vecs = torso_vecs / np.expand_dims(np.linalg.norm(torso_vecs, axis=1), axis=1)
+    forearm_vecs = forearm_vecs / np.expand_dims(np.linalg.norm(forearm_vecs, axis=1), axis=1)
 
-    a_vecs = source1_vecs
-    b_vecs = source2_vecs-source1_vecs
-    c_vecs = source3_vecs-source2_vecs
+    upper_arm_torso_angles = np.degrees(
+        np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
+    upper_arm_forearm_angles = np.degrees(
+        np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
 
-    # shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
+    return upper_arm_torso_angles, upper_arm_forearm_angles, upper_arm_torso_angles
+
+    # # find the arm that is seen most consistently
+    # poses = pose_seq.poses
+    # right_present = [1 for pose in poses
+    #         if pose.neck.exists and pose.rshoulder.exists and pose.relbow.exists and pose.rwrist.exists]
+    # left_present = [1 for pose in poses
+    #         if pose.neck.exists and pose.lshoulder.exists and pose.lelbow.exists and pose.lwrist.exists]
+    # right_count = sum(right_present)
+    # left_count = sum(left_present)
+    # side = 'right' if right_count > left_count else 'left'
+    #
+    # print('Exercise arm detected as: {}.'.format(side))
+    #
+    # if side == 'right':
+    #     joints = [(pose.rshoulder, pose.relbow, pose.rwrist, pose.neck) for pose in poses]
+    # else:
+    #     joints = [(pose.lshoulder, pose.lelbow, pose.lwrist, pose.neck) for pose in poses]
+    #
+    # # filter out data points where a part does not exist
+    # joints = [joint for joint in joints if all(part.exists for part in joint)]
+    #
+    # source1_vecs= np.array([(joint[0].x - joint[3].x, joint[0].y - joint[3].y) for joint in joints])
+    # source2_vecs = np.array([(joint[1].x - joint[3].x, joint[1].y - joint[3].y) for joint in joints])
+    # source3_vecs = np.array([(joint[2].x - joint[3].x, joint[2].y - joint[3].y) for joint in joints])
+    #
+    # # normalize vectors
+    # source1_vecs = source1_vecs / np.expand_dims(np.linalg.norm(source1_vecs, axis=1), axis=1)
+    # source2_vecs = source2_vecs / np.expand_dims(np.linalg.norm(source2_vecs, axis=1), axis=1)
+    # source3_vecs = source3_vecs / np.expand_dims(np.linalg.norm(source3_vecs, axis=1), axis=1)
+    #
+    # a_vecs = source1_vecs
+    # b_vecs = source2_vecs-source1_vecs
+    # c_vecs = source3_vecs-source2_vecs
+    #
+    # shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(a_vecs, b_vecs), axis=1), -1.0, 1.0)))
+    # upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(b_vecs, c_vecs), axis=1), -1.0, 1.0)))
+    # upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(a_vecs, c_vecs), axis=1), -1.0, 1.0)))
+    #
+    # return shoulder_angles, upper_arm_forearm_angles, upper_arm_torso_angles
     #
     # # use thresholds learned from analysis
     # upper_arm_torso_range = np.max(upper_arm_torso_angles) - np.min(upper_arm_torso_angles)
@@ -96,7 +132,7 @@ def _pull_up(pose_seq):
     #     return (correct, 'Exercise performed correctly! Weight was lifted fully up, and upper arm did not move significantly.')
     # else:
     #     return (correct, feedback)
-    return 'it should be ', 'deleted'
+    # return 'it should be ', 'deleted'
 def _bicep_curl(pose_seq):
     # find the arm that is seen most consistently
     poses = pose_seq.poses
