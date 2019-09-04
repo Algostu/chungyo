@@ -25,7 +25,6 @@ class Screen:
 
     # points: list, ex) points = [(x,y), (x1,y1), ...]
     def draw_human(self,point,form):
-
         centers = {}
         colors = {}
         num = 0
@@ -82,6 +81,12 @@ class Screen:
         location_x, location_y = 30, self.height-40
         location = (location_x, location_y)
         text = str.format("MSG_LINE : Try Harder!")
+        cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
+
+    def display_index(self,index):
+        location_x, location_y = 30, self.height-80
+        location = (location_x, location_y)
+        text = f'Frame {index}'
         cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
     def display_angle(self,joint):

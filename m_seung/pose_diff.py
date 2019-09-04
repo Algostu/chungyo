@@ -13,13 +13,13 @@ def frame_filtering(trainer,user): #frame resizing
    if trainer_frame > user_frame:
         recom = "trainer"
         resize = np.zeros(user.shape)
-        split = int(trainer_frame / user_frame)
+        split = trainer_frame / user_frame
         cnt1= 0
         cnt2=0
         while cnt2 < trainer_frame-1:
             resize[cnt1] = trainer[cnt2]
+            cnt2 = round(cnt2 + split*cnt1)
             cnt1 = cnt1 + 1
-            cnt2 = cnt2+split
 
    elif trainer_frame < user_frame:
         recom = "user"
@@ -37,7 +37,7 @@ def frame_filtering(trainer,user): #frame resizing
 
    return recom, resize
 
-def frame_upscaling(trainer,user): #make bigger the fewer frame 50/30
+def frame_upscaling(trainer,user): #make bigger the fewer frame
     user_frame = len(user)
     trainer_frame = len(trainer)
 
@@ -47,9 +47,11 @@ def frame_upscaling(trainer,user): #make bigger the fewer frame 50/30
         split = trainer_frame / user_frame
         num=0
         while 1:
-            for i in range(round(split*num,0.1),round(split*(num+1),0.1)):
+            if num == user_frame:
+                break
+            for i in range(int(round(split*num,1)),int(round(split*(num+1),1))):
                 resize[i] = user[num]
-                num = num +1
+            num = num + 1
 
     elif trainer_frame < user_frame:
         recom = "trainer"
@@ -57,9 +59,9 @@ def frame_upscaling(trainer,user): #make bigger the fewer frame 50/30
         split = user_frame / trainer_frame
         num = 0
         while 1:
-            for i in range(round(split*num,0.1),round(split*(num+1),0.1)):
+            for i in range(int(round(split*num,1)),int(round(split*(num+1),1))):
                 resize[i] = trainer[num]
-                num = num + 1
+            num = num + 1
     else:
         recom = "no"
         resize = "no"
@@ -74,7 +76,7 @@ def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
     for i in angle_np:
         for j in i:
-            j[2] = 0
+            j[2] = 1
     #
     # #Error in RED = 0, Success in GREEN = 1
     # if exercise == 'pullup': #The coordinates indicated vary depending on the type of exercise
@@ -98,28 +100,34 @@ def angle_difference(trainer,user,exercise):
 
 def point_difference(trainer, user, exercise):
     point_np = np.copy(user)
-
     # Error in RED = 1, Success in GREEN = 0
     if exercise == 'pullup':  # The coordinates indicated vary depending on the type of exercise
         i = 0  # pullup assumes necessary body parts as rsholder(x),relbow(y),rwrist(z) : (2,3,4)
+        margin = 1
         while True:
+            # print(f'trainer {trainer[i][2][0]}')
+            # print(f'user {user[i][2][0]}')
             if i > len(user)-1:
                 break
-
-            if trainer[i][2][0] + 0.5 < user[i][2][0] or trainer[i][2][0] - 0.5 > user[i][2][0]:
+            if trainer[i][2][0] + margin < user[i][2][0] or trainer[i][2][0] - margin > user[i][2][0]:
                 point_np[i][2][2] = 1
 
-            elif trainer[i][3][1] + 0.5 < user[i][3][1] or trainer[i][3][1] - 0.5 > user[i][3][1]:
+            elif trainer[i][3][1] + margin < user[i][3][1] or trainer[i][3][1] - margin > user[i][3][1]:
                 point_np[i][3][2] = 1
+
+            elif trainer[i][4][1] + margin > user[i][4][1] or trainer[i][4][1] - margin < user[i][4][1]:
+                point_np[i][4][2] = 1
             else:
                 point_np[i][2][2] = 0
                 point_np[i][3][2] = 0
                 point_np[i][4][2] = 0
             i = i + 1
+
     return point_np
 
 def diffing1(trainer,user,exercise):
     recom, resize = frame_filtering(trainer,user) #recom : 누가 변화했는지, resize : 변화된 npy
+
     if recom == "trainer":
         trainer = resize
         anglenp = angle_difference(trainer,user,exercise)
@@ -145,7 +153,6 @@ def diffing1(trainer,user,exercise):
             for i in range(0, 18):
                 if a[i][2] == 1 and b[i][2] == 1:
                     user[i][2] = 1
-
     return user,trainer
 
 def diffing2(trainer,user,exercise):
@@ -163,10 +170,10 @@ def diffing2(trainer,user,exercise):
         user = resize
         anglenp = angle_difference(trainer, user, exercise)
         pointnp = point_difference(trainer, user, exercise)
-        for a,b in zip(anglenp,pointnp):
+        for a,b,c in zip(anglenp,pointnp,user):
             for i in range(0,18):
-                if a[i][2] == 1 and b[i][2]==1:
-                    user[i][2] = 1
+                if a[i][2] == 1.0 and b[i][2]==1.0:
+                    c[i][2] = 1
     else :
         anglenp = angle_difference(trainer, user, exercise)
         pointnp = point_difference(trainer, user, exercise)
@@ -174,6 +181,5 @@ def diffing2(trainer,user,exercise):
             for i in range(0, 18):
                 if a[i][2] == 1 and b[i][2] == 1:
                     user[i][2] = 1
-
     return user,trainer
 

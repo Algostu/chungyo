@@ -10,6 +10,11 @@ class Video:
     def __init__(self,trainer_npy,user_npy,exercise):
         trainer = np.load(trainer_npy)
         user = np.load(user_npy)
+        # user = np.delete(user, np.s_[::2], 0)
+        user = np.delete(user, np.s_[::2], 0)
+
+        print(f'user frame {len(user)}')
+        print(f'trainer frame {len(trainer)}')
         user,trainer = diffing1(trainer,user,exercise)
 
         a = [k for k in range(0, 18)]
@@ -25,10 +30,12 @@ class Video:
 
         # make screen list
         for i in range(length):
+
             screens.append(
                 Screen(user[i], accuracy[i], angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
-        for screen in screens:
+        for index, screen in enumerate(screens):
+
             # draw_human
             screen.draw_human(screen.point,"Video")
             if cv2.waitKey(100) == 27:
@@ -38,6 +45,7 @@ class Video:
             screen.display_times()
             screen.display_fps()
             screen.display_msg()
+            screen.display_index(index)
             for i in range(0, 18):
                 screen.display_angle(i)
 
