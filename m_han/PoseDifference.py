@@ -34,6 +34,7 @@ class PoseDifference():
             self.pose_system.user_info.set_preferred_exercise_type([self.pose_system.exercise_types,"Enter which exercise you want to train your skeleton:"])
             self.pose_system.user_info.set_preferred_trainer([self.pose_system.trainer_list,'Enter which trainer you want to train your skeleton from:'])
             self.pose_system.train_user_skeleton()
+
         elif s == 4:
             if u=='u':
                 raise MyException("Usage: analysis trainer skeleton only accept trainer")
@@ -41,6 +42,7 @@ class PoseDifference():
             self.pose_system.user_info.set_user_id('Enter Trainer Name(where output file will be stored into):')
             self.pose_system.user_info.set_preferred_exercise_type([self.pose_system.exercise_types,'Enter which exercise you want to anaysis:'])
             self.pose_system.analysis_trainer_skeleton()
+
         elif s == 5:
             self.pose_system = FeedbackSystem(u)
             self.pose_system.user_info.set_user_id("Enter User Name(where output files are stored into):")
