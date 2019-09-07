@@ -26,6 +26,7 @@ class saveuser:
         skeleton_list.append(int(input("skeleton_ID: ")))
         skeleton_list.append(str(input("input_id: ")))
         skeleton_list.append(str(input("skeleton_location: ")))
+        
 
         print(skeleton_list)
 
