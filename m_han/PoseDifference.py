@@ -1,6 +1,7 @@
 from m_han.RegisterSystem import RegisterSystem
 from m_han.TrainSystem import TrainSystem
 from m_han.FeedbackSystem import FeedbackSystem
+#from m_han.PoseSystem import PoseSystem
 
 # PoseDifference Class used for delegation
 class PoseDifference():
@@ -16,6 +17,8 @@ class PoseDifference():
             self.pose_system = RegisterSystem(u)
             if u == "u":
                 self.pose_system.user_info.set_user_id("Enter User Name(will create folder with this name):")
+
+
             else:
                 self.pose_system.user_info.set_user_id("Enter Trainer Name(will create folder with this name):")
             self.pose_system.regist_info()
