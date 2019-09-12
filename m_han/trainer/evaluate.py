@@ -69,33 +69,33 @@ def _pull_up(pose_seq):
     b_vecs = source2_vecs-source1_vecs
     c_vecs = source3_vecs-source2_vecs
 
-    # shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
-    # upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
-    #
-    # # use thresholds learned from analysis
-    # upper_arm_torso_range = np.max(upper_arm_torso_angles) - np.min(upper_arm_torso_angles)
-    # upper_arm_forearm_min = np.min(upper_arm_forearm_angles)
-    #
-    # print('Upper arm and torso angle range: {}'.format(upper_arm_torso_range))
-    # print('Upper arm and forearm minimum angle: {}'.format(upper_arm_forearm_min))
-    #
-    # correct = True
-    # feedback = ''
-    #
-    # if upper_arm_torso_range > 35.0:
-    #     correct = False
-    #     feedback += 'Your upper arm shows significant rotation around the shoulder when curling. Try holding your upper arm still, parallel to your chest, ' + \
-    #                 'and concentrate on rotating around your elbow only.\n'
-    #
-    # if upper_arm_forearm_min > 70.0:
-    #     correct = False
-    #     feedback += 'You are not curling the weight all the way to the top, up to your shoulders. Try to curl your arm completely so that your forearm is parallel with your torso. It may help to use lighter weight.\n'
-    #
-    # if correct:
-    #     return (correct, 'Exercise performed correctly! Weight was lifted fully up, and upper arm did not move significantly.')
-    # else:
-    #     return (correct, feedback)
+    shoulder_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(, torso_vecs), axis=1), -1.0, 1.0)))
+    upper_arm_forearm_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, forearm_vecs), axis=1), -1.0, 1.0)))
+    upper_arm_torso_angles = np.degrees(np.arccos(np.clip(np.sum(np.multiply(upper_arm_vecs, torso_vecs), axis=1), -1.0, 1.0)))
+
+    # use thresholds learned from analysis
+    upper_arm_torso_range = np.max(upper_arm_torso_angles) - np.min(upper_arm_torso_angles)
+    upper_arm_forearm_min = np.min(upper_arm_forearm_angles)
+
+    print('Upper arm and torso angle range: {}'.format(upper_arm_torso_range))
+    print('Upper arm and forearm minimum angle: {}'.format(upper_arm_forearm_min))
+
+    correct = True
+    feedback = ''
+
+    if upper_arm_torso_range > 35.0:
+        correct = False
+        feedback += 'Your upper arm shows significant rotation around the shoulder when curling. Try holding your upper arm still, parallel to your chest, ' + \
+                    'and concentrate on rotating around your elbow only.\n'
+
+    if upper_arm_forearm_min > 70.0:
+        correct = False
+        feedback += 'You are not curling the weight all the way to the top, up to your shoulders. Try to curl your arm completely so that your forearm is parallel with your torso. It may help to use lighter weight.\n'
+
+    if correct:
+        return (correct, 'Exercise performed correctly! Weight was lifted fully up, and upper arm did not move significantly.')
+    else:
+        return (correct, feedback)
     return 'it should be ', 'deleted'
 def _bicep_curl(pose_seq):
     # find the arm that is seen most consistently
