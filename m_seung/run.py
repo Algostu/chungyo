@@ -4,7 +4,6 @@ from m_seung.calculate_angle import get_angle
 import cv2
 import numpy as np
 
-#def diffing(trainer_npy,user_npy,exercise): return
 if __name__ == '__main__':
     print("main")
 
