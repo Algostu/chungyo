@@ -315,9 +315,3 @@ def diffing_increasing(trainer,user,exercise,way):
                     check_times = check_times + 1
     print(f'Number of checking times : {check_times}')
     return user,trainer
-
-def diffing_angle(trainer,user):
-    # 각각의 부위를 어떻게 판단하여 각을 잴지 정해야함 그 후 각마다 index로 번호를 매기고, coco참조하기. coco그림 참조하기
-    trainer_angle,user_angle = get_angle(trainer,user)
-
-    pass
