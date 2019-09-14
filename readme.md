@@ -1,5 +1,7 @@
 # pose-difference
 ---
+## Build Status
+![status Image](https://travis-ci.org/I-Love-IU/pose-difference.svg?branch=dev)
 
 ## Installation
 **Test environment**
