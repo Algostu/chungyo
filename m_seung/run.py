@@ -1,6 +1,7 @@
 from m_seung.screen import Screen
 from m_seung.pose_diff_test import diffing_decreasing, diffing_increasing
 from m_seung.calculate_angle import get_angle
+
 import cv2
 import numpy as np
 
@@ -11,9 +12,7 @@ class Video:
     def __init__(self,trainer_npy,user_npy,exercise,diffing,way,average):
         trainer = np.load(trainer_npy)
         user = np.load(user_npy)
-
         # user = np.delete(user, np.s_[::2], 0)
-
         print(f'user frame {len(user)}')
         print(f'trainer frame {len(trainer)}')
 

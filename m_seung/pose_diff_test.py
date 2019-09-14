@@ -35,8 +35,6 @@ def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0
         sys.exit
 
 def frame_decreasing(trainer,user,way,average): #frame resizing
-    trainer = np.load(trainer)
-    user = np.load(user)
 
     user_frame = len(user)
     trainer_frame = len(trainer)
@@ -194,6 +192,10 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 109d0fb05d4aec8ce85e8aea0e4fe6203f7ac7a8
 def angle_difference(trainer,user,exercise):
     # trainer_x, trainer_y, trainer_z = evaluate_pose(PoseSequence(trainer), exercise)
     # user_x, user_y, user_z = evaluate_pose(PoseSequence(user), exercise)
@@ -283,6 +285,7 @@ def diffing_decreasing(trainer,user,exercise,way,average):
                     check_times = check_times + 1
     print(f'Number of checking times : {check_times}')
     return user,trainer
+
 
 def diffing_increasing(trainer,user,exercise,way):
     recom, resize = frame_increasing(trainer,user,way)
