@@ -7,8 +7,8 @@ class Screen():
         pass
 
     def draw_humans(self,humans, imgcopy=False, frame=0, output_json_dir=None):
-        image = cv2.imread('m_han/test.png', cv2.IMREAD_COLOR)
-        npimg = np.zeros(image.shape)
+        # image = cv2.imread('m_han/test.png', cv2.IMREAD_COLOR)
+        npimg = np.zeros((1024,620, 3), np.uint8)
         # print(image.shape)
         image_h, image_w = npimg.shape[:2]
         dc = {"people":[]}
@@ -20,7 +20,7 @@ class Screen():
 
         # for human in humans:
         for n, human in enumerate(humans):
-            npimg = np.zeros(image.shape)
+            npimg = np.zeros((1024,620, 3), np.uint8)
             flat = [0.0 for i in range(36)]
             # draw point
             for i in range(18):

@@ -116,7 +116,7 @@ class PoseEstimation():
         print('Processing find_initial_skeleton...')
         result = np.load(base)
         # check_accuracy(frames, exercise_type, exit_flags)
-        accuracy, body_part = self.common.check_accuracy(result, -1, 1)
+        accuracy, body_part = self.common.check_accuracy(result, 0, 1)
         # body_part가 한개일때도 [frame] 이런 식으로 저장됨
         keypoints = np.array(body_part)
         # print(keypoints)

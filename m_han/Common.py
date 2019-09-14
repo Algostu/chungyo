@@ -1,35 +1,21 @@
+'''
+* Writer : hankyul
+* Last updated : 2019-09-14
+* About what : Utility function
+* contens : 
+'''
+
 import math
 import numpy as np
 from pprint import pprint as pp
 
 class Common():
     def __init__(self):
-        self.PART_NAMES = ['nose', 'neck',  'rshoulder', 'relbow', 'rwrist', 'lshoulder', 'lelbow', 'lwrist', 'rhip', 'rknee', 'rankle', 'lhip', 'lknee', 'lankle', 'reye', 'leye', 'rear', 'lear']
-        # 각 부위별 인식률
-        self.initial_parts = [0.6 for i in range(14)] + [0, 0, 0, 0]
-        # 전체 인식률 (한 프레임)
-        self.accuracy = [1.0, 0.72, .72, .72, .72]
-        # 전체 인식률 (동영상 전체)
-        self.agv_accuracy = 0.8
-        # ex_parts 와 ex_pairs는 동일한 같은 점 집합으로 생성해야 한다.
-        self.ex_parts = [
-        [],
-        [],
-        [],
-        [0.5, 0.1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0, 0, 0, 0] # walk
-        ]
-        self.ex_pairs = [
-        [],
-        [],
-        [],
-        CocoPairs[:-6]
-        ]
-        # 어떤 운동이던지 간에 중심점을 Neck으로 설정한다.
-        self.ex_center = [ 1, 1, 1, 1]
+        pass
 
     def apply_vector(self, ex_type, length, vector):
-        parts = self.ex_parts[ex_type][:]
-        pairs = self.ex_pairs[ex_type][:]
+        parts = Parts[ex_type][:]
+        pairs = Pairs [ex_type][:]
         length = length[0]
         frames_len = len(vector)
         frames = []
@@ -131,12 +117,12 @@ class Common():
     # 각도와 길이또한 판단해야 한다.
     # 처음 서있는 자세라 해도 모든 것을 다 인식할 필요는 없다.
     def check_accuracy(self, frames, exercise_type, exit_flags):
-        if exercise_type == -1:
-            required_parts = self.initial_parts[:]
-            avg_acc = self.accuracy[0]
+        if exercise_type == 0:
+            required_parts = Parts[0][:]
+            avg_acc = Accuracys[0]
         elif exercise_type > 0:
-            required_parts = self.ex_parts[exercise_type][:]
-            avg_acc = self.accuracy[exercise_type]
+            required_parts = Parts[exercise_type][:]
+            avg_acc = Accuracys[exercise_type]
         else:
             raise MyException('exercise_type are between 0 and 5')
 
@@ -177,7 +163,7 @@ class Common():
 
     # angle 추가하기 + 운동별로 다르게 하기
     def calculate_trainer(self, ex_type, static_skeleton, dynamic_skeleton, dynamic_num):
-        target_pairs = self.ex_pairs[ex_type][:]
+        target_pairs = Pairs[ex_type][:]
 
         pairs_len = len(target_pairs)
 
@@ -236,7 +222,7 @@ class Common():
 
         # center (x, y)
         centers = []
-        cento = self.ex_center[ex_type]
+        cento = Centers[ex_type]
         for i in range(frame_len):
             if dynamic_num[i] == 1:
                 centers.append((dynamic_skeleton[i][cento][0], dynamic_skeleton[i][cento][1]))
@@ -351,7 +337,6 @@ class Common():
 
         return deg
 
-
 CocoColors = [[255, 0, 0], [255, 85, 0], [255, 170, 0], [255, 255, 0], [170, 255, 0], [85, 255, 0], [0, 255, 0],
               [0, 255, 85], [0, 255, 170], [0, 255, 255], [0, 170, 255], [0, 85, 255], [0, 0, 255], [85, 0, 255],
               [170, 0, 255], [255, 0, 255], [255, 0, 170], [255, 0, 85]]
@@ -362,9 +347,28 @@ CocoPairs = [
 ]   # = 19
 CocoPairsRender = CocoPairs[:-2]
 
+PART_NAMES = ['nose', 'neck',  'rshoulder', 'relbow', 'rwrist', 'lshoulder', 'lelbow', 'lwrist', 'rhip', 'rknee', 'rankle', 'lhip', 'lknee', 'lankle', 'reye', 'leye', 'rear', 'lear']
+
+# 0.inital
+# 1.walk
+# 2.pull_up
+# 3.shoulder_press
+
+AVG_Accuracy = 0.8
+Accuracys = [1.0, 0.72, .72, .72, .72]
+Parts = [
+[0.5 for i in range(14)] + [0, 0, 0, 0],
+[0.5 for i in range(14)] + [0, 0, 0, 0],
+[0.5 for i in range(9)] + [0,0,0.5,0,0,0, 0, 0, 0],
+[0.5 for i in range(9)] + [0,0,0.5,0,0,0, 0, 0, 0]
+]
+Pairs = [
+CocoPairs[:-6],
+CocoPairs[:-6],
+CocoPairs[:7]+CocoPairs[9:10],
+CocoPairs[:7]+CocoPairs[9:10]
+]
+Centers = [1, 1, 1, 1]
+
 class MyException(Exception):
     pass
-
-if __name__=='__main__':
-    c = Common()
-    print(c.average([1,23,45,51]))

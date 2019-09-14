@@ -1,5 +1,6 @@
 from m_seung.screen import Screen
-from m_seung.pose_diff import diffing1, diffing2
+from m_seung.pose_diff_test import diffing_decreasing, diffing_increasing
+
 import cv2
 import numpy as np
 
@@ -10,12 +11,13 @@ class Video:
     def __init__(self,trainer_npy,user_npy,exercise):
         trainer = np.load(trainer_npy)
         user = np.load(user_npy)
-        # user = np.delete(user, np.s_[::2], 0)
         user = np.delete(user, np.s_[::2], 0)
 
         print(f'user frame {len(user)}')
         print(f'trainer frame {len(trainer)}')
-        user,trainer = diffing1(trainer,user,exercise)
+
+        user,trainer = diffing_increasing(trainer,user,exercise)
+        # user,trainer = diffing_decreasing(trainer,user,exercise)
 
         a = [k for k in range(0, 18)]
         length = int(len(user))
