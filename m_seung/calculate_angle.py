@@ -22,8 +22,9 @@ def Calculate_angle(point_a,point_b,point_c):
     angle = round(angle)
     return angle
 
-#리스트 초기화해서 AnglePart자리에 넣기.
+
 def get_angle(trainer,user):
+    """Using AnglePairs in coco, input the angle data in list of body part."""
     trainer_angle = []
     user_angle = []
     for a in range(len(trainer)):
