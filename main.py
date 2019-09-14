@@ -19,14 +19,13 @@ def main():
     #
     # app = PoseDifference()
     # app.choose_sys_and_option(args.user, args.sys, args.type)
-
-    trainer = "data/trainer/IU/walk/skeleton.npy"
-    user = "data/user/IU/walk/trained_skeleton.npy"
-    
-    run.Video(trainer,user,'pullup')
-
-
-
+    user = 'data/user/IU/walk/trained_skeleton.npy'
+    trainer = 'data/trainer/IU/walk/skeleton.npy'
+    exercise = 'pullup'
+    way = 'round' #round_up, round_down.
+    average = 1 # 1은 apply 2는 non
+    diffing = 'increase' # decrease
+    run.Video(trainer,user,exercise,diffing,way,average)
 
 if __name__=="__main__":
     main()

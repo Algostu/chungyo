@@ -2,8 +2,9 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import numpy as np
 import math
+from m_seung.calculate_angle import get_angle
 
-def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way):
+def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
     aver = np.zeros((18,3))
     if way == 'round':
         for i in range(cnt2,round(cnt2 + split * cnt1)):
@@ -33,8 +34,8 @@ def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way):
         print(f'Wrong way, there are three ways. rounding, round_up, round_down')
         sys.exit
 
-
 def frame_decreasing(trainer,user,way,average): #frame resizing
+
     user_frame = len(user)
     trainer_frame = len(trainer)
 
@@ -191,7 +192,10 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 109d0fb05d4aec8ce85e8aea0e4fe6203f7ac7a8
 def angle_difference(trainer,user,exercise):
     # trainer_x, trainer_y, trainer_z = evaluate_pose(PoseSequence(trainer), exercise)
     # user_x, user_y, user_z = evaluate_pose(PoseSequence(user), exercise)
@@ -248,8 +252,8 @@ def point_difference(trainer, user, exercise):
 
     return point_np
 
-def diffing_decreasing(trainer,user,exercise):
-    recom, resize = frame_decreasing(trainer,user,way='round',average=1) #recom : 누가 변화했는지, resize : 변화된 npy
+def diffing_decreasing(trainer,user,exercise,way,average):
+    recom, resize = frame_decreasing(trainer,user,way,average) #recom : 누가 변화했는지, resize : 변화된 npy
     check_times=0
     if recom == "trainer":
         trainer = resize
@@ -282,8 +286,9 @@ def diffing_decreasing(trainer,user,exercise):
     print(f'Number of checking times : {check_times}')
     return user,trainer
 
-def diffing_increasing(trainer,user,exercise):
-    recom, resize = frame_increasing(trainer,user,way='round')
+
+def diffing_increasing(trainer,user,exercise,way):
+    recom, resize = frame_increasing(trainer,user,way)
     check_times = 0
     if recom == "trainer":
         trainer = resize
