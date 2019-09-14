@@ -1,4 +1,3 @@
-1. shoulder_press
-2. pull_up
-3. dead_lift
-4. walk
+1. walk
+2. shoulder_press
+3. pull_up
