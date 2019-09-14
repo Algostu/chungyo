@@ -1,3 +1,10 @@
+'''
+* Writer : hankyul
+* Last updated : 2019-09-14
+* About what : Utility function
+* contens : 
+'''
+
 import math
 import numpy as np
 from pprint import pprint as pp
