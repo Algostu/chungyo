@@ -32,9 +32,10 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx*0.002*self.width), int(body_party*0.002*self.height))
+            center = (int(body_partx), int(300-body_party))
+
             centers[num] = center
-            if center == (0,0): #disable Trash value
+            if center == (0,300): #disable Trash value
                 num = num + 1
                 continue
             cv2.circle(self.img, center, 10, Coco.CocoColors[num], thickness=3, lineType=8, shift=0)
@@ -43,18 +44,18 @@ class Screen:
         # draw line
         if form == 'Real_time':
             for pair_order, pair in enumerate(Coco.CocoPairsRender):
-                if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0): #disable Trash value
+                if centers[pair[0]] == (0,300) or centers[pair[1]] == (0,300): #disable Trash value
                     continue
                 cv2.line(self.img, centers[pair[0]], centers[pair[1]], Coco.CocoColors[pair_order], 3)
         else:
             for pair_order, pair in enumerate(Coco.CocoPairsRender):
-                # colors 1 : Green  , colors 0 : Red
-                if centers[pair[0]] == (0, 0) or centers[pair[1]] == (0, 0):  # disable Trash value
+                # colors 1 : red  , colors 0 : green
+                if centers[pair[0]] == (0, 300) or centers[pair[1]] == (0, 300):  # disable Trash value
                     continue
                 if colors[pair_order] == 1:
-                    cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
-                elif colors[pair_order] == 0:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
+                elif colors[pair_order] == 0:
+                    cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
 
@@ -82,10 +83,16 @@ class Screen:
         text = str.format("MSG_LINE : Try Harder!")
         cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
+    def display_index(self,index):
+        location_x, location_y = 30, self.height-80
+        location = (location_x, location_y)
+        text = f'Frame {index}'
+        cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
+
     def display_angle(self,joint):
         section = CocoPart(joint).name
         coordinate = self.point[joint]
-        location_x, location_y = int(coordinate[0]*0.001*self.width), int(coordinate[1]*0.001*self.height)
+        location_x, location_y = int(-coordinate[0]*0.001*self.width), int(-coordinate[1]*0.001*self.height)
 
         if location_x == 0 and location_y == 0: #disable Trash value
             pass

@@ -3,7 +3,7 @@ from m_seung.pose_diff_test import diffing_decreasing, diffing_increasing
 
 import cv2
 import numpy as np
-#def diffing(trainer_npy,user_npy,exercise): return
+
 if __name__ == '__main__':
     print("main")
 
@@ -15,10 +15,8 @@ class Video:
 
         print(f'user frame {len(user)}')
         print(f'trainer frame {len(trainer)}')
-
         user,trainer = diffing_increasing(trainer,user,exercise)
         # user,trainer = diffing_decreasing(trainer,user,exercise)
-
         a = [k for k in range(0, 18)]
         length = int(len(user))
         accuracy = [i + 1 for i in range(length)]
@@ -26,16 +24,18 @@ class Video:
         fps = [i + 1 for i in range(length)]
         times = [i + 1 for i in range(length)]
         msg = [i + 1 for i in range(length)]
-        height = 720
-        width = 1024
+        height = 536
+        width = 953
         screens = []
 
         # make screen list
         for i in range(length):
+
             screens.append(
                 Screen(user[i], accuracy[i], angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
-        for screen in screens:
+        for index, screen in enumerate(screens):
+
             # draw_human
             screen.draw_human(screen.point,"Video")
             if cv2.waitKey(100) == 27:
@@ -45,6 +45,7 @@ class Video:
             screen.display_times()
             screen.display_fps()
             screen.display_msg()
+            screen.display_index(index)
             for i in range(0, 18):
                 screen.display_angle(i)
 
@@ -70,7 +71,6 @@ class Real_time:
         for i in range(length):
             screens.append(
                 Screen(points[i], accuracy[i], angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
-
         for screen in screens:
             # draw_human
 
@@ -85,7 +85,6 @@ class Real_time:
             screen.display_msg()
             for i in range(0, 18):
                 screen.display_angle(i)
-
             # float screen
             cv2.imshow("imshow", screen.img)
         cv2.destroyAllWindows()
