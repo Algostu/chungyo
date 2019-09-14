@@ -3,7 +3,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import numpy as np
 import math
 
-def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
+def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way):
     aver = np.zeros((18,3))
     if way == 'round':
         for i in range(cnt2,round(cnt2 + split * cnt1)):
@@ -33,7 +33,6 @@ def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0
         print(f'Wrong way, there are three ways. rounding, round_up, round_down')
         sys.exit
 
-def average_frame_increasing(frame, resize, split, cnt1, cnt2,way):
 
 def frame_decreasing(trainer,user,way,average): #frame resizing
     user_frame = len(user)
