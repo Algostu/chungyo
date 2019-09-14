@@ -32,7 +32,7 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx), int(300-body_party))
+            center = (int(body_partx*0.002*self.width), 300-int(body_party*0.002*self.height))
 
             centers[num] = center
             if center == (0,300): #disable Trash value
@@ -92,14 +92,17 @@ class Screen:
     def display_angle(self,joint):
         section = CocoPart(joint).name
         coordinate = self.point[joint]
-        location_x, location_y = int(-coordinate[0]*0.001*self.width), int(-coordinate[1]*0.001*self.height)
+        location_x, location_y = int(coordinate[0]*0.002*self.width), 300-int(coordinate[1]*0.002*self.height)
 
         if location_x == 0 and location_y == 0: #disable Trash value
             pass
         else:
             location = (location_x-50, location_y+30)
-            text = str.format("%s %d" % (section, self.angle))
+            text = f'{section} {self.angle[joint]}'
             cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
     def get_img(self):
         return self.img
+
+    def get_angle(self):
+        return self.angle

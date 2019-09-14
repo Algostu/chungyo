@@ -228,3 +228,33 @@ Using cv2.putText, we show to user a several things.
 > ````
 > cv2.putText(img, text, location, font, fontScale, color, thickness)
 > ````
+
+# Calculate_angle
+
+The new Issue#11 in github is need to calculate the angle. So I make some new definition for claculation.
+
+## angle_betwee_vectors_degrees(u,v)
+This return angle into degree between two vectors.
+
+## Calculate_angle(a,b,c)
+The definition can calculate the angle with given point a,b,c.
+Point b is inner point. It works on latitude/longitude radians space.
+
+First, we convert the point in tuple to point in numpy.
+```
+a = np.radians(np.array(point_a))
+b = np.radians(np.array(point_b))
+c = np.radians(np.array(point_c))
+```
+
+Second, make the vector and adjust the scale into 2D space
+```
+adjust = b[0]
+vec1[1] *= math.cos(adjust)
+vec2[1] *= math.cos(adjust)
+```
+
+## get_angle(npy file, npy file)
+Anglepairs in coco.py is the collection that can be measure part on Openpose in coco.
+So, get_angle can return the angle that each part of body using Anglepairs and npy file.
+The thing to be careful about at this time is that the point of cabinet must be always centered on.
