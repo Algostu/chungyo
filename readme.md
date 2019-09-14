@@ -1,14 +1,16 @@
 # pose-difference
 ---
-## HomePage
-***Our HomePage is [Here][1]***
+## Build Status
+[![Build Status](https://travis-ci.org/I-Love-IU/pose-difference.svg?branch=dev)](https://travis-ci.org/I-Love-IU/pose-difference)
+
 ## Installation
 **Test environment**
 * windows 10
-* please add if you have ideas :)
+* python 3.6.4
+* opencv-python 4.1.0
+* numpy >= 1.14.5
 
 **Dependencies**
-+ tf-pose-estimation
 + openpose(only for extracting example from video Images)
 
 **Install from gitHub**  
@@ -21,35 +23,8 @@ python main.py
 
 ---
 ## Hello World
-you(seung-min, da-ani, byung-hun) can start this project with below sample codes. This code is for checking dependencies needed in your computer. **So before you started, make sure that these sample codes are working properly in your computer.**
-````
-# 1
-# for check tf-pose are installed for your computer in packages
-python main.py --mode check
 
-# 2
-# for check your modules
-python main.py --mode [m_da | m_seung | m_byung]
-````
-***Result***
-````
-# 1
-Hello Pose Difference
 
-# 2
-hello byunghun-world
-hello daan-world
-hello seungmin-world
-````
-
-***Purpose***  
-Purpose of this document is mainly for me to be get used to MarkDown Language. And most contents of this document will be edited when it comes to become public README.MD so dont worry about it. There is another reason for writting it, which is this document could help us to concentrate on developing on project. ***So please Read it thoroughly!!***
-
-We are a student, not a professional one. So please dont get any pressure from forcing you to do it. We are doing this, cause we want to become more experienced and get more fun. But we can learn from it as much as do. So if we want to become more better programmer by doing it, we should be eager to learn something. It is depend on your choice whether you can get good results in any forms(skills, aptitude for programming, or relationship) or not!
-
-Okay if you read until now, you are ready to start. The most important thing in development is that your document can be read easily so that others can share your brilliant ideas by reading your documents. The basic class diagram and flow chart are uploaded in our [trello][5], which is we dicussed before in our meeting (I modified it a little bit). If you realized your assigned parts, then write documents that explain your ideas. The form and rules of document are explained ***Development Rules*** section. So start from there. Thank you and good luck everyone!
-
----
 ## Development Rules
 1) **How to Commit to Main Repository**
     * **push to repo**  
@@ -95,15 +70,7 @@ Okay if you read until now, you are ready to start. The most important thing in 
             if __name__="__main__":
                 test_var_1, test_var_2 = 1, 2
                 print(increase(test_var_1, test_var_2))
-            ````
-        3. **How to Start Coding and Which Part should I touch First?**  
-            I know you are not going to read this document thoroughly, but please give attention to this part, cause if you dont know about it, you just cant start coding and it could let you down badly :(
-
-            First, check where your part is. To do this, classes and flow chart are provided in our [trello][5]. There are explanation about basic structure about our project, such className, method usage, parameter, etc. So you can start with readin those document and image files.
-
-            Second, after you check your part, you can write your code in your local machine. Each person's working directory is specified in *Current Working Parts* section. Input of each function maybe improper or not ready to use. That is because our project is too small to devide it enough not to touch other's working part. So if you find any bugs in input, leave issues in our git repo and tell person who are responsible of.
-
-            Third, modify and complete documents while developing. The classes diagram and flow charts are not complete yet. They wait you to complete. Please update it and notify it to others.
+       
     * **Comments Rules**  
     There are two type of comments you must write. Others are optional, but these two types must be written in order to make source file read easily by not only other people, but mainly yourself.
     First, write comments per files(moduel). This comments has form to follow, So just copy, paste and modify it.
@@ -132,15 +99,6 @@ Okay if you read until now, you are ready to start. The most important thing in 
     > 3. bugs and limits
 
 
----
-## Current Working Parts  
-*This section should be updated in the future.*
-+ hankyul
-+ seungmin
-+ daani
-+ buynghun
-
----
 ## References(gitHub Repo)
 1. [tf-pose-estimation][2]
 2. [open-pose][3]
