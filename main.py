@@ -27,5 +27,6 @@ def main():
     diffing = 'increase' # decrease
     run.Video(trainer,user,exercise,diffing,way,average)
 
+
 if __name__=="__main__":
     main()

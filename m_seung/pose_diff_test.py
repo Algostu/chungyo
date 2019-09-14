@@ -192,10 +192,6 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 109d0fb05d4aec8ce85e8aea0e4fe6203f7ac7a8
 def angle_difference(trainer,user,exercise):
     # trainer_x, trainer_y, trainer_z = evaluate_pose(PoseSequence(trainer), exercise)
     # user_x, user_y, user_z = evaluate_pose(PoseSequence(user), exercise)

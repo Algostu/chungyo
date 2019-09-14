@@ -1,9 +1,10 @@
 import numpy as np
+from some_module import get_helloworld
+
+def test_get_helloworld():
+	assert 'hello world' == get_helloworld()
+
+if __name__=='__main__':
+    test_get_helloworld()
 
 
-
-a = np.array([1, 2, 3, 4])
-b = np.array([4, 2, 2, 4])
-c = np.array([1, 2, 3, 4])
-t = 5.487
-print(round(t))
