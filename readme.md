@@ -6,10 +6,11 @@
 ## Installation
 **Test environment**
 * windows 10
-* please add if you have ideas :)
+* python 3.6.4
+* opencv-python 4.1.0
+* numpy >= 1.14.5
 
 **Dependencies**
-+ tf-pose-estimation
 + openpose(only for extracting example from video Images)
 
 **Install from gitHub**  
@@ -22,28 +23,8 @@ python main.py
 
 ---
 ## Hello World
-you(seung-min, da-ani, byung-hun) can start this project with below sample codes. This code is for checking dependencies needed in your computer. **So before you started, make sure that these sample codes are working properly in your computer.**
-````
-# 1
-# for check tf-pose are installed for your computer in packages
-python main.py --mode check
 
-# 2
-# for check your modules
-python main.py --mode [m_da | m_seung | m_byung]
-````
-***Result***
-````
-# 1
-Hello Pose Difference
 
-# 2
-hello byunghun-world
-hello daan-world
-hello seungmin-world
-````
-
----
 ## Development Rules
 1) **How to Commit to Main Repository**
     * **push to repo**  
