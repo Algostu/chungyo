@@ -19,7 +19,7 @@ from pose_diff.util.Common import Common
 
 
 # TF-Pose-Estimation
-# from tf_pose.estimator import TfPoseEstimator
+# from tf_pose.estimator import TfPoseEstimators
 # from tf_pose.networks import get_graph_path, model_wh
 
 # OpenPose 빌드 다시하면 OpenPose도 추가하기
@@ -27,7 +27,7 @@ from pose_diff.util.Common import Common
 class PoseEstimation():
     def __init__(self):
         self.common = Common()
-        self.screen = Screen()
+        # self.screen = Screen()
         # self.pose_diff = PoseDiff()
         self.post_procedure_call_list = [
             "OpenPose로 동영상 분석해서 skeleton.npy저장"
@@ -144,7 +144,7 @@ class PoseEstimation():
         length = np.load(input_skeleton)
         vector = np.load(input_vector)
         res = self.common.apply_vector(ex_type, length, vector)
-        self.screen.draw_humans(res)
+        # self.screen.draw_humans(res)
         np.save(output_coordinates, res)
         return True
 

@@ -2,7 +2,7 @@
 * Writer : hankyul
 * Last updated : 2019-09-14
 * About what : Utility function
-* contens : 
+* contens :
 '''
 
 import math
@@ -373,7 +373,7 @@ Centers = [1, 1, 1, 1]
 AnglePairs = [(1,2,3),(2,3,4),(3,2,8),(8,9,10),(1,5,6),(5,6,7),(6,5,11),(11,12,13)]
 AnglePart = [2,3,1,9,5,6,1,12]
 
-class CocoPart(Enum):
+class CocoPart(enum.Enum):
     Nose = 0
     Neck = 1
     RShoulder = 2
