@@ -13,6 +13,7 @@ import numpy as np
 
 from pose_diff.util.screen import Screen
 from pose_diff.util.Common import Common
+from pose_diff.core.run import Video
 
 # from trainer.parse import load_ps
 # from trainer.evaluate import evaluate_pose
@@ -147,6 +148,13 @@ class PoseEstimation():
         # self.screen.draw_humans(res)
         np.save(output_coordinates, res)
         return True
+
+    def feedback(self, user, trainer, ex_type):
+        print("feedback processing....", end="")
+
+        video = Video(trainer, user, "pullup", "increase", "round", 1)
+        return True
+
 
     def check_procedure_list(self, option_list):
         if len(option_list) != 5:

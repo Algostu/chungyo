@@ -52,7 +52,10 @@ class Screen:
                 # colors 1 : red  , colors 0 : green
                 if centers[pair[0]] == (0, 300) or centers[pair[1]] == (0, 300):  # disable Trash value
                     continue
-                if colors[pair_order] == 1:
+
+                # Todo 
+                # if colors[pair_order] == 1:
+                if colors[pair[0]] == 1:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
                 elif colors[pair_order] == 0:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)

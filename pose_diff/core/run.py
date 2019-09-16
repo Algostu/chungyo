@@ -4,6 +4,7 @@ from pose_diff.core.calculate_angle import get_angle
 
 import cv2
 import numpy as np
+from pprint import pprint as pp
 
 if __name__ == '__main__':
     print("main")

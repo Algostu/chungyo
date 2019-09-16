@@ -230,19 +230,31 @@ def point_difference(trainer, user, exercise):
         while True:
             # print(f'trainer {trainer[i][2][0]}')
             # print(f'user {user[i][2][0]}')
+
+            # todo
+            # for idx, part in enumerate(Common.Parts[exercise]):
+            #     if part > 0.5:
+            #         if trainer[i][idx][0] != user[i][idx][0] or trainer[i][idx][1] != user[i][idx][1]: 
+            #             point_np[i][idx][2] = 1
+            #         else:
+            #             point_np[i][idx][2] = 0
+            #     else:
+
             if i > len(user)-1:
                 break
             if trainer[i][2][0] + margin < user[i][2][0] or trainer[i][2][0] - margin > user[i][2][0]:
                 point_np[i][2][2] = 1
-
-            elif trainer[i][3][1] + margin < user[i][3][1] or trainer[i][3][1] - margin > user[i][3][1]:
-                point_np[i][3][2] = 1
-
-            elif trainer[i][4][1] + margin > user[i][4][1] or trainer[i][4][1] - margin < user[i][4][1]:
-                point_np[i][4][2] = 1
             else:
                 point_np[i][2][2] = 0
+
+            if trainer[i][3][1] + margin < user[i][3][1] or trainer[i][3][1] - margin > user[i][3][1]:
+                point_np[i][3][2] = 1
+            else:
                 point_np[i][3][2] = 0
+
+            if trainer[i][4][1] + margin > user[i][4][1] or trainer[i][4][1] - margin < user[i][4][1]:
+                point_np[i][4][2] = 1
+            else:
                 point_np[i][4][2] = 0
             i = i + 1
 
@@ -304,6 +316,7 @@ def diffing_increasing(trainer,user,exercise,way):
                 if a[i][2] == 1.0 and b[i][2]==1.0:
                     c[i][2] = 1
                     check_times = check_times + 1
+
     else :
         anglenp = angle_difference(trainer, user, exercise)
         pointnp = point_difference(trainer, user, exercise)

@@ -47,7 +47,8 @@ class PoseDifference():
             self.pose_system = FeedbackSystem(u)
             self.pose_system.user_info.set_user_id("Enter User Name(where output files are stored into):")
             self.pose_system.user_info.set_preferred_exercise_type([self.pose_system.exercise_types,"Enter which exercise you want to learn:"])
-            self.pose_system.get_real_time_feedback()
+            self.pose_system.user_info.set_preferred_trainer([self.pose_system.trainer_list,'Enter which trainer you want to train your skeleton from:'])
+            self.pose_system.get_feedback()
             # 이후에 계속 추가
         else:
             raise MyException("Usage: --sys [1-5]")
