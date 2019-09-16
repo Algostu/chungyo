@@ -98,7 +98,8 @@ class Screen:
             pass
         else:
             location = (location_x-50, location_y+30)
-            text = f'{section} {self.angle[joint]}'
+            # text = f'{section} {self.angle[joint]}'
+            text = f'{self.angle[joint]}'
             cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
     def get_img(self):

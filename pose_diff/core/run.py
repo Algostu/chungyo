@@ -43,8 +43,6 @@ class Video:
 
         for index, screen in enumerate(screens):
 
-        for index, screen in enumerate(screens):
-
             # draw_human
             screen.draw_human(screen.point,"Video")
             if cv2.waitKey(100) == 27:
