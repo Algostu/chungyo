@@ -2,6 +2,7 @@
 ---
 ## Future Update List
 1. interface.poseEstimatioin need to use the updated util.screen constructor without error  
+2. OpenPose demo version should be replaced by build version to develop real time functions
 
 ## Basic Usage  
 
