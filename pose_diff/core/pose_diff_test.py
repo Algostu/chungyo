@@ -2,6 +2,8 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 import numpy as np
 import math
+from pose_diff.util.Common import Parts
+from pose_diff.core.calculate_angle import get_angle
 
 
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
@@ -192,70 +194,55 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
+# Todo Make angle difference.
 def angle_difference(trainer,user,exercise):
-    # trainer_x, trainer_y, trainer_z = evaluate_pose(PoseSequence(trainer), exercise)
-    # user_x, user_y, user_z = evaluate_pose(PoseSequence(user), exercise)
-    #
     angle_np = np.copy(user)
-    for i in angle_np:
-        for j in i:
-            j[2] = 1
-    #
-    # #Error in RED = 0, Success in GREEN = 1
-    # if exercise == 'pullup': #The coordinates indicated vary depending on the type of exercise
-    #     i=0                  #pullup assumes necessary body parts as rsholder(x),relbow(y),rwrist(z) : (2,3,4)
-    #     while True:
-    #         if i>len(user):
-    #             break
-    #
-    #         if trainer_x[i]+1<user_x[i] or trainer_x[i]-1>user_x[i]:
-    #             angle_np[i][2][2] = 1
-    #
-    #         elif trainer_y[i]+1<user_y[i] or trainer_y[i]-1>user_y[i]:
-    #             angle_np[i][3][2] = 1
-    #
-    #         elif trainer_z[i]+1<user_z[i] or trainer_z[i]-1>user_z[i]:
-    #             angle_np[i][4][2] = 1
-    #         else:
-    #             angle_np[i][4][2] = 0
-    #         i= i+1
+    margin = 0.5
+    trainer_angle = get_angle(trainer)
+    user_angle = get_angle(user)
+    # Error in RED = 1, Success in GREEN = 0
+    if exercise == 1:
+        print("Exercise type is Walk")
+        pass
+    if exercise == 2:
+        print("Exercise type is shoulder_press")
+        pass
+    if exercise == 3:
+        i = 0
+        while True:
+            if i > len(user) - 1:
+                break
+            for idx, part in enumerate(Parts[exercise]):
+                if part > 0.5:
+                    if trainer_angle[i][idx] - margin > user_angle[i][idx] or trainer_angle[i][idx] + margin < user_angle[i][idx]:
+                        angle_np[i][idx][2] = 1
+                    else:
+                        angle_np[i][idx][2] = 0
+            i = i+1
+
     return angle_np
 
 def point_difference(trainer, user, exercise):
     point_np = np.copy(user)
     margin = 0.5
     # Error in RED = 1, Success in GREEN = 0
-    if exercise == 'pullup':  # The coordinates indicated vary depending on the type of exercise
-        i = 0  # pullup assumes necessary body parts as rsholder(x),relbow(y),rwrist(z) : (2,3,4)
+    if exercise == 1:
+        print("Exercise type is Walk")
+        pass
+    if exercise == 2:
+        print("Exercise type is shoulder_press")
+        pass
+    if exercise == 3:
+        i = 0
         while True:
-            # print(f'trainer {trainer[i][2][0]}')
-            # print(f'user {user[i][2][0]}')
-
-            # todo
-            # for idx, part in enumerate(Common.Parts[exercise]):
-            #     if part > 0.5:
-            #         if trainer[i][idx][0] != user[i][idx][0] or trainer[i][idx][1] != user[i][idx][1]: 
-            #             point_np[i][idx][2] = 1
-            #         else:
-            #             point_np[i][idx][2] = 0
-            #     else:
-
-            if i > len(user)-1:
+            if i > len(user) - 1:
                 break
-            if trainer[i][2][0] + margin < user[i][2][0] or trainer[i][2][0] - margin > user[i][2][0]:
-                point_np[i][2][2] = 1
-            else:
-                point_np[i][2][2] = 0
-
-            if trainer[i][3][1] + margin < user[i][3][1] or trainer[i][3][1] - margin > user[i][3][1]:
-                point_np[i][3][2] = 1
-            else:
-                point_np[i][3][2] = 0
-
-            if trainer[i][4][1] + margin > user[i][4][1] or trainer[i][4][1] - margin < user[i][4][1]:
-                point_np[i][4][2] = 1
-            else:
-                point_np[i][4][2] = 0
+            for idx, part in enumerate(Parts[exercise]):
+                if part > 0.5:
+                    if trainer[i][idx][0] - margin > user[i][idx][0] or trainer[i][idx][0] + margin < user[i][idx][0] or trainer[i][idx][1] - margin > user[i][idx][1] or trainer[i][idx][1] + margin < user[i][idx][1]:
+                        point_np[i][idx][2] = 1
+                    else:
+                        point_np[i][idx][2] = 0
             i = i + 1
 
     return point_np

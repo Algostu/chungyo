@@ -27,7 +27,7 @@ class Video:
         a = [k for k in range(0, 18)]
         length = int(len(user))
         accuracy = [i + 1 for i in range(length)]
-        trainer_angle, user_angle = get_angle(trainer,user)
+        user_angle = get_angle(user)
 
 
         fps = [i + 1 for i in range(length)]

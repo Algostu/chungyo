@@ -23,31 +23,18 @@ def Calculate_angle(point_a,point_b,point_c):
     return angle
 
 
-def get_angle(trainer,user):
+def get_angle(npyfile):
     """Using AnglePairs in coco, input the angle data in list of body part."""
-    trainer_angle = []
-    user_angle = []
-    for a in range(len(trainer)):
-        tangle = [None] * 18
-        for index, i in enumerate(AnglePairs):
-            pointa = trainer[a][i[0]]
-            pointa = pointa[:2]
-            pointb = trainer[a][i[1]]
-            pointb = pointb[:2]
-            pointc = trainer[a][i[2]]
-            pointc = pointc[:2]
-            tangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
-        trainer_angle.append(tangle)
-
-    for b in range(len(user)):
+    angle = []
+    for b in range(len(npyfile)):
         uangle = [None] * 18
         for index, j in enumerate(AnglePairs):
-            pointa = user[b][j[0]]
+            pointa = npyfile[b][j[0]]
             pointa = pointa[:2]
-            pointb = user[b][j[1]]
+            pointb = npyfile[b][j[1]]
             pointb = pointb[:2]
-            pointc = user[b][j[2]]
+            pointc = npyfile[b][j[2]]
             pointc = pointc[:2]
             uangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
-        user_angle.append(uangle)
-    return trainer_angle, user_angle
+        angle.append(uangle)
+    return angle
