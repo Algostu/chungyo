@@ -48,16 +48,14 @@ class Screen:
                     continue
                 cv2.line(self.img, centers[pair[0]], centers[pair[1]], CocoColors[pair_order], 3)
         else:
-            for pair_order, pair in enumerate(CocoPairsRender):
+            for pair in CocoPairsRender:
                 # colors 1 : red  , colors 0 : green
                 if centers[pair[0]] == (0, 300) or centers[pair[1]] == (0, 300):  # disable Trash value
                     continue
 
-                # Todo 
-                # if colors[pair_order] == 1:
-                if colors[pair[0]] == 1:
+                if colors[pair[0]] == 1 and colors[pair[1]] == 1:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
-                elif colors[pair_order] == 0:
+                elif colors[pair[0]] == 0 and colors[pair[1]] == 0:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)

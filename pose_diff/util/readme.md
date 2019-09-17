@@ -1,8 +1,9 @@
 # **Screen**
 
 ## Future Update List
-1. Screen Output error
-2. PointDiff improve diffing algorithm for applying each exercises.  
+1. Screen Output error - resolved.
+2. PointDiff improve diffing algorithm for applying each exercises.   
+3. change exercise String into Number
 
 ## Attribute
 > * point

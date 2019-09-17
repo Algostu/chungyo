@@ -8,7 +8,6 @@ import argparse
 from pose_diff.interface.PoseDifference import PoseDifference
 from pose_diff.core.run import *
 
-
 def main():
     parser = argparse.ArgumentParser(description='Pose Difference')
     parser.add_argument('--user', type=str, default='', help='Select User Type')
