@@ -19,7 +19,7 @@ def Calculate_angle(point_a,point_b,point_c):
     vec2[1] *= math.cos(adjust)
 
     angle = angle_between_vectors_degrees(vec1,vec2)
-    angle = round(angle)
+    angle = round(angle,2)
     return angle
 
 

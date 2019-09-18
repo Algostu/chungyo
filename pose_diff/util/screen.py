@@ -21,6 +21,7 @@ class Screen:
         self.height = height
         self.width = width
         self.img = np.zeros((self.height, self.width, 3), np.uint8)  # 현재는 그냥 검은 bg.
+
         pass
 
     # points: list, ex) points = [(x,y), (x1,y1), ...]
@@ -59,6 +60,11 @@ class Screen:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
+        for a in colors:
+            if a == 1:
+                return -1
+            else:
+                return 0
 
     def display_accuracy(self):
         location_x, location_y = self.width - 140, 30
@@ -78,10 +84,10 @@ class Screen:
         text = str.format("times %d" % (self.times))
         cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
-    def display_msg(self):
+    def display_score(self,score):
         location_x, location_y = 30, self.height-40
         location = (location_x, location_y)
-        text = str.format("MSG_LINE : Try Harder!")
+        text = (f'Score : {round(score,2)}')
         cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
     def display_index(self,index):

@@ -5,7 +5,6 @@ import math
 from pose_diff.util.Common import Parts
 from pose_diff.core.calculate_angle import get_angle
 
-
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
     aver = np.zeros((18,3))
     if way == 'round':
@@ -137,7 +136,6 @@ def frame_decreasing(trainer,user,way,average): #frame resizing
     else:
        recom = "no"
        resize = "no"
-
     return recom, resize
 
 def frame_increasing(trainer,user,way): #make bigger the fewer frame
@@ -194,7 +192,7 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
-# Todo Make angle difference.
+
 def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
     margin = 0.5
@@ -219,7 +217,6 @@ def angle_difference(trainer,user,exercise):
                     else:
                         angle_np[i][idx][2] = 0
             i = i+1
-
     return angle_np
 
 def point_difference(trainer, user, exercise):
@@ -244,7 +241,6 @@ def point_difference(trainer, user, exercise):
                     else:
                         point_np[i][idx][2] = 0
             i = i + 1
-
     return point_np
 
 def diffing_decreasing(trainer,user,exercise,way,average):
@@ -278,7 +274,6 @@ def diffing_decreasing(trainer,user,exercise,way,average):
                 if a[i][2] == 1 and b[i][2] == 1:
                     c[i][2] = 1
                     check_times = check_times + 1
-    print(f'Number of checking times : {check_times}')
     return user,trainer
 
 
@@ -312,5 +307,32 @@ def diffing_increasing(trainer,user,exercise,way):
                 if a[i][2] == 1.0 and b[i][2] == 1.0:
                     c[i][2] = 1
                     check_times = check_times + 1
-    print(f'Number of checking times : {check_times}')
     return user,trainer
+
+# it works well when user frame is more bigger than trainer frame
+def diffing_angle(trainer, user, exercise):
+    trainer_angle = get_angle(trainer)
+    user_angle = get_angle(user)
+    margin = 1
+
+    #for scoring
+    cnt = 0
+    for idx, part in enumerate(Parts[exercise]):
+        if part > 0.5:
+            cnt = cnt + 1
+    score_range = 100 / len(user_angle) * cnt
+
+    rearrange_user = []
+    rearrange_trainer = []
+    for i in range(0,18):
+        rearrange_user.append([x[i] for x in user_angle if x[i] is not None])
+    for i in range(0,18):
+        rearrange_trainer.append((x[i] for x in trainer_angle if x[i] is not None))
+
+    for i in range(0,18):
+        for idx, a in enumerate(rearrange_user[i]):
+            for b in rearrange_trainer[i]:
+                if a < b+margin and b - margin < a:
+                    user[idx][i][2] = 0
+                    break
+    return user, score_range
