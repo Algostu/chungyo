@@ -38,6 +38,10 @@ class Video:
         width = 953
         screens = []
         score = 0
+        self.video_name = 'output.avi'
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        writer = cv2.VideoWriter(self.video_name, fourcc, 10, (953, 536))
+
         # make screen list
         for i in range(length):
             screens.append(
@@ -70,7 +74,12 @@ class Video:
 
             # float screen
             cv2.imshow("imshow", screen.img)
+            writer.write(screen.img)
         cv2.destroyAllWindows()
+
+    def set_video_name(self,name):
+        self.video_name = f'{name}.avi'
+
 
 class Real_time:
     def __init__(self,npfile):
@@ -85,6 +94,8 @@ class Real_time:
         height = 720
         width = 1024
         screens = []
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        writer = cv2.VideoWriter('output.avi', fourcc, 10, (953, 536))
 
         # make screen list
         for i in range(length):
@@ -105,4 +116,5 @@ class Real_time:
                 screen.display_angle(i)
             # float screen
             cv2.imshow("imshow", screen.img)
+            writer.write(screen.img)
         cv2.destroyAllWindows()
