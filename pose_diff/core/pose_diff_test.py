@@ -5,6 +5,9 @@ import math
 from pose_diff.util.Common import Parts
 from pose_diff.core.calculate_angle import get_angle
 
+def setting_relative_error(trainer_val,user_val):
+    return abs(trainer_val-user_val)/trainer_val * 100
+
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
     aver = np.zeros((18,3))
     if way == 'round':
@@ -192,10 +195,9 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
         resize = "no"
     return recom, resize
 
-
 def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
-    margin = 0.5
+    margin = 20
     trainer_angle = get_angle(trainer)
     user_angle = get_angle(user)
     # Error in RED = 1, Success in GREEN = 0
@@ -212,16 +214,16 @@ def angle_difference(trainer,user,exercise):
                 break
             for idx, part in enumerate(Parts[exercise]):
                 if part > 0.5:
-                    if trainer_angle[i][idx] - margin > user_angle[i][idx] or trainer_angle[i][idx] + margin < user_angle[i][idx]:
-                        angle_np[i][idx][2] = 1
-                    else:
+                    if setting_relative_error(trainer_angle[i][idx],user_angle[i][idx]) < margin:
                         angle_np[i][idx][2] = 0
+                    else:
+                        angle_np[i][idx][2] = 1
             i = i+1
     return angle_np
 
 def point_difference(trainer, user, exercise):
     point_np = np.copy(user)
-    margin = 0.5
+    margin = 20
     # Error in RED = 1, Success in GREEN = 0
     if exercise == 1:
         print("Exercise type is Walk")
@@ -236,10 +238,10 @@ def point_difference(trainer, user, exercise):
                 break
             for idx, part in enumerate(Parts[exercise]):
                 if part > 0.5:
-                    if trainer[i][idx][0] - margin > user[i][idx][0] or trainer[i][idx][0] + margin < user[i][idx][0] or trainer[i][idx][1] - margin > user[i][idx][1] or trainer[i][idx][1] + margin < user[i][idx][1]:
-                        point_np[i][idx][2] = 1
-                    else:
+                    if setting_relative_error(trainer[i][idx][0],user[i][idx][0]) < margin and setting_relative_error(trainer[i][idx][1],user[i][idx][1]) < margin:
                         point_np[i][idx][2] = 0
+                    else:
+                        point_np[i][idx][2] = 1
             i = i + 1
     return point_np
 
@@ -275,7 +277,6 @@ def diffing_decreasing(trainer,user,exercise,way,average):
                     c[i][2] = 1
                     check_times = check_times + 1
     return user,trainer
-
 
 def diffing_increasing(trainer,user,exercise,way):
     recom, resize = frame_increasing(trainer,user,way)
