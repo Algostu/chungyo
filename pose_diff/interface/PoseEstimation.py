@@ -1,4 +1,4 @@
-'''
+common'''
 * Writer : hankyul
 * Last updated : 2019-08-22
 * About what : Estimate Pose from frames
@@ -12,7 +12,7 @@ import shutil
 import numpy as np
 
 from pose_diff.util.screen import Screen
-from pose_diff.util.Common import Common
+from pose_diff.util import Common
 from pose_diff.core.run import Video
 
 # from trainer.parse import load_ps
@@ -27,7 +27,6 @@ from pose_diff.core.run import Video
 
 class PoseEstimation():
     def __init__(self):
-        self.common = Common()
         # self.screen = Screen()
         # self.pose_diff = PoseDiff()
         self.post_procedure_call_list = [
@@ -111,7 +110,7 @@ class PoseEstimation():
         print('Processing find_initial_skeleton...')
         result = np.load(base)
         # check_accuracy(frames, exercise_type, exit_flags)
-        accuracy, body_part = self.common.check_accuracy(result, 0, 1)
+        accuracy, body_part = Common.check_accuracy(result, 0, 1)
         # body_part가 한개일때도 [frame] 이런 식으로 저장됨
         keypoints = np.array(body_part)
         # print(keypoints)
@@ -125,17 +124,15 @@ class PoseEstimation():
         skeleton = np.load(input_skeleton)
         static_skeleton = skeleton[0]
         dynamic_skeleton = np.load(output_skeleton)
-        # print(dynamic_skeleton)
-        accuracy, body_part = self.common.check_accuracy(dynamic_skeleton, 3, 0)
-        l_f = 0
-        for part in body_part[1]:
-            if part == 1:
-                l_f += 1
+        test_res = Common.check_accuracy(dynamic_skeleton, ex_type)
 
-        res = self.common.calculate_trainer(ex_type, static_skeleton, body_part[0], body_part[1])
-        # print(res)
-        np.save(output_vector, res)
-        return True
+        if test_res[0] == True:
+            res = Common.calculate_trainer(ex_type, static_skeleton, dynamic_skeleton)
+            np.save(output_vector, res)
+            return True
+        else:
+            print("This input file is not proper to use")
+            return False
 
     def train_exercise(self, ex_type, input_skeleton, input_vector, output_coordinates):
         # print('ex_type : %d' % ex_type)
@@ -144,7 +141,7 @@ class PoseEstimation():
         # print('output_coordinates : %s' % output_coordinates)
         length = np.load(input_skeleton)
         vector = np.load(input_vector)
-        res = self.common.apply_vector(ex_type, length, vector)
+        res = Common.apply_vector(ex_type, length, vector)
         # self.screen.draw_humans(res)
         np.save(output_coordinates, res)
         return True
