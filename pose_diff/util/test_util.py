@@ -1,20 +1,32 @@
 import os
 import numpy as np
+
+from pprint import pprint as pp
 from pose_diff.util import Common
 
+# Test functions
 def test_check_accuracy():
     test_set = load_testSet(1)
     ret_val = Common.check_accuracy(test_set, 1)
     print("Average accuracy: ", ret_val[1])
     assert ret_val[0] == True
 
-def load_testSet(ex_type):
-    fileloc = os.path.join('data', 'exercise.txt')
-    ex_list = []
-    with open(fileloc, 'r') as f:
-        ex_list = [line.rstrip('\n') for line in f]
-        ex_list = [ex[3:] for ex in ex_list]
-    file_name = ex_list[ex_type-1]
-    print(file_name)
-    testSet = np.load(os.path.join('data', 'testSets', file_name+'.npy'))
-    return testSet
+def test_calculate_trainer():
+    assert 1==1
+    # for i in range(pairs_len):
+    #     if frames_len_1 != len(body_movement_length[i]):
+    #         print("%d : length numbers are not same" % i)
+    #         frames_len_1 = len(body_movement_length[i])
+    #         print(frames_len_1)
+    #     if frames_len_2 != len(body_movement_vector[i]):
+    #         print("%d : vector numbers are not same" % i)
+    #         frames_len_2 = len(body_movement_vector[i])
+    #         print(frames_len_2)
+    #
+    # if frames_len_1 == frames_len_2:
+    #     frame_len = frames_len_1
+
+def test_cal_blank():
+    test_set = load_testSet(1)
+    for testset in test_set:
+        joints = zip(*testset)

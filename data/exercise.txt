@@ -1,3 +1,4 @@
 1. walk
 2. shoulder_press
 3. pull_up
+4. squat

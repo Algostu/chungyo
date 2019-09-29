@@ -124,17 +124,15 @@ class PoseEstimation():
         skeleton = np.load(input_skeleton)
         static_skeleton = skeleton[0]
         dynamic_skeleton = np.load(output_skeleton)
-        # print(dynamic_skeleton)
-        accuracy, body_part = Common.check_accuracy(dynamic_skeleton, 3, 0)
-        l_f = 0
-        for part in body_part[1]:
-            if part == 1:
-                l_f += 1
+        test_res = Common.check_accuracy(dynamic_skeleton, ex_type)
 
-        res = Common.calculate_trainer(ex_type, static_skeleton, body_part[0], body_part[1])
-        # print(res)
-        np.save(output_vector, res)
-        return True
+        if test_res[0] == True:
+            res = Common.calculate_trainer(ex_type, static_skeleton, dynamic_skeleton)
+            np.save(output_vector, res)
+            return True
+        else:
+            print("This input file is not proper to use")
+            return False
 
     def train_exercise(self, ex_type, input_skeleton, input_vector, output_coordinates):
         # print('ex_type : %d' % ex_type)

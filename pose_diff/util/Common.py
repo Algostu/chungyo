@@ -8,7 +8,7 @@
 import math
 import numpy as np
 import enum
-
+import matplotlib.pyplot as plt
 
 def apply_vector(ex_type, length, vector):
     parts = Parts[ex_type][:]
@@ -146,71 +146,48 @@ def average(list):
         sum += item
     return sum/len(list)
 
-# angle 추가하기 + 운동별로 다르게 하기
-def calculate_trainer(ex_type, static_skeleton, dynamic_skeleton, dynamic_num):
+# Todo: cal_blank 테스트하기
+# Todo: vector, center, length, angle 구하기
+# Todo: Outlier 제거 함수 만들기
+# Todo: 지금 출력 형식은 [center, parts * 18] * frames, parts = [vector, length] 인데 수정 해야됨. Debug도 하기
+# Todo: 프레임 길이를 바탕으로 테스트 하기
+def calculate_trainer(ex_type, static_skeleton, input_frames):
+    required_parts = Parts[ex_type][:]
     target_pairs = Pairs[ex_type][:]
-
     pairs_len = len(target_pairs)
 
     body_measurements = []
     body_movement_length = [[] for i in range(pairs_len)]
     body_movement_vector = [[] for i in range(pairs_len)]
 
-    for idx,pairs in enumerate(target_pairs):
-        body_measurements.append(distance(static_skeleton[pairs[0]], static_skeleton[pairs[1]]))
-        fixed_len = body_measurements[idx]
-        # for debug
-        # m_num = 0
-        # n_num = 0
-        # nm_num = 0
-        # vector와 length
-        for index, value in enumerate(dynamic_num)  :
-            if value == 1:
-                tuple = [dynamic_skeleton[index][pairs[0]], dynamic_skeleton[index][pairs[1]]]
-                if tuple[0][2] > 0 and  tuple[1][2]> 0:
-                    body_movement_length[idx].append(distance(tuple[0], tuple[1])/fixed_len)
-                    body_movement_vector[idx].append(norm_vector(tuple[0], tuple[1]))
-                    # print(body_movement_length[idx][index])
-                    # print(degree(body_movement_vector[idx][index]))
-                    # m_num += 1
-                else:
-                    body_movement_length[idx].append(0)
-                    body_movement_vector[idx].append(0)
-                    # n_num += 1
-            else:
-                body_movement_length[idx].append(0)
-                body_movement_vector[idx].append(0)
-                # n_num += 1
-        cal_blank(body_movement_length[idx], 1)
-        cal_blank(body_movement_vector[idx], 2)
-        # print('결과==============')
-        # for index, ratio in enumerate(body_movement_length[idx]):
-        #     print("%d 번째 ratio : %f" % (index, ratio))
-        # print('채워진것 : %d' % m_num)
-        # print('안채워진것 : %d' % n_num)
-        # print('다시 채운것 : %d' % nm_num)
+    for part in required_parts:
+        cal_blank(input_frames[part], 3)
+    # for idx,pairs in enumerate(target_pairs):
+    #     body_measurements.append(distance(static_skeleton[pairs[0]], static_skeleton[pairs[1]]))
+    #     fixed_len = body_measurements[idx]
+    #     for index in range(len(input_frames)):
+    #         if input_frames[index][pairs[0]][2] > required_parts[pairs[0]]
+    #         and input_frames[index][pairs[1]][2] > required_parts[pairs[1]]:
+    #             tuple = [input_frames[index][pairs[0]], input_frames[index][pairs[1]]]
+    #             body_movement_length[idx].append(distance(tuple[0], tuple[1])/fixed_len)
+    #             body_movement_vector[idx].append(norm_vector(tuple[0], tuple[1]))
+    #         else:
+    #             body_movement_length[idx].append(0)
+    #             body_movement_vector[idx].append(0)
+    #             # n_num += 1
+    #     cal_blank(body_movement_length[idx], 1)
+    #     cal_blank(body_movement_vector[idx], 2)
+
 
     frames_len_1 = len(body_movement_length[0])
     frames_len_2 = len(body_movement_vector[0])
-    for i in range(pairs_len):
-        if frames_len_1 != len(body_movement_length[i]):
-            print("%d : length numbers are not same" % i)
-            frames_len_1 = len(body_movement_length[i])
-            print(frames_len_1)
-        if frames_len_2 != len(body_movement_vector[i]):
-            print("%d : vector numbers are not same" % i)
-            frames_len_2 = len(body_movement_vector[i])
-            print(frames_len_2)
+    frame_len = frames_len_1
 
-    if frames_len_1 == frames_len_2:
-        frame_len = frames_len_1
-
-    # center (x, y)
     centers = []
     cento = Centers[ex_type]
     for i in range(frame_len):
         if dynamic_num[i] == 1:
-            centers.append((dynamic_skeleton[i][cento][0], dynamic_skeleton[i][cento][1]))
+            centers.append((input_frames[i][cento][0], input_frames[i][cento][1]))
         else:
             centers.append(0)
 
@@ -229,7 +206,7 @@ def calculate_trainer(ex_type, static_skeleton, dynamic_skeleton, dynamic_num):
 
     return keypoints
 
-def cal_blank(array, option):
+def cal_blank(array, option, test_opt=False):
     first = 1 if array[0] == 0 else 0
     last = 1 if array[-1] == 0 else 0
     if first == 1 or last == 1:
@@ -275,8 +252,7 @@ def cal_blank(array, option):
             else:
                 #print("%d번째 Ratio : %f" % (index, ratio))
                 last_value = ratio
-    # for index, ratio in enumerate(array):
-    #     print("%d 번째 ratio : <%f, %f>" % (index, ratio[0], ratio[1]))
+
 
 def distance(joint_1, joint_2):
     x_diff = math.pow(joint_1[0]-joint_2[0], 2)
