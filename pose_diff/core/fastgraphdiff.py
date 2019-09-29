@@ -1,11 +1,7 @@
 import numpy as np
 from pprint import pprint as pp
 class Momentum:
-
-
-
-    def compare_avg(self,part,xy):
-        frames = np.load("/Users/dani/Desktop/Projectfile/pose-difference/data/output/1-2/numpy/result.npy")  # 풀업
+    def compare_avg(self,part,xy,frames):
         Joints = list(zip(*frames))
         #print(Joints[part][1][1])
         avg =0
@@ -17,6 +13,7 @@ class Momentum:
         print(leni)
         flag = 1
         j = 0
+        # print(Joints[part])
         while(j < leni-3):
 
             for i in range(0, 3 + j):
@@ -28,7 +25,7 @@ class Momentum:
             avg_list.append(avg)
 
             j+=3
-        #pp(Joints[part])
+        # pp(Joints[part])
 
         print(avg_list)
         return avg_list
@@ -64,6 +61,6 @@ class Momentum:
 if __name__ == "__main__":
     test_class = Momentum()
 
-    result = test_class.compare_avg(2,1)
+    # result = test_class.compare_avg(2,1)
 
     #result2 = test_class.get_momentum(2, 9) #kneesfor x

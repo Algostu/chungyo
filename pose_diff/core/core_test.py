@@ -1,8 +1,9 @@
+import os, sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 import  numpy as np
 import cv2
 
 from pose_diff.util.Common import CocoColors, CocoPairsRender
-
 
 class Testclass:
     def __init__(self, a, b):
@@ -25,7 +26,7 @@ class Video:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx * 0.002 * width), 300 - int(body_party * 0.002 * height))
+            center = (int(body_partx * 0.1* width), 300 - int(body_party * 0.1* height))
 
             centers[num] = center
             if center == (0, 300):  # disable Trash value
@@ -40,12 +41,13 @@ class Video:
             cv2.line(self.img, centers[pair[0]], centers[pair[1]], CocoColors[pair_order], 3)
 #Todo make Video file in screen.py
 if __name__ == '__main__':
-    user_dir = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/user/IU/walk/trained_skeleton.npy'
-    trainer_dir = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/trainer/IU/walk/skeleton.npy'
+    # user_dir = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/user/IU/walk/trained_skeleton.npy'
+    # trainer_dir = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/user/IU/walk/trained_skeleton.npy'
+    user_dir = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/output/1-2/numpy/result.npy'
     user = np.load(user_dir)
     video  = []
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    writer = cv2.VideoWriter('output.avi',fourcc,10,(953,536))
+    writer = cv2.VideoWriter('output.avi',fourcc,10,(5000,5000))
     for i in user:
         Video(i)
         if cv2.waitKey(100) == 27:

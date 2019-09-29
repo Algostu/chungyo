@@ -1,5 +1,4 @@
 from pose_diff.core.fastgraphdiff import Momentum
-from pose_diff.util.Common import Parts
 moment = Momentum()
 
 class cut:
@@ -26,13 +25,17 @@ class cut:
         #print(avglist[i+1])
         back = (i+1)*3
         print(back)
+        return back
 
+class getCut:
+    def __init__(self,frame,exercise_type,axis):
+        self.frame = frame
+        exercise_type = 2
+        axis = 1
+        newcompare = cut()
+        avglist = moment.compare_avg(exercise_type,axis,frame)
+        frontavg, self.front = newcompare.compare_front(avglist)
+        self.back = newcompare.compare_back(avglist, frontavg)
 
-
-
-if __name__ == "__main__":
-    newcompare = cut()
-    avglist = moment.compare_avg(2, 1)
-    frontavg, front = newcompare.compare_front(avglist)
-    back = newcompare.compare_back(avglist, frontavg)
-
+    def get_frame_number(self):
+        return self.front, self.back
