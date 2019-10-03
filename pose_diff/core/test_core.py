@@ -1,7 +1,6 @@
 def test_core_function_test_1():
     assert 1 == 1
 
-
 def test_core_function_test_2():
     assert 2 == 2
 
@@ -16,3 +15,10 @@ def test_core_function_test_2():
 if __name__ == "__main__":
     test_core_function_test_1()
     test_core_function_test_2()
+    a = [1]
+    b = [2,3,4]
+    c = [5,6,7]
+    a = b
+    print(a)
+    a = c
+    print(c)

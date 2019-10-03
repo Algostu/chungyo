@@ -1,80 +1,83 @@
 from pose_diff.util.screen import Screen
-from pose_diff.core.pose_diff_test import diffing_decreasing, diffing_increasing, diffing_angle
+from pose_diff.core.pose_diffing import diffing_decreasing, diffing_increasing, diffing_angle
 from pose_diff.core.calculate_angle import get_angle
-
+from pose_diff.core.framecut import cut
 import cv2
 import numpy as np
 
-if __name__ == '__main__':
-    print("main")
-
 class Video:
-    def __init__(self,trainer_npy,user_npy,exercise,diffing,way,average,apply=True):
-        trainer = np.load(trainer_npy)
-        user = np.load(user_npy)
-        # user = np.delete(user, np.s_[::2], 0)
-        print(f'user frame {len(user)}')
-        print(f'trainer frame {len(trainer)}')
-        if apply == True:
-            score_range = 100 / len(user)
-            if diffing == 'increase':
-                user, trainer = diffing_increasing(trainer, user, exercise, way)
-            elif diffing == 'decrease':
-                user,trainer = diffing_decreasing(trainer,user,exercise,way,average)
+    def __init__(self,trainer_npy,user_npy,exercise=3,diffing='increase',way='round',average=1,apply=True):
+        trainer_full = np.load(trainer_npy)
+        user_full = np.load(user_npy)
+        usercut = cut.getCut(user_full).get_frame_number()
+        trainercut = cut.getCut(trainer_full).get_frame_number()
+        trainer_full = np.load(trainer_npy)
+        user_full = np.load(user_npy)
+        trainer = trainer_full[trainercut[0][0]:trainercut[0][1]]
 
-            else:
-                print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
-        if apply == 'Angle':
-            user, score_range = diffing_angle(trainer,user,exercise)
-
-        a = [k for k in range(0, 18)]
-        length = int(len(user))
-        accuracy = [i + 1 for i in range(length)]
-        user_angle = get_angle(user)
-        fps = [i + 1 for i in range(length)]
-        times = [i + 1 for i in range(length)]
-        msg = [i + 1 for i in range(length)]
-        height = 536
-        width = 953
-        screens = []
-        score = 0
         self.video_name = 'output.avi'
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        writer = cv2.VideoWriter(self.video_name, fourcc, 10, (953, 536))
+        writer = cv2.VideoWriter(self.video_name, fourcc, 10, (1280, 720))
 
-        # make screen list
-        for i in range(length):
-            screens.append(
-                Screen(user[i], accuracy[i], user_angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
+        for Ucut in usercut:
+            screens = []
+            print(f'UCTU  === {Ucut}')
+            user = user_full[Ucut[0]:Ucut[1]+1]
+            print(len(user))
+            if apply == True:
+                if diffing == 'increase':
+                    user, trainer = diffing_increasing(trainer, user, exercise, way)
+                elif diffing == 'decrease':
+                    user,trainer = diffing_decreasing(trainer,user,exercise,way,average)
+                else:
+                    print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
+                score_range = 100 / len(user)
+            if apply == 'Angle':
+                user, score_range = diffing_angle(trainer,user,exercise)
 
-        for index, screen in enumerate(screens):
-            # draw_human
-            val = screen.draw_human(screen.point,"Video")
-            if cv2.waitKey(100) == 27:
-                break
-            # display_things
-            screen.display_accuracy()
-            screen.display_times()
-            screen.display_fps()
-            screen.display_index(index)
+            length = len(user)
+            accuracy = [i + 1 for i in range(length)]
+            user_angle = get_angle(user)
+            fps = [i + 1 for i in range(length)]
+            times = [i + 1 for i in range(length)]
+            msg = [i + 1 for i in range(length)]
+            height = 720
+            width = 1280
+            score = 0
 
-            # display things-score
-            if val == -1:
-                screen.display_score(score)
-            else:
-                score = score + score_range
-                screen.display_score(score)
+            # make screen list
+            for i in range(length):
+                screens.append(
+                    Screen(user[i], accuracy[i], user_angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
-      # display_things-angle
-            angle = screen.get_angle()
-            for i in range(0, 18):
-                if angle[i] == None:
-                    continue
-                screen.display_angle(i)
+            for index, screen in enumerate(screens):
+                # draw_human
+                val = screen.draw_human(screen.point,"Video")
+                if cv2.waitKey(100) == 27:
+                    break
+                # display_things
+                screen.display_accuracy()
+                screen.display_times()
+                screen.display_fps()
+                screen.display_index(index)
 
-            # float screen
-            cv2.imshow("imshow", screen.img)
-            writer.write(screen.img)
+                # display things-score
+                if val == -1:
+                    screen.display_score(score)
+                else:
+                    score = score + score_range
+                    screen.display_score(score)
+
+          # display_things-angle
+                angle = screen.get_angle()
+                for i in range(0, 18):
+                    if angle[i] == None:
+                        continue
+                    screen.display_angle(i)
+
+                # float screen
+                cv2.imshow("imshow", screen.img)
+                writer.write(screen.img)
         cv2.destroyAllWindows()
 
     def set_video_name(self,name):
@@ -83,38 +86,49 @@ class Video:
 
 class Real_time:
     def __init__(self,npfile):
-        points = np.load(npfile)
-        a = [k for k in range(0, 18)]
-        length = int(len(points))
-        accuracy = [i + 1 for i in range(length)]
-        angle = [i + 1 for i in range(length)] #[frame][part][value]
-        fps = [i + 1 for i in range(length)]
-        times = [i + 1 for i in range(length)]
-        msg = [i + 1 for i in range(length)]
+        user_full = np.load(npfile)
+        usercut = getCut(user_full).get_frame_number()
+        user_full = np.load(npfile)
         height = 720
         width = 1024
-        screens = []
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        writer = cv2.VideoWriter('output.avi', fourcc, 10, (953, 536))
+        writer = cv2.VideoWriter('output.avi', fourcc, 10, (1024,720))
 
-        # make screen list
-        for i in range(length):
-            screens.append(
-                Screen(points[i], accuracy[i], angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
-        for screen in screens:
-            # draw_human
-            screen.draw_human(screen.point,"Real_time")
-            if cv2.waitKey(100) == 27:
-                break
+        for Ucut in usercut:
+            screens = []
+            user = user_full[Ucut[0]:Ucut[1] + 1]
+            length = int(len(user))
+            accuracy = [i + 1 for i in range(length)]
+            user_angle = get_angle(user)
+            fps = [i + 1 for i in range(length)]
+            times = [i + 1 for i in range(length)]
+            msg = [i + 1 for i in range(length)]
 
-            # display_things
-            screen.display_accuracy()
-            screen.display_times()
-            screen.display_fps()
-            screen.display_msg()
-            for i in range(0, 18):
-                screen.display_angle(i)
-            # float screen
-            cv2.imshow("imshow", screen.img)
-            writer.write(screen.img)
+            # make screen list
+            for i in range(length):
+                print(i)
+                screens.append(
+                    Screen(user[i], accuracy[i], user_angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
+
+            for screen in screens:
+                # draw_human
+                screen.draw_human(screen.point,"Real_time")
+                if cv2.waitKey(100) == 27:
+                    break
+
+                # display_things
+                screen.display_accuracy()
+                screen.display_times()
+                screen.display_fps()
+
+                # display_things-angle
+                angle = screen.get_angle()
+                for i in range(0, 18):
+                    if angle[i] == None:
+                        continue
+                    screen.display_angle(i)
+
+                # float screen
+                cv2.imshow("imshow", screen.img)
+                writer.write(screen.img)
         cv2.destroyAllWindows()

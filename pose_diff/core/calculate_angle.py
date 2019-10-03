@@ -22,7 +22,6 @@ def Calculate_angle(point_a,point_b,point_c):
     angle = round(angle,2)
     return angle
 
-
 def get_angle(npyfile):
     """Using AnglePairs in coco, input the angle data in list of body part."""
     angle = []

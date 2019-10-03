@@ -1,4 +1,4 @@
-from pose_diff.core.fastgraphdiff import Momentum
+from pose_diff.core.momentum import Momentum
 import numpy as np
 moment = Momentum()
 

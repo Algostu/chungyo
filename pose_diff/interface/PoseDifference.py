@@ -1,13 +1,7 @@
-<<<<<<< HEAD:pose_diff/interface/PoseDifference.py
 from pose_diff.interface.RegisterSystem import RegisterSystem
 from pose_diff.interface.TrainSystem import TrainSystem
 from pose_diff.interface.FeedbackSystem import FeedbackSystem
-=======
-from m_han.RegisterSystem import RegisterSystem
-from m_han.TrainSystem import TrainSystem
-from m_han.FeedbackSystem import FeedbackSystem
-#from m_han.PoseSystem import PoseSystem
->>>>>>> db2:m_han/PoseDifference.py
+
 
 # PoseDifference Class used for delegation
 class PoseDifference():

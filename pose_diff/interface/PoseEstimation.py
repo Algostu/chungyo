@@ -1,27 +1,11 @@
-common'''
-* Writer : hankyul
-* Last updated : 2019-08-22
-* About what : Estimate Pose from frames
-* contens : class->PoseEstimation, function->estimateRealTime,...
-'''
 import subprocess
 import os
 import glob
 import json
 import shutil
 import numpy as np
-
-from pose_diff.util.screen import Screen
 from pose_diff.util import Common
 from pose_diff.core.run import Video
-
-# from trainer.parse import load_ps
-# from trainer.evaluate import evaluate_pose
-
-
-# TF-Pose-Estimation
-# from tf_pose.estimator import TfPoseEstimators
-# from tf_pose.networks import get_graph_path, model_wh
 
 # OpenPose 빌드 다시하면 OpenPose도 추가하기
 

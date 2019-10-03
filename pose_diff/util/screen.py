@@ -9,7 +9,6 @@ thickness = 1
 font = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 0.6
 
-# 동영상으로 저장할 수 있는 옵션 생성
 class Screen:
     def __init__(self,point,accuracy,angle,fps,times,msg,height,width):
         self.point = point
@@ -33,10 +32,11 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx*0.002*self.width), 300-int(body_party*0.002*self.height))
+            print(i[2])
+            center = (int(body_partx), int(body_party))
 
             centers[num] = center
-            if center == (0,300): #disable Trash value
+            if center == (0,0): #disable Trash value
                 num = num + 1
                 continue
             cv2.circle(self.img, center, 5, CocoColors[num], thickness=3, lineType=8, shift=0)
@@ -45,18 +45,18 @@ class Screen:
         # draw line
         if form == 'Real_time':
             for pair_order, pair in enumerate(CocoPairsRender):
-                if centers[pair[0]] == (0,300) or centers[pair[1]] == (0,300): #disable Trash value
+                if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0): #disable Trash value
                     continue
                 cv2.line(self.img, centers[pair[0]], centers[pair[1]], CocoColors[pair_order], 3)
         else:
             for pair in CocoPairsRender:
-                # colors 1 : red  , colors 0 : green
-                if centers[pair[0]] == (0, 300) or centers[pair[1]] == (0, 300):  # disable Trash value
+                # colors 1 : red  , colors 2 : green
+                if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0):  # disable Trash value
                     continue
 
-                if colors[pair[0]] == 1 and colors[pair[1]] == 1:
+                if colors[pair[0]] == 1 or colors[pair[1]] == 1:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
-                elif colors[pair[0]] == 0 and colors[pair[1]] == 0:
+                elif colors[pair[0]] == 2 or colors[pair[1]] == 2:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
@@ -97,9 +97,9 @@ class Screen:
         cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
     def display_angle(self,joint):
-        section = CocoPart(joint).name
+        # section = CocoPart(joint).name
         coordinate = self.point[joint]
-        location_x, location_y = int(coordinate[0]*0.002*self.width), 300-int(coordinate[1]*0.002*self.height)
+        location_x, location_y = int(coordinate[0]), int(coordinate[1])
 
         if location_x == 0 and location_y == 0: #disable Trash value
             pass
