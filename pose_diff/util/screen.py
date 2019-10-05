@@ -2,15 +2,12 @@ from pose_diff.util.Common import CocoColors, CocoPairsRender, CocoPart
 import cv2
 import numpy as np
 
-if __name__ == '__main__':
-    print("main.py")
-
 thickness = 1
 font = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 0.6
 
 class Screen:
-    def __init__(self,point,accuracy,angle,fps,times,msg,height,width):
+    def __init__(self,point,accuracy=None,angle=None,fps=None,times=None,msg=None,height=None,width=None):
         self.point = point
         self.accuracy = accuracy
         self.angle = angle
@@ -19,7 +16,8 @@ class Screen:
         self.msg = msg
         self.height = height
         self.width = width
-        self.img = np.zeros((self.height, self.width, 3), np.uint8)  # 현재는 그냥 검은 bg.
+        # Background 설정
+        self.img = np.zeros((self.height, self.width, 3), np.uint8)
 
         pass
 
