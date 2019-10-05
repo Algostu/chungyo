@@ -10,4 +10,4 @@ def load_testSet(ex_type,user_type=1, view=1):
         ex_list = [ex[3:] for ex in ex_list]
     path = os.path.join('data', 'testSets', ex_list[ex_type-1], view, user)
     numpy_list = [np.load(os.path.join(path, file)) for file in os.listdir(path)]
-    return numpy_list
+    return ex_list[ex_type-1], numpy_list
