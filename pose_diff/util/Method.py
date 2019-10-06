@@ -62,6 +62,7 @@ def parse_person(input_video_loc, option=1):
     subprocess.call([openpose_path, # Issue : Output is only json
                     '--model_pose', model,
                     parsing_objects[option-1], os.path.join('..',input_video_loc),
+                    # '--write_video', 'output/result.avi',
                     '--number_people_max', '1',
                     '--write_json', output_path])
 
@@ -82,7 +83,7 @@ def parse_person(input_video_loc, option=1):
         shutil.rmtree(output_path)
 
     os.chdir('..')
-
+    np.save('out.npy', all_keypoints)
     return all_keypoints
 
 def find_initial_skeleton(numpy_array):
@@ -178,4 +179,4 @@ def feedback(user, trainer, ex_type):
     return True
 
 def analyze_physical(file_name, exercise_id, user_numpy, trainer_numpy, user_name, trainer_name):
-    
+    pass
