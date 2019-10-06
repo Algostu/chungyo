@@ -87,7 +87,7 @@ class Video:
 class Real_time:
     def __init__(self,npfile):
         user_full = np.load(npfile)
-        usercut = getCut(user_full).get_frame_number()
+        usercut = cut.getCut(user_full).get_frame_number()
         user_full = np.load(npfile)
         height = 720
         width = 1024
