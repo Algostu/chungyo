@@ -34,8 +34,10 @@ def make_db():
     c.execute("""CREATE TABLE IF NOT EXISTS skeleton_list(
     skeleton_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
+    sample_id INTEGER NOT NULL,
     skeleton_location VARCHAR(200),
-    FOREIGN KEY(user_id) REFERENCES user_list(user_id) ON DELETE CASCADE)""")
+    FOREIGN KEY(user_id) REFERENCES user_list(user_id) ON DELETE CASCADE,
+    FOREIGN KEY(sample_id) REFERENCES numpy_input_list(sample_id) ON DELETE CASCADE)""")
 
     c.execute("""CREATE TABLE IF NOT EXISTS user_input_video_list(
     input_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -61,8 +63,8 @@ def make_db():
     skeleton_id INTEGER,
     exercise_id INTEGER,
     sample_id INTEGER,
-    vector_training VARCHAR(200) NOT NULL,
-    degreediffloc VARCHAR(200) NOT NULL,
+    vector_for_training_loc VARCHAR(200) NOT NULL,
+    angle_for_diff_loc VARCHAR(200) NOT NULL,
     FOREIGN KEY(skeleton_id) REFERENCES skeleton_list(skeleton_id) ON DELETE CASCADE,
     FOREIGN KEY(exercise_id) REFERENCES exercise_list(exercise_id) ON DELETE CASCADE,
     FOREIGN KEY(sample_id) REFERENCES numpy_input_list(sample_id) ON DELETE CASCADE)""")
@@ -146,40 +148,41 @@ def population():
         values(?, ?)""", exercise)
 
     c.execute("""INSERT INTO
-    skeleton_list (user_id, skeleton_location)
-    values (0, ?)
-    """, (os.path.join(base_skeleton_location, 'TESTTRAINER_1.npy'),))
-
-    c.execute("""INSERT INTO
-    skeleton_list (user_id, skeleton_location)
-    values (1, ?)
-    """, (os.path.join(base_skeleton_location, 'TESTTRAINER_2.npy'),))
-
-    c.execute("""INSERT INTO
-    skeleton_list (user_id, skeleton_location)
-    values (2, ?)
-    """, (os.path.join(base_skeleton_location, 'TESTUSER_1.npy'),))
-
-    c.execute("""INSERT INTO
-    skeleton_list (user_id, skeleton_location)
-    values (3, ?)
-    """, (os.path.join(base_skeleton_location, 'TESTUSER_2.npy'),))
-
-    c.execute("""INSERT INTO
     numpy_input_list (user_id, exercise_id, sample_location)
     values (1, 1, ?)""", (os.path.join(base_sample_location, 'side_squat_1-1.npy'),))
 
     c.execute("""INSERT INTO
-    numpy_input_list (user_id, exercise_id, sample_location)
-    values (1, 1, ?)""", (os.path.join(base_sample_location, 'side_squat_1-2.npy'),))
+    skeleton_list (user_id, sample_id, skeleton_location)
+    values (0, ?, ?)
+    """, (c.lastrowid, os.path.join(base_skeleton_location, 'TESTTRAINER_1.npy'),))
 
     c.execute("""INSERT INTO
     numpy_input_list (user_id, exercise_id, sample_location)
     values (1, 1, ?)""", (os.path.join(base_sample_location, 'side_squat_1-2.npy'),))
+
+    c.execute("""INSERT INTO
+    skeleton_list (user_id, sample_id, skeleton_location)
+    values (1, ?, ?)
+    """, (c.lastrowid, os.path.join(base_skeleton_location, 'TESTTRAINER_2.npy'),))
+
+    c.execute("""INSERT INTO
+    numpy_input_list (user_id, exercise_id, sample_location)
+    values (1, 1, ?)""", (os.path.join(base_sample_location, 'side_squat_1-2.npy'),))
+
+    c.execute("""INSERT INTO
+    skeleton_list (user_id, sample_id, skeleton_location)
+    values (2, ?, ?)
+    """, (c.lastrowid, os.path.join(base_skeleton_location, 'TESTUSER_1.npy'),))
 
     c.execute("""INSERT INTO
     numpy_input_list (user_id, exercise_id, sample_location)
     values (3, 1, ?)""", (os.path.join(base_sample_location, 'side_squat_1.npy'),))
+
+    c.execute("""INSERT INTO
+    skeleton_list (user_id, sample_id, skeleton_location)
+    values (3, ?, ?)
+    """, (c.lastrowid, os.path.join(base_skeleton_location, 'TESTUSER_2.npy'),))
+
 
     conn.commit()
     conn.close()
@@ -189,7 +192,7 @@ base_root_project_location = 'pose-difference'
 base_root_data_location = 'data'
 base_skeleton_location = os.path.join('data', 'skeleton_list')
 base_input_video_location = os.path.join('data', 'input_video') # user가 유일하게  건들어야 하는 곳, input 또한 video로 제한 했다.
-base_sample_location = os.path.join('data', 'sample')
+base_sample_location = os.path.join('data', 'sample') # applied 또한 같이 저장된다
 base_math_info_location = os.path.join('data', 'math_info')
 exercise_info = [
 ('squat', json.dumps([0.5 for i in range(18)])),
@@ -420,3 +423,99 @@ def save_math_info_extraction(skeleton_id, exercise_id, sample_id, numpys, file_
     conn.close()
 
     return primary_key
+
+def get_math_info_list_per_exercise(exercise_id):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    sql = """SELECT
+    math_info_extractions.extraction_id,
+    math_info_extractions.exercise_id,
+    math_info_extractions.vector_for_training_loc,
+    user_list.user_name
+    FROM
+    math_info_extractions
+    LEFT JOIN numpy_input_list ON math_info_extractions.sample_id = numpy_input_list.sample_id
+    LEFT JOIN user_list ON numpy_input_list.user_id = user_list.user_id
+    WHERE
+    math_info_extractions.exercise_id = ?"""
+    c.execute(sql, (exercise_id,))
+
+    rows = c.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return rows
+
+def get_math_info(extraction_id):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    sql = """SELECT
+    math_info_extractions.vector_for_training_loc,
+    math_info_extractions.angle_for_diff_loc
+    FROM
+    math_info_extractions
+    WHERE
+    math_info_extractions.exercise_id = ?"""
+    c.execute(sql, (exercise_id,))
+
+    rows = c.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return rows
+
+def save_applied_sample():
+    pass
+
+def load_applied_skeleton_list():
+    ##################################
+    # Return Value
+    # (applied_sample_id, exercise_id, sample_location, user_name, applied_sample_location, trainer_name)
+    ##################################
+    tables = []
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+    sql1 = """SELECT
+    applied_sample_id,
+    applied_skeleton_list.exercise_id,
+    numpy_input_list.sample_location,
+    user_list.user_name
+    FROM
+    applied_skeleton_list
+    LEFT JOIN skeleton_list ON applied_skeleton_list.skeleton_id = skeleton_list.skeleton_id
+    LEFT JOIN numpy_input_list ON skeleton_list.sample_id = numpy_input_list.sample_id
+    LEFT JOIN user_list ON skeleton_list.user_id = user_list.user_id"""
+
+    sql2 = """SELECT
+    applied_skeleton_list.result_loc,
+    user_list.user_name
+    FROM
+    applied_skeleton_list
+    LEFT JOIN math_info_extractions ON applied_skeleton_list.standard_id = math_info_extractions.extraction_id
+    LEFT JOIN skeleton_list ON math_info_extractions.skeleton_id = skeleton_list.skeleton_id
+    LEFT JOIN user_list ON skeleton_list.user_id = user_list.user_id"""
+
+    c.execute(sql1)
+    rows_1 = c.fetchall()
+    c.execute(sql2)
+    rows_2 = c.fetchall()
+    tables = [list(a+b) for a, b in list(zip(rows_1, rows_2))]
+
+    conn.commit()
+    conn.close()
+
+    return tables
+
+def get_exercise_names():
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+
+    c.execute('Select exercise_name from exercise_list')
+    rows = c.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return rows

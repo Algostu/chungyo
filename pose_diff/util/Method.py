@@ -18,8 +18,9 @@ import json
 import shutil
 import time
 import numpy as np
-from pose_diff.util import Common
 import matplotlib.pyplot as plt
+from pose_diff.util import Common
+from pose_diff.core.run import Video
 
 def parse_person(input_video_loc, option=1):
     ####################################
@@ -166,20 +167,15 @@ def analyze_exercise(numpy_array, exercise_id, skeleton):
         print("This input file is not proper to use")
         return False, False
 
-def train_exercise(ex_type, input_skeleton, input_vector, output_coordinates):
-    # print('ex_type : %d' % ex_type)
-    # print('input_skeleton : %s' % input_skeleton)
-    # print('input_vector : %s' % input_vector)
-    # print('output_coordinates : %s' % output_coordinates)
-    length = np.load(input_skeleton)
-    vector = np.load(input_vector)
+def resize(ex_type, input_skeleton, input_vector):
+    length = input_skeleton
+    vector = input_vector
     res = Common.apply_vector(ex_type, length, vector)
-    # self.screen.draw_humans(res)
-    np.save(output_coordinates, res)
-    return True
+    return res
 
 def feedback(user, trainer, ex_type):
-    print("feedback processing....", end="")
-
-    video = Video(trainer, user, "pullup", "increase", "round", 1)
+    video = Video(trainer, user, 3)
     return True
+
+def analyze_physical(file_name, exercise_id, user_numpy, trainer_numpy, user_name, trainer_name):
+    

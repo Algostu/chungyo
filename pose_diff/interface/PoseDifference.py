@@ -34,6 +34,9 @@ def main_ui():
     1. Register Trainer
     2. Get Advice about Exercise Captured from Video
     3. Analyze Physical Data and Get Advice from it
+    ------------------------------------------------------------------
+    FOR DEVELOPERS
+    4. Initialize DataBase (Init data folder in project root directory)
     ==================================================================
     """)
 
@@ -45,12 +48,139 @@ def main_ui():
         diff_videos_ui()
     elif main_option == 3:
         physical_ui()
+    elif main_option == 4:
+        DB.initialize()
 
 def physical_ui():
-    pass
+    indent = " "*4
+
+    # (exercise_name)
+    # (applied_sample_id, exercise_id, sample_location, user_name, applied_sample_location, trainer_name)
+    exercise_list = DB.get_exercise_names()
+    applied_samples = DB.load_applied_skeleton_list()
+    print(exercise_list)
+    print("""
+    ==================================================================
+    CHOOSE EXERCISE DATA WHERE YOU WANT TO GET REPORT(USER)""")
+    for idx, row in enumerate(applied_samples):
+        print(indent+"%d. %s: %s by %s" % (idx+1, exercise_list[row[1]-1][0], row[3], row[5]))
+    print(indent+"""==================================================================
+    """)
+
+    option = int(input("Enter: "))
+    args = applied_samples[option]
+
+    ret_val = PoseSystem.Analyze_Physical_Data(*args)
+    if ret_val == True:
+        print("""
+    ==================================================================
+    END OF ANALYZE PHYSICAL DATA PROCESS
+    RESULT : SUCCESS
+    ==================================================================
+        """)
+    else:
+        print("""
+    ==================================================================
+    END OF ANALYZE PHYSICAL DATA PROCESS
+    RESULT : FAIL
+    ==================================================================
+        """)
+    return
+
 
 def diff_videos_ui():
-    pass
+    ####################################
+    # Basic Info
+    # Scene No.2 유저가 비디오 분석을 받기 위한 UI이다.
+    # Console Based UI가 기본이고 INPUT에 대한 exception을 처리한다.
+
+    # Feature
+    # 유저로부터 Input을 받고 적절한 함수를 호출합니다.
+
+    # Todo
+    # 결과창 띄우기 (A+)
+    # 비디오 분석 건너 뛰기 옵션 적용 (A)
+    # Video 조건 영어로 번역
+    ####################################
+    # For Print Format
+    indent = " "*4
+
+    # Get the number of math_info for exercise
+    exercise_list = DB.get_exercise_list()
+    for idx, exercise in enumerate(exercise_list):
+        exercise_list[idx] = list(exercise) + [len(DB.get_math_info_list_per_exercise(exercise[0]))]
+
+    # Select Exercise
+    print("""
+    ==================================================================
+    CHOOSE WHICH EXERCISE YOU WANT TO GET ADVICE FOR""")
+    for idx, row in enumerate(exercise_list):
+            print(indent+"%d. %s [%d]" % (idx+1, row[1], row[2]))
+    print(indent+"""==================================================================
+    """)
+
+    option = int(input("Enter: "))
+    if exercise_list[option-1][2] == 0:
+        print("""
+    ==================================================================
+    END OF GET ADVICE PROCESS
+    RESULT : FAIL
+    ERROR : Select Exercise Which Trainer Registered Before
+    ==================================================================
+        """)
+        return
+
+    exercise_id = exercise_list[option-1][0]
+
+    # Select Math Info
+    rows = DB.get_math_info_list_per_exercise(exercise_id)
+    print("""
+    ==================================================================
+    CHOOSE TRAINER WHO YOU WANT TO GET ADVICE FROM""")
+    for idx, row in enumerate(rows):
+        print(indent+"%d. %s: %s" % (idx+1, row[3], row[2]))
+    print(indent+"""==================================================================
+    """)
+
+    option = int(input("Enter: "))
+    standard_id = rows[option-1][0]
+
+    print("""
+    ==================================================================
+    ENTER LOCATION OF INPUT VIDEO FILE (PLEASE CHECK VIDEO CONDITION)
+    1. Stand Upright Still at Least 1 Sec
+    2. 카메라로부터 운동하는 사람과의 거리는 해당 사람이 똑바로 서있을때와 동일해야 합니다.
+    3. The Maximum number of people in Video is 1
+    4. Cam should not Move
+    ==================================================================
+    """)
+
+    input_video_loc = input("Enter (relative path): ")
+    ret_val = False
+    try:
+        if os.path.exists(input_video_loc):
+            ret_val = PoseSystem.get_feedback(standard_id, exercise_id, input_video_loc)
+        else:
+            raise Exception()
+    except Exception:
+        traceback.print_exc()
+        return
+
+    if ret_val == True:
+        print("""
+    ==================================================================
+    END OF GET ADVICE PROCESS
+    RESULT : SUCCESS
+    ==================================================================
+        """)
+    else:
+        print("""
+    ==================================================================
+    END OF GET ADVICE PROCESS
+    RESULT : FAIL
+    ==================================================================
+        """)
+    return
 
 def trainer_ui():
     ####################################
@@ -62,8 +192,10 @@ def trainer_ui():
     # 유저로부터 Input을 받고 적절한 함수를 호출합니다.
 
     # Todo
-    # Exercise 추가 기능
-    # Video 조건 영어로 번역
+    # 결과창 띄우기 (A+)
+    # 비디오 분석을 건너뛰고 등록된 sample을 이용할 수 있는 옵션 추가(A)
+    # Exercise 추가 기능 (B)
+    # Video 조건 영어로 번역 (A)
     ####################################
     # For Print Format
     indent = " "*4
