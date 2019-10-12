@@ -27,12 +27,12 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 
 ## 📌 What's In This Document
 
-  - [📌 What's In This Document](#whats-in-this-document)
-  - [🚀 Let's Get Quick Start](#lets-get-quick-start)
-  - [👀 Look at output](#look-at-output)
-  - [📋 How To Use More Detailed](#how-to-use-more-detailed)
+  - [📌 What's In This Document](#-whats-in-this-document)
+  - [🚀 Let's Get Quick Start](#-lets-get-quick-start)
+  - [👀 Look at output](#-look-at-output)
+  - [📋 How To Use More Detailed](#-how-to-use-more-detailed)
   - [📝 License](#license)
-  - [🧷 References(gitHub Repo)](#referencesgithub-repo)
+  - [🧷 References(gitHub Repo)](#-referencesgithub-repo)
 
 
 **Test environment**
