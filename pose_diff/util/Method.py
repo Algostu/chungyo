@@ -45,7 +45,7 @@ def parse_person(input_video_loc, option=1):
     os.chdir('openpose')
     openpose_path = os.path.join('bin', 'OpenPoseDemo.exe')
     model = 'COCO'
-    output_path = 'temp'
+    output_path = 'output_json'
 
     parsing_objects = ['--video', '--image_dir']
     if option not in (1, 2):
@@ -62,12 +62,14 @@ def parse_person(input_video_loc, option=1):
     subprocess.call([openpose_path, # Issue : Output is only json
                     '--model_pose', model,
                     parsing_objects[option-1], os.path.join('..',input_video_loc),
-                    # '--write_video', 'output/result.avi',
+                    '--output_resolution', '1280x720',
+                    '--write_video', 'output_video/result.avi',
+                    '--write_images', 'output_images/',
                     '--number_people_max', '1',
                     '--write_json', output_path])
 
     # Read json file and Make Numpy Array
-    json_files = glob.glob(os.path.join('temp/', '*.json'))
+    json_files = glob.glob(os.path.join('output_json/', '*.json'))
     json_files = sorted(json_files)
 
     num_frames = len(json_files)
@@ -79,31 +81,14 @@ def parse_person(input_video_loc, option=1):
             keypoints = np.array(json_obj['people'][0]['pose_keypoints_2d'])
             all_keypoints[i] = keypoints.reshape((18, 3))
 
-    if os.path.exists(output_path):
-        shutil.rmtree(output_path)
+    # if os.path.exists(output_path):
+    #     shutil.rmtree(output_path)
 
+    np.save('output_numpy/output.npy', all_keypoints)
     os.chdir('..')
-    np.save('out.npy', all_keypoints)
     return all_keypoints
 
-def find_initial_skeleton(numpy_array):
-    ####################################
-    # Basic Info
-    # params
-    # numpy_array: 서있는 모습이 담긴 numpy array이다.
-    # How it works
-    # 팔꿈치와 무릎의 각도가 일정한 각도에서 일정하게 유지될때 중에서 신체의 길이가 가장 길때를 신체 사이즈로 측정한다.
-    # Return Values
-    # skeleton이 담긴 numpy array
-    # Return값이 False인경우 Initial Pose를 찾지 못했다.
-
-    # Feature
-    #
-
-    # Todo
-    # UI
-    # UI Event 설정
-    ####################################
+def find_initial_skeleton(numpy_array, name, stilness=15):
     skeleton = []
     left_elbow = []
     right_elbow = []
@@ -116,28 +101,38 @@ def find_initial_skeleton(numpy_array):
         right_elbow.append(Common.get_angle(frame[5], frame[6], frame[7]))
         left_knee.append(Common.get_angle(frame[8], frame[9], frame[10]))
         right_knee.append(Common.get_angle(frame[11], frame[12], frame[13]))
-
+    np.save(name+"_left_elbow.npy", left_elbow)
+    np.save(name+"_right_elbow.npy", right_elbow)
+    np.save(name+"_left_knee.npy", left_knee)
+    np.save(name+"_right_knee.npy", right_knee)
     # Find 정지된 자세
-    stop_len = 30 # 정지된 상태로 있어야 하는 시간이다. (단위는 프레임)
+    stop_len = stilness # 정지된 상태로 있어야 하는 시간이다. (단위는 프레임)
     stop_i = 0 # 정지된 상태가 지속된 시간이다.
     height = [] # 정지된 상태에서 측정된 키의 리스트이다.
     frames = [] # 정지된 상태에서의 프레임이다.
+    frames_num = []
+    i = 0
     for frame, l_e, r_e, l_k, r_k in zip(numpy_array, left_elbow, right_elbow, left_knee, right_knee):
-        if (175 < l_e < 185) and (175 < r_e < 185) and (175 < l_k < 185) and (175 < r_k < 185):
+        if (170 < l_e < 190) and (170 < r_e < 190) and (170 < l_k < 190) and (170 < r_k < 190):
             stop_i += 1
         else:
             stop_i = 0
         if stop_i >= stop_len:
-            height.append(get_body_len(frame))
+            frames_num.append(i)
+            height.append(Common.get_body_len(frame))
             frames.append(frame)
+        i += 1
 
     # Initial Pose를 찾을 수 없을 경우 False를 Return 한다.
     if len(height) != 0:
         skeleton = frames[height.index(max(height))]
+        frame_num = frames_num[height.index(max(height))]
     else:
         skeleton = False
+        frame_num = -1
 
-    return skeleton
+    return skeleton, frame_num
+
 
 def analyze_exercise(numpy_array, exercise_id, skeleton):
     ####################################

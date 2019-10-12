@@ -201,13 +201,13 @@ def angle_difference(trainer,user,exercise):
     trainer_angle = get_angle(trainer)
     user_angle = get_angle(user)
     # Error in RED = 1, Success in GREEN = 2
-    if exercise == 1:
-        print("Exercise type is Walk")
+    if exercise == 0:
+        print("Exercise type is squat")
         pass
-    if exercise == 2:
+    if exercise == 1:
         print("Exercise type is shoulder_press")
         pass
-    if exercise == 3:
+    if exercise == 2:
         i = 0
         while True:
             if i > len(user) - 1:
@@ -227,13 +227,13 @@ def point_difference(trainer, user, exercise):
     point_np = np.copy(user)
     margin = 20
     # Error in RED = 1, Success in GREEN = 2
-    if exercise == 1:
+    if exercise == 0:
         print("Exercise type is Walk")
         pass
-    if exercise == 2:
+    if exercise == 1:
         print("Exercise type is shoulder_press")
         pass
-    if exercise == 3:
+    if exercise == 2:
         i = 0
         while True:
             if i > len(user) - 1:

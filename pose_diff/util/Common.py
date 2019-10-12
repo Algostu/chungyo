@@ -114,7 +114,7 @@ def get_math_info(ex_type, static_skeleton, dynamic_skeleton):
         angles = [get_angle((0,0), b, b+c) for b, c in zip(body_movement_vector[vector[0]], body_movement_vector[vector[1]])]
         filter_noise(body_movement_length[vector[1]])
         noises = filter_noise(angles)
-        body_movement_vector[vector[1]] = [(cos(get_angle((1,0),(0,0), a)-noise), sin(get_angle((1,0),(0,0), a)-noise)) for a, noise in zip(body_movement_vector[vector[1]], noises)]
+        body_movement_vector[vector[1]] = [(math.cos(get_angle((1,0),(0,0), a)-noise), math.sin(get_angle((1,0),(0,0), a)-noise)) for a, noise in zip(body_movement_vector[vector[1]], noises)]
 
     # check length of vectors and lengths
     frames_len_1 = len(body_movement_length[0])
@@ -142,7 +142,7 @@ def get_math_info(ex_type, static_skeleton, dynamic_skeleton):
         else:
             centers.append(0)
 
-    fill_blank_straight(centers)
+    fill_blank_circle(centers, 3)
 
     # summerize
     final_orders = []
@@ -330,7 +330,8 @@ def filter_noise(unfiltered_list):
 def apply_vector(ex_type, length, vector):
     parts = Parts[ex_type][:]
     pairs = Pairs [ex_type][:]
-    length = length[0]
+    # print(length)
+    # length = length[0]
     frames_len = len(vector)
     frames = []
     # print(length)
@@ -362,12 +363,7 @@ def apply_vector(ex_type, length, vector):
         # lhip
         if parts[11] > 0:
             # n += 1
-            frames[i][11] = calc_coordinates(frames[i][1], tuple(vector[i][10]), basic_length[9])
-
-        # nose
-        if parts[0] > 0:
-            # n += 1
-            frames[i][0] = calc_coordinates(frames[i][1], tuple(vector[i][13]), basic_length[12])
+            frames[i][11] = calc_coordinates(frames[i][1], tuple(vector[i][8]), basic_length[7])
 
         # relbow
         if parts[3] > 0:
@@ -389,25 +385,6 @@ def apply_vector(ex_type, length, vector):
             # n += 1
             frames[i][7] = calc_coordinates(frames[i][6], tuple(vector[i][6]), basic_length[5])
 
-        # rknee
-        if parts[9] > 0:
-            # n += 1
-            frames[i][9] = calc_coordinates(frames[i][8], tuple(vector[i][8]), basic_length[7])
-
-        # rankle
-        if parts[10] > 0:
-            # n += 1
-            frames[i][10] = calc_coordinates(frames[i][9], tuple(vector[i][9]), basic_length[8])
-
-        # lknee
-        if parts[12] > 0:
-            # n += 1
-            frames[i][12] = calc_coordinates(frames[i][11], tuple(vector[i][11]), basic_length[10])
-
-        # lankle
-        if parts[13] > 0:
-            # n += 1
-            frames[i][13] = calc_coordinates(frames[i][12], tuple(vector[i][12]), basic_length[11])
 
 
 

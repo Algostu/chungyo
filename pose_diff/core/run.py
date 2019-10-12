@@ -6,24 +6,23 @@ import cv2
 import numpy as np
 
 class Video:
-    def __init__(self,trainer_npy,user_npy,exercise=3,diffing='increase',way='round',average=1,apply=True):
+    def __init__(self,trainer_npy,user_npy, video_name, exercise=2,diffing='increase',way='round',average=1,apply=True):
         trainer_full = np.load(trainer_npy)
         user_full = np.load(user_npy)
-        usercut = cut.getCut(user_full).get_frame_number()
-        trainercut = cut.getCut(trainer_full).get_frame_number()
+        usercut = cut().getCut(user_full)
+        # trainercut = cut().getCut(trainer_full)
         trainer_full = np.load(trainer_npy)
         user_full = np.load(user_npy)
-        trainer = trainer_full[trainercut[0][0]:trainercut[0][1]]
+        # trainer = trainer_full[trainercut[0][0]:trainercut[0][1]]
+        trainer = trainer_full
 
-        self.video_name = 'output.avi'
+        self.video_name = video_name
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         writer = cv2.VideoWriter(self.video_name, fourcc, 10, (1280, 720))
 
         for Ucut in usercut:
             screens = []
-            print(f'UCTU  === {Ucut}')
             user = user_full[Ucut[0]:Ucut[1]+1]
-            print(len(user))
             if apply == True:
                 if diffing == 'increase':
                     user, trainer = diffing_increasing(trainer, user, exercise, way)
@@ -84,6 +83,12 @@ class Video:
         self.video_name = f'{name}.avi'
 
 
+if __name__ == '__main__':
+    a = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/sample/side_squat_1-1.npy'
+    b = 'C:/Users/Rhcsky/Desktop/SW_developer/pose-difference/data/sample/side_squat_1-2.npy'
+    Video(a,b)
+
+
 class Real_time:
     def __init__(self,npfile):
         user_full = np.load(npfile)
@@ -106,7 +111,6 @@ class Real_time:
 
             # make screen list
             for i in range(length):
-                print(i)
                 screens.append(
                     Screen(user[i], accuracy[i], user_angle[i], fps[i], times[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
@@ -129,6 +133,28 @@ class Real_time:
                     screen.display_angle(i)
 
                 # float screen
+                cv2.imshow("imshow", screen.img)
+                writer.write(screen.img)
+        cv2.destroyAllWindows()
+
+class human_pic:
+    def __init__(self,user_npy, video_name):
+        user = user_npy
+
+        self.video_name = video_name
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        writer = cv2.VideoWriter(self.video_name, fourcc, 10, (1280, 720))
+
+        for a in user:
+            screens = []
+            screens.append(
+                Screen(a, height=720, width=1280))
+            for index, screen in enumerate(screens):
+                # draw_human
+                val = screen.draw_human(screen.point,"Real_time")
+                if cv2.waitKey(100) == 27:
+                    break
+                # display_things
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()

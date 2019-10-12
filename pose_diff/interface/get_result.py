@@ -7,8 +7,13 @@ from matplotlib.figure import Figure
 import sys, time, cv2, numpy as np
 
 class ResultWindow(QWidget):
-    def __init__(self, numpy, numpy_title, video1, video2, title, title2, title3):
+    def __init__(self, frameNum, isImage, numpy, numpy_title, video1, video2, title, title2, title3):
         super().__init__()
+        if isImage == True:
+            self.videoF1 = False
+        else:
+            self.videoF1 = True
+        self.videoF2 = True
         self.setWindowTitle("Pose Difference")
         self.titlemsg = title
         self.titlemsg2 = title2
@@ -17,12 +22,13 @@ class ResultWindow(QWidget):
         self.video2 = video2
         self.numpy = numpy
         self.numpy_title = numpy_title
+        self.isImage = isImage
+        self.frameNum = frameNum
         # top, left, width, height = 100, 50, 1300, 700
-        self.setGeometry(25, 50, 640*2 + 600, 580)
+        self.setGeometry(25, 50, 640*2 + 600, 980)
         self.initUI()
 
     def initUI(self):
-        self.cpt = cv2.VideoCapture(self.video1)
         self.cpt1 = cv2.VideoCapture(self.video2)
         self.fps = 24
 
@@ -32,6 +38,15 @@ class ResultWindow(QWidget):
         self.frame.resize(640, 480)
         self.frame.setScaledContents(True)
         self.frame.move(5,55)
+
+        if self.isImage == True:
+            self.cpt = cv2.imread(self.video1, cv2.IMREAD_ANYCOLOR)
+            cam = cv2.cvtColor(self.cpt, cv2.COLOR_BGR2RGB)
+            img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+            pix = QPixmap.fromImage(img)
+            self.frame.setPixmap(pix)
+        else:
+            self.cpt = cv2.VideoCapture(self.video1)
 
         self.title = QLabel(self)
         self.title.resize(640,40)
@@ -70,6 +85,11 @@ class ResultWindow(QWidget):
         self.prt.resize(200,25)
         self.prt.move(5+105+105, 540)
 
+        self.prt2 = QLabel(self)
+        self.prt2.resize(200,25)
+        self.prt2.move(5+105+105+700, 540)
+        self.prt2.setFont(QFont("SansSerif", 20, QFont.Bold))
+
         self.sldr = QSlider(Qt.Horizontal, self)
         self.sldr.resize(100, 25)
         self.sldr.move(5+105+105+200, 540)
@@ -80,7 +100,7 @@ class ResultWindow(QWidget):
 
         self.list = QListWidget(self)
         self.list.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.list.resize(570, 480)
+        self.list.resize(570, 880)
         self.list.move(5+640*2+5+5, 55)
 
         self.title3 = QLabel(self)
@@ -109,6 +129,7 @@ class ResultWindow(QWidget):
 
         self.show()
 
+
     def setFps(self):
         self.fps = self.sldr.value()
         self.prt.setText('fps가' +str(self.fps) + '로 변경되었습니다')
@@ -124,18 +145,26 @@ class ResultWindow(QWidget):
         self._timer.start()
 
     def nextFrameSlot(self):
-        if self.cpt.isOpened():
-            _, cam = self.cpt.read()
-            cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
-            img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
-            pix = QPixmap.fromImage(img)
-            self.frame.setPixmap(pix)
-        if self.cpt1.isOpened():
+        if self.videoF1 == True:
+            if self.cpt.isOpened():
+                _, cam = self.cpt.read()
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                self.frame.setPixmap(pix)
+            else:
+                print("Flag 1 changed")
+                self.videoF1 = False
+
+        if self.cpt1.isOpened() and self.videoF2 == True:
             _, cam1 = self.cpt1.read()
             cam1 = cv2.cvtColor(cam1, cv2.COLOR_BGR2RGB)
             img = QImage(cam1, cam1.shape[1], cam1.shape[0], QImage.Format_RGB888)
             pix = QPixmap.fromImage(img)
             self.frame2.setPixmap(pix)
+        else:
+            print("Flag 2 changed")
+            self.videoF2 = False
 
     def stop(self):
         self.timer.stop()
@@ -144,25 +173,21 @@ class ResultWindow(QWidget):
     def _update_canvas(self):
         for i in range(len(self.axes)):
             self.axes[i].clear()
-            self.axes[i].set(title = self.numpy_title[i])
+            self.axes[i].set(title = self.numpy_title[i], )
             self.axes[i].plot(self.numpy[i][self.cnt:self.cnt+50])
             self.axes[i].figure.canvas.draw()
         self.cnt += 1
 
 #############
-def debugger(video='result.mp4', video2='result2.mp4', file_name=['result.npy'], plot_title = ['Test Graph', "Test Graph2", "Test Graph3"], title='비교 대상 1', title1 = '비교 대상 2', title2 = '그래프'):
+def debugger(frameNum = 0, isImage = False, video='video/user_ex.mp4', video2='video/trainer_ex.mp4', file_name=['final/trainer_left_elbow.npy', 'final/trainer_right_elbow.npy', 'final/trainer_left_knee.npy', 'final/trainer_right_knee.npy'], plot_title = ['left_elbow', "right_elbow", "left_knee", "right_knee"], title='비교 대상 1', title1 = '비교 대상 2', title2 = '그래프'):
     app = QApplication(sys.argv)
-    # numpy_array = [np.load(name) for name in file_name]
-    frames = np.load(file_name[0])
-    joints = list(zip(*frames))
-    xs1, ys, cs = list(zip(*joints[2]))
-    xs2, ys, cs = list(zip(*joints[3]))
-    xs3, ys, cs = list(zip(*joints[4]))
-    numpy_array = [xs1, xs2, xs3]
-    window = ResultWindow(numpy_array, plot_title, video, video2, title, title1, title2)
+    numpy_array = [np.load(name) for name in file_name]
+
+    window = ResultWindow(frameNum, isImage, numpy_array, plot_title, video, video2, title, title1, title2)
     window.show()
     app.exec()
     window.cpt.release()
+    window.cpt1.release()
 
 if __name__ == "__main__":
     debugger()

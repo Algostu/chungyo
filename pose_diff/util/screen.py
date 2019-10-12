@@ -7,7 +7,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 0.6
 
 class Screen:
-    def __init__(self,point,accuracy=None,angle=None,fps=None,times=None,msg=None,height=None,width=None):
+    def __init__(self,point,accuracy=None,angle=None,fps=None,times=None,msg=None,height=720,width=1024):
         self.point = point
         self.accuracy = accuracy
         self.angle = angle
@@ -43,7 +43,7 @@ class Screen:
         # draw line
         if form == 'Real_time':
             for pair_order, pair in enumerate(CocoPairsRender):
-                if centers[pair[0]] == (0,0) or centers[pair[1]] == (0,0): #disable Trash value
+                if centers[pair[0]] == (0,720) or centers[pair[1]] == (0,720): #disable Trash value
                     continue
                 cv2.line(self.img, centers[pair[0]], centers[pair[1]], CocoColors[pair_order], 3)
         else:

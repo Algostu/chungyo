@@ -25,7 +25,7 @@ class cut:
         back = (i+1)*3
         return i,avglist[i+1],back
 
-    def getCut(self,frame,exercise_type=2,axis=1):
+    def getCut(self, frame,exercise_type=2,axis=1):
         cutarray  = []
         avglist = moment.compare_avg(exercise_type, axis, frame)
         frontavg, front = self.compare_front(avglist)
