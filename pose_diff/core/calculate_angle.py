@@ -19,35 +19,47 @@ def Calculate_angle(point_a,point_b,point_c):
     vec2[1] *= math.cos(adjust)
 
     angle = angle_between_vectors_degrees(vec1,vec2)
-    angle = round(angle)
+    angle = round(angle,2)
     return angle
 
-
-def get_angle(trainer,user):
+def get_angle(npyfile):
     """Using AnglePairs in coco, input the angle data in list of body part."""
-    trainer_angle = []
-    user_angle = []
-    for a in range(len(trainer)):
-        tangle = [None] * 18
-        for index, i in enumerate(AnglePairs):
-            pointa = trainer[a][i[0]]
-            pointa = pointa[:2]
-            pointb = trainer[a][i[1]]
-            pointb = pointb[:2]
-            pointc = trainer[a][i[2]]
-            pointc = pointc[:2]
-            tangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
-        trainer_angle.append(tangle)
-
-    for b in range(len(user)):
+    angle = []
+    for b in range(len(npyfile)):
         uangle = [None] * 18
         for index, j in enumerate(AnglePairs):
-            pointa = user[b][j[0]]
+            pointa = npyfile[b][j[0]]
             pointa = pointa[:2]
-            pointb = user[b][j[1]]
+            pointb = npyfile[b][j[1]]
             pointb = pointb[:2]
-            pointc = user[b][j[2]]
+            pointc = npyfile[b][j[2]]
             pointc = pointc[:2]
             uangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
-        user_angle.append(uangle)
-    return trainer_angle, user_angle
+        angle.append(uangle)
+    return angle
+
+def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
+    # body=[]
+    # body=('Neck','RShoulder','RElbow','RWrist','LShoulder','LElbow',
+    #       'LWrist','RHip','RKnee','RAnkle','LHip','LKnee','LAnkle','REye','LEye','REar','LEar','Background')
+    parts=[]
+    frame = np.load(video_name)
+    if part==1: #left arm
+        parts=[0,4,5]
+    elif part==2: #left elbow
+        parts=[4,5,6]
+    elif part==3: # R arm-
+        parts=[0,1,2]
+    else : # R elbow  part==4 라고 가정
+        parts=[1,2,3]
+
+
+    angle=[]
+    for i in range(len(frame)):
+        result_angle=calculate_angle.Calculate_angle(
+        [frame[i][parts[0]][0],frame[i][parts[0]][1]],[frame[i][parts[1]][0],frame[i][parts[1]][1]],[frame[i][parts[2]][0],frame[i][parts[2]][1]])
+        if ((frame[i][parts[1]][1] - frame[i][parts[0]][1]) / (frame[i][parts[1]][0] - frame[i][parts[0]][0])) * (frame[i][parts[2]][0] - frame[i][parts[0]][0]) + frame[i][parts[0]][1] < frame[i][parts[2]][1]:
+            result_angle = 360 - result_angle
+        angle.append(result_angle)
+
+    return angle

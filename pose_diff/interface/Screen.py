@@ -6,26 +6,24 @@ class Screen():
     def __init__(self):
         pass
 
-    def draw_humans(self,humans, imgcopy=False, frame=0, output_json_dir=None):
+    def draw_humans(self,humans, file_name, imgcopy=False, frame=0, output_json_dir=None):
         # image = cv2.imread('m_han/test.png', cv2.IMREAD_COLOR)
-        npimg = np.zeros((1024,620, 3), np.uint8)
-        # print(image.shape)
+        npimg = np.zeros((1280, 720), np.uint8)
         image_h, image_w = npimg.shape[:2]
         dc = {"people":[]}
         centers = {}
 
-        # Define the codec and create VideoWriter object
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter('output.avi',fourcc, 20.0, (image_w, image_h))
+        out = cv2.VideoWriter(file_name,fourcc, 20.0, (image_w, image_h))
 
         # for human in humans:
         for n, human in enumerate(humans):
-            npimg = np.zeros((1024,620, 3), np.uint8)
+            npimg = np.zeros((1280,720, 3), np.uint8)
             flat = [0.0 for i in range(36)]
             # draw point
             for i in range(18):
                 body_part = human[i]
-                center = (600-int(body_part[0]), -(int(body_part[1]) - 250))
+                center = (int(body_part[0]), int(body_part[1]))
                 centers[i] = center
                 # cv2.circle(npimg, center, 3, common.CocoColors[i], thickness=3, lineType=8, shift=0)
                 #add x
@@ -49,7 +47,7 @@ class Screen():
             if cv2.waitKey(15) == 27:
                 break
 
-        out.release()
+        # out.release()
 
         cv2.destroyAllWindows()
         return npimg
