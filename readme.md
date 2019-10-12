@@ -47,7 +47,7 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 - numpy >= 1.14.5
 - matplotlib
 - pyqt
-- 
+
 **Dependencies**
 + openpose(only for extracting example from video Images)
 
