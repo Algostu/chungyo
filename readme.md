@@ -1,5 +1,3 @@
-# pose-difference
-
 <h1 align="center">
   Chunghakdong Gyojungdang
 </h1>
