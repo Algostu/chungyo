@@ -22,8 +22,7 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 - **Get a wonderful feedback** Receive various information such as posture, amount of exercise, calories, etc.
 
   [**Go to our homepage**](https://rhcsky.gitbook.io/chungyo/)
-
---이곳에 짧막한 시연동영상 또는 결과물--
+![result](https://github.com/I-Love-IU/pose-difference/blob/master/docs/final.gif?raw=true)
 
 ## 📌 What's In This Document
 
