@@ -1,0 +1,79 @@
+<RCC>
+  <qresource prefix="signin">
+    <file>image/signin/background.png</file>
+    <file>image/signin/btn_login.png</file>
+    <file>image/signin/btn_signup.png</file>
+    <file>image/signin/forgot.png</file>
+    <file>image/signin/Logo.png</file>
+    <file>image/signin/pass.png</file>
+    <file>image/signin/Password.png</file>
+    <file>image/signin/Remember me.png</file>
+    <file>image/signin/terms.png</file>
+    <file>image/signin/Username.png</file>
+    <file>image/signin/welcom.png</file>
+  </qresource>
+  <qresource prefix="signup">
+    <file>image/signup/Age.png</file>
+    <file>image/signup/agree.png</file>
+    <file>image/signup/already.png</file>
+    <file>image/signup/background.png</file>
+    <file>image/signup/btn_signup.png</file>
+    <file>image/signup/check.png</file>
+    <file>image/signup/Confirm Password.png</file>
+    <file>image/signup/Logo.png</file>
+    <file>image/signup/Password.png</file>
+    <file>image/signup/please.png</file>
+    <file>image/signup/Sex.png</file>
+    <file>image/signup/Stature.png</file>
+    <file>image/signup/Username.png</file>
+    <file>image/signup/Usertype.png</file>
+    <file>image/signup/Weight.png</file>
+    <file>image/signup/패스 297.png</file>
+  </qresource>
+  <qresource prefix="start">
+    <file>image/start/analyze_guide.png</file>
+    <file>image/start/analyze_physically.png</file>
+    <file>image/start/comment.png</file>
+    <file>image/start/make.png</file>
+    <file>image/start/register.png</file>
+    <file>image/start/upload.png</file>
+    <file>image/start/userinfo.png</file>
+  </qresource>
+  <qresource prefix="title">
+    <file>image/title/appliedtrainer.png</file>
+    <file>image/title/check.png</file>
+    <file>image/title/comparison.png</file>
+    <file>image/title/find.png</file>
+    <file>image/title/improve.png</file>
+    <file>image/title/registered.png</file>
+    <file>image/title/resize.png</file>
+    <file>image/title/store.png</file>
+    <file>image/title/user.png</file>
+    <file>image/title/yourlist.png</file>
+  </qresource>
+  <qresource prefix="upload_video">
+    <file>image/upload_video/address.png</file>
+    <file>image/upload_video/browse.png</file>
+    <file>image/upload_video/End.png</file>
+    <file>image/upload_video/exercise.png</file>
+    <file>image/upload_video/exercise_type.png</file>
+    <file>image/upload_video/initialize.png</file>
+    <file>image/upload_video/Start.png</file>
+    <file>image/upload_video/type_rectangle.png</file>
+    <file>image/upload_video/UPLOAD.png</file>
+  </qresource>
+  <qresource prefix="overall">
+    <file>image/analyze.png</file>
+    <file>image/arrow.png</file>
+    <file>image/arrow_green.png</file>
+    <file>image/arrow_red.png</file>
+    <file>image/back.png</file>
+    <file>image/down.png</file>
+    <file>image/export.png</file>
+    <file>image/gray_rectangle.png</file>
+    <file>image/home.png</file>
+    <file>image/next.png</file>
+    <file>image/note.png</file>
+    <file>image/white_rectangle.png</file>
+  </qresource>
+</RCC>

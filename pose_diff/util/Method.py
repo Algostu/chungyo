@@ -22,35 +22,15 @@ import matplotlib.pyplot as plt
 from pose_diff.util import Common
 from pose_diff.core.run import Video
 
-def parse_person(input_video_loc, option=1):
-    ####################################
-    # Basic Info
-    # Params
-    # input_video_loc : Video location for parsing
-    # How it works
-    # input_video_loc으로 전달받은 비디오를 openpose로 분석한다.
-    # Return
-    # 좌표값이 들어간 numpy
-
-    # Feature
-    # option = 1 : Video Parsing
-    # opetion = 2 : Image Parsing
-
-    # Todo
-    # Json, Video, Image Option
-    # Demo -> Build
-    ####################################
-
-    # Parse video using OpenPose Demo
+def parse_person(input_video_loc, output_numpy, output_video):
+    """
+    Parse Video Using OpenPose
+    """
     os.chdir('openpose')
     openpose_path = os.path.join('bin', 'OpenPoseDemo.exe')
     model = 'COCO'
+    parsing_objects = '--video'
     output_path = 'output_json'
-
-    parsing_objects = ['--video', '--image_dir']
-    if option not in (1, 2):
-        print("Error: Option should be 1 or 2")
-        return
 
     if os.path.exists(output_path):
         shutil.rmtree(output_path)
@@ -61,10 +41,9 @@ def parse_person(input_video_loc, option=1):
 
     subprocess.call([openpose_path, # Issue : Output is only json
                     '--model_pose', model,
-                    parsing_objects[option-1], os.path.join('..',input_video_loc),
+                    parsing_objects, os.path.join('..',input_video_loc),
                     '--output_resolution', '1280x720',
-                    '--write_video', 'output_video/result.avi',
-                    '--write_images', 'output_images/',
+                    '--write_video', os.path.join('..',output_video),
                     '--number_people_max', '1',
                     '--write_json', output_path])
 
@@ -81,12 +60,8 @@ def parse_person(input_video_loc, option=1):
             keypoints = np.array(json_obj['people'][0]['pose_keypoints_2d'])
             all_keypoints[i] = keypoints.reshape((18, 3))
 
-    # if os.path.exists(output_path):
-    #     shutil.rmtree(output_path)
-
-    np.save('output_numpy/output.npy', all_keypoints)
+    np.save(os.path.join('..',output_numpy), all_keypoints)
     os.chdir('..')
-    return all_keypoints
 
 def find_initial_skeleton(numpy_array, name, stilness=15):
     skeleton = []
