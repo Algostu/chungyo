@@ -478,7 +478,7 @@ def save_skeleton(input_id, skeleton_numpy, graph_numpy):
             print("the sqlite connection is closed") # UC 2,3 공통 (Scene 2)
             return primary_key # UC 2,3 공통 (Scene 2)
 
-# * 개발 대상
+# * 개발 대상 : 개발 완료
 def load_skeleton(skeleton_id, base_folder):
     try:
         sqliteConnection = sqlite3.connect(db)
@@ -503,7 +503,7 @@ def load_skeleton(skeleton_id, base_folder):
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("sqlite connection is closed") # UC 2,3 공통 (Scene 2)
+            print("sqlite connection is closed") # UC 2,3 공통 (Scene 3)
 
 # * 개발 대상
 def save_math_info_extraction(skeleton_id, math_info_1, math_info_2):
@@ -520,23 +520,30 @@ def save_math_info_extraction(skeleton_id, math_info_1, math_info_2):
     Return Values
         extraction_id
     """
-    for file_name, numpy in zip(file_names, numpys):
-        loc = os.path.join(base_math_info_location, file_name)
-        np.save(loc, numpy)
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_insert_blob_query = """Insert into
+        math_info_extractions (skeleton_id, math_info_1, math_info_2)
+        values (?, ?, ?)"""
+        math_info_1 = convertToBinaryData(math_info_1)
+        math_info_2 = convertToBinaryData(math_info_2)
+        # Convert data into tuple format
+        data_tuple = (skeleton_id, math_info_1, math_info_2)
+        cursor.execute(sqlite_insert_blob_query, data_tuple)
+        primary_key = cursor.lastrowid
+        sqliteConnection.commit()
+        print("Math Info numpy and video inserted successfully as a BLOB into a table")
+        cursor.close()
 
-    conn = sqlite3.connect(db)
-    c = conn.cursor()
-
-    c.execute("""Insert into
-    math_info_extractions (skeleton_id, exercise_id, sample_id, )
-    values (?, ?, ?, )""", (skeleton_id, exercise_id, sample_id))
-
-    primary_key = c.lastrowid
-
-    conn.commit()
-    conn.close()
-
-    return primary_key # UC 2 (Scene 3)
+    except sqlite3.Error as error:
+        print("Failed to insert blob data into sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("the sqlite connection is closed") # UC 2,3 공통 (Scene 2)
+            return primary_key # UC 2 (Scene 3)
 
 # * 개발 대상
 def save_applied_sample():

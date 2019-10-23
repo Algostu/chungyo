@@ -118,9 +118,71 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
         self.connectFunction()
         args = (self.skeleton_id, self.input_id)
         main_function(3, *args)
+        self.graph()
+        self.Video()
+
+    def graph(self):
+        self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graph_list.setFlow(QListWidget.LeftToRight)
+        self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.numpy = np.load('temp/graph.npy')
+        mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
+        self.axes = []
+        for idx, mcanvase in enumerate(mcanvases):
+            itemN = QListWidgetItem()
+            itemN.setSizeHint(QSize(380, 380))
+            self.graph_list.addItem(itemN)
+            self.graph_list.setItemWidget(itemN, mcanvase)
+            self.axes.append(mcanvase.figure.subplots())
+            self.axes[idx].set(title = self.graph_title[idx])
+
+    def Video(self):
+        self.origin_label.setScaledContents(True)
+        self.copy_label.setScaledContents(True)
+        self.cpt = cv2.VideoCapture('temp/exercise_video.avi')
+        self.cpt2 = cv2.VideoCapture('temp/math_info.avi')
+        self.frequency = 0.3
+        self.cnt = 0
+        self.start()
+
+    def start(self):
+        cam = 1
+        cam2 = 1
+        index = 0
+        while self.cpt.isOpened() and cam is not None and cam2 is not None:
+            # Video
+            _, cam = self.cpt.read()
+            _, cam2 = self.cpt2.read()
+            if cam is not None and cam2 is not None:
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                cam2 = cv2.cvtColor(cam2, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                img2 = QImage(cam2, cam2.shape[1], cam2.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                pix2 = QPixmap.fromImage(img2)
+                self.origin_label.setPixmap(pix)
+                self.copy_label.setPixmap(pix2)
+                
+                cv2.waitKey(100)
+
+            # graph
+            for i in range(len(self.axes)):
+                self.axes[i].clear()
+                self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].plot(self.numpy[i][index:index+50])
+                self.axes[i].figure.canvas.draw()
+
+            index += 1
+        self.cpt.release()
+        self.cpt2.release()
 
     def connectFunction(self):
-        self.home.clicked.connect(self.close)
+        self.home.clicked.connect(self.back_home)
+
+    def back_home(self):
+        self.cpt.release()
+        self.cpt2.release()
+        self.close
 
 class WindowFindInitialPose(QMainWindow, find_initial_pose):
     def __init__(self, mode=0, input_id = 0, extraction_id = 0):
@@ -134,7 +196,6 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
 
         args = (input_id,)
         skeleton, self.found_num, self.skeleton_id = main_function(2, *args)
-        print(skeleton)
         # run.human_pic(skeleton, 'temp/skeleton.png')
         if self.found_num == -1:
             QMessageBox.warning(

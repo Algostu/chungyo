@@ -57,19 +57,20 @@ def main_function(option, *args):
         DB.load_skeleton(args[0], base_folder)
         DB.read_from_input_list(args[1], base_folder)
         ex_type = 2
-        numpy_array = os.path.join(base_folder, 'exercise_numpy.npy')
-        skeleton = os.path.join(base_folder, 'skeleton.npy')
+        time.sleep(0.5)
+        numpy_array = np.load(os.path.join(base_folder, 'exercise_numpy.npy'))
+        skeleton = np.load(os.path.join(base_folder, 'skeleton.npy'))[0]
         target_skeleton = skeleton
 
         common = bc_common.Common()
         accuracy, body_part = common.check_accuracy(numpy_array, ex_type, 0)
         input_vector = common.calculate_trainer(ex_type, skeleton, body_part[0], body_part[1])
         resized = common.apply_vector(ex_type, target_skeleton, input_vector)
-        np.save(os.path.join(base_folder, 'math_info.npy'), math_info)
+        np.save(os.path.join(base_folder, 'math_info.npy'), input_vector)
         np.save(os.path.join(base_folder, 'resized.npy'), resized)
-        screen = run.human_pic(input_vector, os.path.join(base_folder, 'math_info.avi'))
-        screen = run.human_pic(resized, os.path.join(base_folder, 'resized.avi'))
-
+        screen = run.human_pic(resized, os.path.join(base_folder, 'math_info.avi'))
+        DB.save_math_info_extraction(args[0], os.path.join(base_folder, 'math_info.npy'), os.path.join(base_folder, 'math_info.avi'))
+        
 
     elif option == 4:
         pass
