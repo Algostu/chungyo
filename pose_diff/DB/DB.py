@@ -65,6 +65,7 @@ def make_db():
     input_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     exercise_id INTEGER,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     init_numpy BLOB NOT NULL,
     init_video BLOB NOT NULL,
     exercise_numpy BLOB NOT NULL,
@@ -87,6 +88,7 @@ def make_db():
     c.execute("""CREATE TABLE IF NOT EXISTS math_info_extractions(
     extraction_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     skeleton_id INTEGER,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     math_info_1 BLOB NOT NULL,
     math_info_2 BLOB NOT NULL,
     FOREIGN KEY(skeleton_id) REFERENCES skeleton_list(skeleton_id) ON DELETE CASCADE)""")
@@ -96,6 +98,7 @@ def make_db():
     skeleton_id INTEGER,
     standard_id INTEGER,
     exercise_id INTEGER NOT NULL,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     exercise_numpy BLOB NOT NULL,
     exercise_video BLOB NOT NULL,
     FOREIGN KEY(standard_id) REFERENCES math_info_extractions(extraction_id) ON DELETE CASCADE,
@@ -355,7 +358,8 @@ def get_input_list(user_id):
 
     c.execute("""SELECT
     input_list.input_id,
-    exercise_list.exercise_name
+    exercise_list.exercise_name,
+    input_list.create_time
     FROM
     input_list
     LEFT JOIN exercise_list ON input_list.exercise_id = exercise_list.exercise_id
@@ -389,7 +393,7 @@ def get_user_info(user_id):
     conn.commit()
     conn.close()
 
-    return rows
+    return rows # UC 2,3 공통 (Scene 1)
 
 def get_user_list(user_type):
     """
@@ -418,7 +422,8 @@ def get_math_info_list(user_id):
     c = conn.cursor()
     sql = """SELECT
     math_info_extractions.extraction_id,
-    exercise_list.exercise_name
+    exercise_list.exercise_name,
+    math_info_extractions.create_time
     FROM
     math_info_extractions
     LEFT JOIN skeleton_list ON math_info_extractions.skeleton_id = skeleton_list.skeleton_id

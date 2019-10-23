@@ -90,7 +90,7 @@
      <rect>
       <x>207</x>
       <y>220</y>
-      <width>231</width>
+      <width>271</width>
       <height>391</height>
      </rect>
     </property>
@@ -101,7 +101,6 @@
       <weight>9</weight>
       <italic>false</italic>
       <bold>false</bold>
-      <underline>false</underline>
      </font>
     </property>
     <property name="styleSheet">
@@ -192,25 +191,65 @@ background-color: rgba(255, 255, 255, 0);</string>
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="applied_trainer">
+   <widget class="QListWidget" name="applied_trainer">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>220</y>
-      <width>321</width>
-      <height>361</height>
+      <x>810</x>
+      <y>210</y>
+      <width>271</width>
+      <height>391</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>함초롬돋움</family>
+      <pointsize>20</pointsize>
+      <weight>9</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
     <property name="styleSheet">
-     <string notr="true">font: 20pt &quot;함초롬바탕&quot;;
-color: rgb(255, 255, 255);</string>
+     <string notr="true">font: 75 20pt &quot;함초롬돋움&quot;;
+color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 0);</string>
     </property>
-    <property name="text">
-     <string/>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    <property name="editTriggers">
+     <set>QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
     </property>
+    <property name="textElideMode">
+     <enum>Qt::ElideRight</enum>
+    </property>
+    <property name="resizeMode">
+     <enum>QListView::Adjust</enum>
+    </property>
+    <property name="viewMode">
+     <enum>QListView::ListMode</enum>
+    </property>
+    <property name="uniformItemSizes">
+     <bool>false</bool>
+    </property>
+    <property name="sortingEnabled">
+     <bool>false</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string>New Item</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>New Item</string>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>New Item</string>
+     </property>
+    </item>
    </widget>
    <zorder>graphicsView</zorder>
    <zorder>label_3</zorder>

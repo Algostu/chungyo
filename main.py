@@ -65,6 +65,7 @@ class WindowUploadVideo(QMainWindow, upload_video):
         font.setFamily("MS Gothic")
         font.setPointSize(26)
         self.user_id = user_id
+        self.comboBox.clear()
         for name in DB.get_exercise_names():
             self.comboBox.addItems(name)
         self.show()
@@ -117,6 +118,8 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.input_id = input_id
         self.extraction_id = extraction_id
         self.connectFunction()
+        args = (,)
+        main_function(2, args)
 
     def connectFunction(self):
         self.next.clicked.connect(self.Next)
@@ -139,14 +142,14 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
         self.setuserinfo()
 
         rows = DB.get_input_list(self.user_id)
-        self.input_id_list = list(zip(*rows))[0]
-        if rows != None:
+        if rows != []:
             for row in rows:
                 self.yourlist.addItem(f'{row[0]}.{row[1]}')
+            self.input_id_list = rows[:]
 
         rows = DB.get_math_info_list(self.user_id)
-        self.extraction_id_list = list(zip(*rows))[0]
-        if rows != None:
+        if rows != []:
+            self.extraction_id_list = rows[:]
             for row in rows:
                 self.registeredlist.addItem(f'{row[0]}.{row[1]}')
         self.target_type = 0
@@ -168,16 +171,16 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
     def analyze(self):
         index = self.yourlist.currentRow()
         self.target_type = 1
-        self.target_id = self.input_id_list[index]
+        self.target_id = self.input_id_list[index][0]
 
-        text = f'Creation Time : \n' \
+        text = f'Creation Time : {self.input_id_list[index][2]}\n' \
                f'State : Not Analyzed\n' \
                f'\nIf you want to register \n' \
                f'your video, clicked analyze.'
         self.note.setText(text)
 
     def view(self):
-        text = f'Creation Time : \n' \
+        text = f'Creation Time : {self.input_id_list[index][0]}\n' \
                f'State : Analyzed\n' \
                f'\nThis item is already\n' \
                f'been analyzed.\n' \
@@ -187,11 +190,14 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
 
         index = self.registeredlist.currentRow()
         self.target_type = 2
-        self.target_id = self.extraction_id_list[index]
+        self.target_id = self.extraction_id_list[index][0]
 
     def setuserinfo(self):
         user = DB.get_user_info(self.user_id)
-        text = f'Hello, {user[0][0]} {user[0][1]}'
+        if user[0][0] == 'standard':
+            text = f'Hello, Trainer {user[0][1]}'
+        else:
+            text = f'Hello, {user[0][1]}'
         self.userinfo.setText(text)
 
 # UC 3
@@ -213,14 +219,19 @@ class WindowMakeTrainer(QMainWindow, make_trainer):
         self.show()
         self.user_id = user_id
         self.setuserinfo()
+
+        self.yourlist.clear()
+        self.comboBox.clear()
+        self.comparison.clear()
+
         rows = DB.get_input_list(self.user_id)
-        if rows != None:
+        if rows != []:
             self.input_id_list = rows[:]
             for row in rows:
                 self.yourlist.addItem(f'{row[0]}.{row[1]}')
 
         rows = DB.get_user_list('standard')
-        if rows != None:
+        if rows != []:
             self.trainer_id_list = list(zip(*rows))[0]
             for row in rows:
                 self.comboBox.addItem(f'{row[1]}')
@@ -288,7 +299,10 @@ class WindowMakeTrainer(QMainWindow, make_trainer):
 
     def setuserinfo(self):
         user = DB.get_user_info(self.user_id)
-        text = f'Hello, {user[0][0]} {user[0][1]}'
+        if user[0][0] == 'standard':
+            text = f'Hello, Trainer {user[0][1]}'
+        else:
+            text = f'Hello, {user[0][1]}'
         self.userinfo.setText(text)
 
 # UC 4
