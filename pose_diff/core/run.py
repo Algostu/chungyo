@@ -158,3 +158,14 @@ class human_pic:
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
+
+def make_skeleton_image(npy,image_name):
+    screen  = Screen(npy, height=720, width=1280)
+    screen.draw_human(screen.point,"Real_time")
+    cv2.imwrite(image_name, screen.img)
+    while(1):
+        cv2.imshow("SKEf",screen.img)
+        if cv2.waitKey(100) == 27:
+            break
+    cv2.destroyAllWindows()
+
