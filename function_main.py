@@ -49,40 +49,30 @@ def main_function(option, *args):
         graph_numpy = 'graph.npy'
         (res1, res2) = Method.find_initial_skeleton(numpy, os.path.join(base_folder,graph_numpy), 10)
         # print(res1, res2)
-        np.save(os.path.join(base_folder, skeleton_numpy), res1)
-        DB.save_skeleton(args[0], os.path.join(base_folder,skeleton_numpy), os.path.join(base_folder,graph_numpy))
-    
+        np.save(os.path.join(base_folder, skeleton_numpy), [res1,res2])
+        pk = DB.save_skeleton(args[0], os.path.join(base_folder,skeleton_numpy), os.path.join(base_folder,graph_numpy))
+        return (res1, res2, pk)
+
     elif option == 3:
-        type = ['trainer', 'user']
-        frame = [48, 22]
-        selected = type[args.type]
-        found = frame[args.type]
-        input1 = 'data/%s/init/init.png' % (selected,)
-        input2 = 'data/%s/init/raw/output_video/result.avi' % (selected,)
-        file_names = ['data/%s/init/init_left_elbow.npy' % (selected,),
-        'data/%s/init/init_right_elbow.npy' % (selected,),
-        'data/%s/init/init_left_knee.npy' % (selected,),
-        'data/%s/init/init_right_knee.npy' % (selected,)]
-        plot_titles = ['left_elbow angle', "right_elbow angle", "left_knee angle", "right_knee angle"]
-
-        get_result.debugger(found, isImage = True, video=input1, video2=input2,
-        file_name=file_names,
-        plot_title = plot_titles,
-        title='%s initial pose' % (selected,), title1 = '%s video' % (selected,), title2 = 'graph data for main angle')
-
-    elif option == 4:
+        DB.load_skeleton(args[0], base_folder)
+        DB.read_from_input_list(args[1], base_folder)
         ex_type = 2
-        numpy_array = np.load('data/trainer/exercise/raw/output_numpy/output.npy')
-        skeleton = np.load('data/trainer/init/init.npy')
-        target_skeleton = np.load('data/user/init/init.npy')
+        numpy_array = os.path.join(base_folder, 'exercise_numpy.npy')
+        skeleton = os.path.join(base_folder, 'skeleton.npy')
+        target_skeleton = skeleton
 
         common = bc_common.Common()
-        accuracy, body_part = common.check_accuracy(numpy_array, 3, 0)
+        accuracy, body_part = common.check_accuracy(numpy_array, ex_type, 0)
         input_vector = common.calculate_trainer(ex_type, skeleton, body_part[0], body_part[1])
         resized = common.apply_vector(ex_type, target_skeleton, input_vector)
-        np.save('data/user/exercise/upgraded.npy', resized)
-        # screen = run.human_pic(numpy_array,'data/user/exercise/original.avi')
-        # screen = run.human_pic(resized,'data/user/exercise/upgraded.avi')
+        np.save(os.path.join(base_folder, 'math_info.npy'), math_info)
+        np.save(os.path.join(base_folder, 'resized.npy'), resized)
+        screen = run.human_pic(input_vector, os.path.join(base_folder, 'math_info.avi'))
+        screen = run.human_pic(resized, os.path.join(base_folder, 'resized.avi'))
+
+
+    elif option == 4:
+        pass
 
     elif option == 5:
         input2 = 'data/user/exercise/upgraded.avi'

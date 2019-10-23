@@ -154,12 +154,12 @@ border-image: url(:/overall/image/back.png);
         <string/>
        </property>
       </widget>
-      <widget class="QLabel" name="label_8">
+      <widget class="QLabel" name="found_label">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>20</y>
-         <width>151</width>
+         <width>271</width>
          <height>36</height>
         </rect>
        </property>

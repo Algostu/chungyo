@@ -16,6 +16,7 @@ from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2
 from matplotlib.figure import Figure
 
 from pose_diff.DB import DB
+from pose_diff.core import run
 from function_main import main_function
 
 signin = uic.loadUiType("ui/signin.ui")[0]
@@ -108,12 +109,15 @@ class WindowUploadVideo(QMainWindow, upload_video):
 
 # UC 2
 class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
-    def __init__(self):
+    def __init__(self, skeleton_id, input_id):
         super().__init__()
         self.setupUi(self)
         self.show()
-
+        self.skeleton_id = skeleton_id
+        self.input_id = input_id
         self.connectFunction()
+        args = (self.skeleton_id, self.input_id)
+        main_function(3, *args)
 
     def connectFunction(self):
         self.home.clicked.connect(self.close)
@@ -122,18 +126,28 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
     def __init__(self, mode=0, input_id = 0, extraction_id = 0):
         super().__init__()
         self.setupUi(self)
-        self.show()
         self.mode = mode
         self.input_id = input_id
         self.extraction_id = extraction_id
+        self.show()
         self.connectFunction()
+
         args = (input_id,)
-        main_function(2, *args)
+        skeleton, self.found_num, self.skeleton_id = main_function(2, *args)
+        print(skeleton)
+        # run.human_pic(skeleton, 'temp/skeleton.png')
+        if self.found_num == -1:
+            QMessageBox.warning(
+                self, 'Error', "You should select file or Enter Video Info")
+            self.close()
+
+
         self.graph()
         self.Video()
 
     def graph(self):
         self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graph_list.setFlow(QListWidget.LeftToRight)
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.numpy = np.load('temp/graph.npy')
         mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
@@ -159,8 +173,6 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         index = 0
         while self.cpt.isOpened() and cam is not None:
             # Video
-            print("index", index)
-            index += 1
             _, cam = self.cpt.read()
             if cam is not None:
                 cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
@@ -168,8 +180,13 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
                 pix = QPixmap.fromImage(img)
                 pix2 = QPixmap.fromImage(img)
                 self.origin_label.setPixmap(pix)
-                self.copy_label.setPixmap(pix2)
-                cv2.waitKey(500)
+                if index < self.found_num:
+                    self.copy_label.setPixmap(pix2)
+                else:
+                    self.found_label.setStyleSheet('color:green')
+                    self.found_label.setText('Complete Analyze')
+                    self.copy_label.setStyleSheet("border: 7px inset green;")
+                cv2.waitKey(100)
 
             # graph
             for i in range(len(self.axes)):
@@ -178,15 +195,16 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
                 self.axes[i].plot(self.numpy[i][index:index+50])
                 self.axes[i].figure.canvas.draw()
 
+            index += 1
         self.cpt.release()
-        print("I am Done")
 
     def connectFunction(self):
         self.next.clicked.connect(self.Next)
 
     def Next(self):
+        self.cpt.release()
         if self.mode == 0:
-            self.window = WindowReigsterTrainerBetter()
+            self.window = WindowReigsterTrainerBetter(self.skeleton_id, self.input_id)
         else:
             self.window = WindowResizeTrainer()
         self.close()

@@ -105,7 +105,6 @@ def find_initial_skeleton(numpy_array, name, stilness=15):
 
     return skeleton, frame_num
 
-
 def analyze_exercise(numpy_array, exercise_id, skeleton):
     ####################################
     # Basic Info
@@ -133,7 +132,7 @@ def analyze_exercise(numpy_array, exercise_id, skeleton):
         return result
     else:
         print("This input file is not proper to use")
-        return False, False
+        return False
 
 def resize(ex_type, input_skeleton, input_vector):
     length = input_skeleton

@@ -439,22 +439,19 @@ def get_math_info_list(user_id):
 
     return rows # UC 2,3 공통 (Scene 1)
 
-# * 개발 대상
+# * 개발 대상 : 개발 완료
 def save_skeleton(input_id, skeleton_numpy, graph_numpy):
     """
     skeleton을 저장한다.
 
     params
         user_id : user_list의 PK, numpy_input_list의 FK이다.
-        skeleton_numpy : init_skeleton이 저장된 파일 이름이다.
+        skeleton_numpy : [init_skeleton, frame_num]형식으로 저장된 파일 이름이다.
         graph_numpy : graph_numpy가 하나로 저장된 파일 이름이다.
     How it works
         skeleton_numpy와 graph_nump를 Blob 형식으로 저장한다.
     Return Values
         skeleton_id
-
-    Todo
-        skeleton_numpy만 저장을 했다 하지만, 프레임 넘버까지 저장하면 좋을것 같다.
     """
     try:
         sqliteConnection = sqlite3.connect(db)
@@ -479,10 +476,34 @@ def save_skeleton(input_id, skeleton_numpy, graph_numpy):
         if (sqliteConnection):
             sqliteConnection.close()
             print("the sqlite connection is closed") # UC 2,3 공통 (Scene 2)
+            return primary_key # UC 2,3 공통 (Scene 2)
 
 # * 개발 대상
-def load_skeleton(skeleton_id):
-    pass # UC 2,3 공통 (Scene 2)
+def load_skeleton(skeleton_id, base_folder):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        sql_fetch_blob_query = """SELECT * from skeleton_list where skeleton_id = ?"""
+        cursor.execute(sql_fetch_blob_query, (skeleton_id,))
+        record = cursor.fetchall()
+        for row in record:
+            skeleton_numpy  = os.path.join(base_folder, 'skeleton.npy')
+            graph_numpy  = os.path.join(base_folder, 'graph.npy')
+
+            print("Storing skeleton and graph numpy on disk \n")
+            writeTofile(row[2], skeleton_numpy)
+            writeTofile(row[3], graph_numpy)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read blob data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("sqlite connection is closed") # UC 2,3 공통 (Scene 2)
 
 # * 개발 대상
 def save_math_info_extraction(skeleton_id, math_info_1, math_info_2):
