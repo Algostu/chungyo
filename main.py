@@ -162,7 +162,7 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
                 pix2 = QPixmap.fromImage(img2)
                 self.origin_label.setPixmap(pix)
                 self.copy_label.setPixmap(pix2)
-                
+
                 cv2.waitKey(100)
 
             # graph
@@ -182,7 +182,7 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
     def back_home(self):
         self.cpt.release()
         self.cpt2.release()
-        self.close
+        self.close()
 
 class WindowFindInitialPose(QMainWindow, find_initial_pose):
     def __init__(self, mode=0, input_id = 0, extraction_id = 0):
@@ -193,10 +193,10 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.extraction_id = extraction_id
         self.show()
         self.connectFunction()
+        self.isSkipped = False
 
         args = (input_id,)
-        skeleton, self.found_num, self.skeleton_id = main_function(2, *args)
-        # run.human_pic(skeleton, 'temp/skeleton.png')
+        self.skeleton, self.found_num, self.skeleton_id = main_function(2, *args)
         if self.found_num == -1:
             QMessageBox.warning(
                 self, 'Error', "You should select file or Enter Video Info")
@@ -257,6 +257,8 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
                 self.axes[i].figure.canvas.draw()
 
             index += 1
+        if self.isSkipped != True:
+            run.make_skeleton_image(self.skeleton, 'temp/skeleton.png')
         self.cpt.release()
 
     def connectFunction(self):
@@ -264,11 +266,12 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
 
     def Next(self):
         self.cpt.release()
+        self.isSkipped = True
+        self.close()
         if self.mode == 0:
             self.window = WindowReigsterTrainerBetter(self.skeleton_id, self.input_id)
         else:
-            self.window = WindowResizeTrainer()
-        self.close()
+            self.window = WindowResizeTrainer(self.skeleton_id, self.extraction_id, self.input_id)
 
 class WindowRegisterTrainer(QMainWindow, register_trainer):
     def __init__(self, user_id):
@@ -322,7 +325,7 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
         index = self.registeredlist.currentRow()
         self.target_type = 2
         self.target_id = self.extraction_id_list[index][0]
-        text = f'Creation Time : {self.input_id_list[index][2]}\n' \
+        text = f'Creation Time : {self.extraction_id_list[index][2]}\n' \
                f'State : Analyzed\n' \
                f'\nThis item is already\n' \
                f'been analyzed.\n' \
@@ -340,12 +343,15 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
 
 # UC 3
 class WindowResizeTrainer(QMainWindow, resize_trainer):
-    def __init__(self):
+    def __init__(self, skeleton_id, extraction_id, input_id):
         super().__init__()
         self.setupUi(self)
         self.show()
-
+        self.skeleton_id = skeleton_id
+        self.extraction_id = extraction_id
         self.connectFunction()
+        args = (self.skeleton_id, self.extraction_id, input_id)
+        main_function(4, *args)
 
     def connectFunction(self):
         self.home.clicked.connect(self.close)
@@ -451,8 +457,38 @@ class WindowStore(QMainWindow, store):
         self.show()
         self.connectFunction()
         print(input_id, sample_id)
-        args = (input_id, sample_id, self.frame, self.progressBar)
+        args = (input_id, sample_id)
         # main_function(6, *args)
+        self.Video()
+
+    def Video(self):
+        self.frame.setScaledContents(True)
+        self.cpt = cv2.VideoCapture('temp/output.avi')
+        self.frequency = 0.3
+        self.cnt = 0
+        self.progressBar.setRange(0, 100)
+        self.progressBar.setValue(0)
+        self.start()
+
+    def start(self):
+        cam = 1
+        index = 0
+        length = int(self.cpt.get(cv2.CAP_PROP_FRAME_COUNT))
+        while self.cpt.isOpened() and cam is not None:
+            # Video
+            _, cam = self.cpt.read()
+            if cam is not None:
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                self.frame.setPixmap(pix)
+                cv2.waitKey(100)
+
+            # progressBar
+            self.progressBar.setValue(int(index/length * 100))
+
+            index += 1
+        self.cpt.release()
 
     def connectFunction(self):
         self.next.clicked.connect(self.close)

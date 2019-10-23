@@ -67,22 +67,6 @@
      <string/>
     </property>
    </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>120</y>
-      <width>960</width>
-      <height>540</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-   </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
@@ -157,14 +141,27 @@
      <string>Progress...</string>
     </property>
    </widget>
+   <widget class="QLabel" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>120</y>
+      <width>960</width>
+      <height>540</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
    <zorder>graphicsView</zorder>
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>next</zorder>
-   <zorder>frame</zorder>
    <zorder>label_7</zorder>
    <zorder>progressBar</zorder>
    <zorder>label_8</zorder>
+   <zorder>frame</zorder>
   </widget>
  </widget>
  <resources>

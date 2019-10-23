@@ -505,7 +505,7 @@ def load_skeleton(skeleton_id, base_folder):
             sqliteConnection.close()
             print("sqlite connection is closed") # UC 2,3 공통 (Scene 3)
 
-# * 개발 대상
+# * 개발 대상 : 개발 완료
 def save_math_info_extraction(skeleton_id, math_info_1, math_info_2):
     """
     math_info를 저장한다.
@@ -545,9 +545,82 @@ def save_math_info_extraction(skeleton_id, math_info_1, math_info_2):
             print("the sqlite connection is closed") # UC 2,3 공통 (Scene 2)
             return primary_key # UC 2 (Scene 3)
 
-# * 개발 대상
-def save_applied_sample():
-    pass # UC 3 (Scene 3)
+# * 개발 대상 : 개발 완료
+def load_math_info_extraction(extraction_id, base_folder):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        sql_fetch_blob_query = """SELECT * from math_info_extractions where extraction_id = ?"""
+        cursor.execute(sql_fetch_blob_query, (extraction_id,))
+        record = cursor.fetchall()
+        for row in record:
+            math_info_npy  = os.path.join(base_folder, 'math_info.npy')
+            math_info_avi  = os.path.join(base_folder, 'math_info.avi')
+
+            print("Storing math info numpy and video on disk \n")
+            writeTofile(row[3], math_info_npy)
+            writeTofile(row[4], math_info_avi)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read blob data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("sqlite connection is closed")
+
+# * 개발 대상 : 개발 완료
+def save_applied_sample(skeleton_id, standard_id, exercise_id, exercise_numpy, exercise_video):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_insert_blob_query = """Insert into
+        applied_skeleton_list (skeleton_id, standard_id, exercise_id, exercise_numpy, exercise_video)
+        values (?, ?, ?, ?, ?)"""
+        exercise_numpy = convertToBinaryData(exercise_numpy)
+        exercise_video = convertToBinaryData(exercise_video)
+        # Convert data into tuple format
+        data_tuple = (skeleton_id, standard_id, exercise_id, exercise_numpy, exercise_video)
+        cursor.execute(sqlite_insert_blob_query, data_tuple)
+        primary_key = cursor.lastrowid
+        sqliteConnection.commit()
+        print("Applied numpy and video inserted successfully as a BLOB into a table")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to insert blob data into sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
+            return primary_key  # UC 3 (Scene 3)
+
+def get_exercise_id(input_id):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_insert_blob_query = """Select exercise_id from
+        input_list where
+        input_list.input_id = ?"""
+        data_tuple = (input_id,)
+        cursor.execute(sqlite_insert_blob_query, data_tuple)
+        rows = cursor.fetchall()
+        sqliteConnection.commit()
+        print("Load exercise id from a table")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to insert blob data into sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
+            return rows # UC 3 (Scene 3) # UC 3 (Scene 3)
 
 # UC 4, 5
 def load_applied_skeleton_list(user_id):
@@ -566,8 +639,7 @@ def load_applied_skeleton_list(user_id):
     FROM
     applied_skeleton_list
     LEFT JOIN exercise_list ON exercise_list.exercise_id = applied_skeleton_list.exercise_id
-    LEFT JOIN math_info_extractions ON applied_skeleton_list.standard_id = math_info_extractions.extraction_id
-    LEFT JOIN skeleton_list ON math_info_extractions.skeleton_id = skeleton_list.skeleton_id
+    LEFT JOIN skeleton_list ON applied_skeleton_list.skeleton_id = skeleton_list.skeleton_id
     LEFT JOIN input_list ON skeleton_list.input_id = input_list.input_id
     LEFT JOIN user_list ON input_list.user_id = user_list.user_id
     where
@@ -596,8 +668,8 @@ def load_applied_skeleton_file(applied_sample_id, base_folder):
             upgraded_video  = os.path.join(base_folder, 'upgraded.avi')
 
             print("Storing User numpy and video on disk \n")
-            writeTofile(row[4], upgraded_numpy)
-            writeTofile(row[5], upgraded_video)
+            writeTofile(row[5], upgraded_numpy)
+            writeTofile(row[6], upgraded_video)
 
         cursor.close()
 

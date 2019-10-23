@@ -70,35 +70,33 @@ def main_function(option, *args):
         np.save(os.path.join(base_folder, 'resized.npy'), resized)
         screen = run.human_pic(resized, os.path.join(base_folder, 'math_info.avi'))
         DB.save_math_info_extraction(args[0], os.path.join(base_folder, 'math_info.npy'), os.path.join(base_folder, 'math_info.avi'))
-        
 
     elif option == 4:
-        pass
+        exercise_id = DB.get_exercise_id(args[2])[0][0]
+        DB.load_skeleton(args[0], base_folder)
+        DB.load_math_info_extraction(args[1], base_folder)
+        ex_type = 2
+        time.sleep(0.5)
+        math_info = np.load(os.path.join(base_folder, 'math_info.npy'))
+        skeleton = np.load(os.path.join(base_folder, 'skeleton.npy'))[0]
+
+        common = bc_common.Common()
+        resized = common.apply_vector(ex_type, skeleton, math_info)
+        np.save(os.path.join(base_folder, 'resized.npy'), resized)
+        screen = run.human_pic(resized, os.path.join(base_folder, 'resized.avi'))
+        DB.save_applied_sample(args[0], args[1], exercise_id, os.path.join(base_folder, 'resized.npy'), os.path.join(base_folder, 'resized.avi'))
 
     elif option == 5:
-        input2 = 'data/user/exercise/upgraded.avi'
-        input1 = 'data/user/exercise/raw/output_video/result.avi'
-        selected = 'trainer'
-        file_names = ['data/%s/init/init_left_elbow.npy' % (selected,),
-        'data/%s/init/init_right_elbow.npy' % (selected,),
-        'data/%s/init/init_left_knee.npy' % (selected,),
-        'data/%s/init/init_right_knee.npy' % (selected,)]
-        plot_titles = ['left_elbow angle', "right_elbow angle", "left_knee angle", "right_knee angle"]
-
-        get_result.debugger(0, isImage = False, video=input1, video2=input2,
-        file_name=file_names,
-        plot_title = plot_titles,
-        title1='applied user exercise', title = 'original user exercise', title2 = 'graph data for main angle')
-
+        pass
     # args = (input_id, sample_id)
     elif option == 6:
         video_name = os.path.join(base_folder, 'output.avi')
         DB.load_applied_skeleton_file(args[1], base_folder)
-        DB.load_input_list(args[0], base_folder)
+        DB.read_from_input_list(args[0], base_folder)
         input1 = os.path.join(base_folder, 'upgraded.npy')
         input2 = os.path.join(base_folder, 'exercise_numpy.npy')
-
         run.Video(input1, input2, video_name)
+        # Some DB Stuff
 
     elif option == 7:
         input2 = 'data/result.avi'

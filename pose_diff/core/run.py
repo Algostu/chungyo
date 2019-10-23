@@ -168,4 +168,3 @@ def make_skeleton_image(npy,image_name):
         if cv2.waitKey(100) == 27:
             break
     cv2.destroyAllWindows()
-

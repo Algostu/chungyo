@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1305</width>
-    <height>843</height>
+    <width>1316</width>
+    <height>894</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,7 +36,7 @@ border-image: url(:/overall/image/back.png);
      <number>5</number>
     </property>
     <item row="0" column="0" colspan="2">
-     <widget class="QFrame" name="frame_4">
+     <widget class="QFrame" name="upper">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -79,14 +79,14 @@ border-image: url(:/overall/image/back.png);
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QFrame" name="frame">
+     <widget class="QFrame" name="origin_frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="origin">
+      <widget class="QLabel" name="origin_label">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -130,14 +130,14 @@ border-image: url(:/overall/image/back.png);
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QFrame" name="frame_2">
+     <widget class="QFrame" name="analyze_frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="copy">
+      <widget class="QLabel" name="copy_label">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -181,7 +181,7 @@ border-image: url(:/overall/image/back.png);
      </widget>
     </item>
     <item row="2" column="0" colspan="2">
-     <widget class="QFrame" name="frame_3">
+     <widget class="QFrame" name="graph_frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
@@ -212,7 +212,7 @@ border-image: url(:/overall/image/back.png);
         <string>Graph</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="graph">
+      <widget class="QListWidget" name="graph_list">
        <property name="geometry">
         <rect>
          <x>-20</x>
@@ -225,7 +225,7 @@ border-image: url(:/overall/image/back.png);
         <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
        </property>
       </widget>
-      <zorder>graph</zorder>
+      <zorder>graph_list</zorder>
       <zorder>label_9</zorder>
      </widget>
     </item>
