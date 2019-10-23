@@ -1,12 +1,21 @@
 import sys
 import os
 import time
+import cv2
+
+import sqlite3
+import numpy as np
+
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from PyQt5 import uic, QtGui
 
-import os
+from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
+from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.figure import Figure
+
 from pose_diff.DB import DB
-import sqlite3
 from function_main import main_function
 
 signin = uic.loadUiType("ui/signin.ui")[0]
@@ -118,8 +127,59 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.input_id = input_id
         self.extraction_id = extraction_id
         self.connectFunction()
-        args = (,)
-        main_function(2, args)
+        args = (input_id,)
+        main_function(2, *args)
+        self.graph()
+        self.Video()
+
+    def graph(self):
+        self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.numpy = np.load('temp/graph.npy')
+        mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
+        self.axes = []
+        for idx, mcanvase in enumerate(mcanvases):
+            itemN = QListWidgetItem()
+            itemN.setSizeHint(QSize(380, 380))
+            self.graph_list.addItem(itemN)
+            self.graph_list.setItemWidget(itemN, mcanvase)
+            self.axes.append(mcanvase.figure.subplots())
+            self.axes[idx].set(title = self.graph_title[idx])
+
+    def Video(self):
+        self.origin_label.setScaledContents(True)
+        self.copy_label.setScaledContents(True)
+        self.cpt = cv2.VideoCapture('temp/init_video.avi')
+        self.frequency = 0.3
+        self.cnt = 0
+        self.start()
+
+    def start(self):
+        cam = 1
+        index = 0
+        while self.cpt.isOpened() and cam is not None:
+            # Video
+            print("index", index)
+            index += 1
+            _, cam = self.cpt.read()
+            if cam is not None:
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                pix2 = QPixmap.fromImage(img)
+                self.origin_label.setPixmap(pix)
+                self.copy_label.setPixmap(pix2)
+                cv2.waitKey(500)
+
+            # graph
+            for i in range(len(self.axes)):
+                self.axes[i].clear()
+                self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].plot(self.numpy[i][index:index+50])
+                self.axes[i].figure.canvas.draw()
+
+        self.cpt.release()
+        print("I am Done")
 
     def connectFunction(self):
         self.next.clicked.connect(self.Next)
@@ -180,17 +240,16 @@ class WindowRegisterTrainer(QMainWindow, register_trainer):
         self.note.setText(text)
 
     def view(self):
-        text = f'Creation Time : {self.input_id_list[index][0]}\n' \
+        index = self.registeredlist.currentRow()
+        self.target_type = 2
+        self.target_id = self.extraction_id_list[index][0]
+        text = f'Creation Time : {self.input_id_list[index][2]}\n' \
                f'State : Analyzed\n' \
                f'\nThis item is already\n' \
                f'been analyzed.\n' \
                f'If you want to see this,\n' \
                f'please go to more info.'
         self.note.setText(text)
-
-        index = self.registeredlist.currentRow()
-        self.target_type = 2
-        self.target_id = self.extraction_id_list[index][0]
 
     def setuserinfo(self):
         user = DB.get_user_info(self.user_id)
@@ -307,23 +366,14 @@ class WindowMakeTrainer(QMainWindow, make_trainer):
 
 # UC 4
 class WindowStore(QMainWindow, store):
-    def __init__(self):
+    def __init__(self, input_id, sample_id):
         super().__init__()
         self.setupUi(self)
         self.show()
-
         self.connectFunction()
-
-    def connectFunction(self):
-        self.next.clicked.connect(self.close)
-
-class WindowView(QMainWindow, view):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        self.show()
-
-        self.connectFunction()
+        print(input_id, sample_id)
+        args = (input_id, sample_id, self.frame, self.progressBar)
+        # main_function(6, *args)
 
     def connectFunction(self):
         self.next.clicked.connect(self.close)
@@ -335,13 +385,44 @@ class WindowAnalyzeGuide(QMainWindow, analyze_guide):
         self.show()
         self.user_id = user_id
         self.connectFunction()
+        rows = DB.get_input_list(self.user_id)
+        if rows != []:
+            self.input_id_list = rows[:]
+            for row in rows:
+                self.user.addItem(f'{row[0]}.{row[1]}')
+
+        rows = DB.load_applied_skeleton_list(self.user_id)
+        if rows != []:
+            self.applied_trainer_list = rows[:]
+            for row in rows:
+                self.applied_trainer.addItem(f'{row[0]}.{row[1]}-{row[2]}')
+        self.input_id = 0
+        self.target_id = 0
 
     def connectFunction(self):
         self.store.clicked.connect(self.Store)
+        self.user.itemClicked.connect(self.change_input_id)
+        self.applied_trainer.itemClicked.connect(self.change_target_id)
+
+    def change_input_id(self):
+        index = self.user.currentRow()
+        self.input_id = self.input_id_list[index]
+
+    def change_target_id(self):
+        index = self.applied_trainer.currentRow()
+        self.target_id = self.applied_trainer_list[index]
 
     def Store(self):
-        self.window = WindowStore()
-        self.close()
+        if self.input_id !=0 and self.target_id !=0:
+            if self.input_id[1] == self.target_id[2]:
+                self.window = WindowStore(self.input_id[0], self.target_id[0])
+                self.close()
+            else:
+                QMessageBox.warning(
+                    self, 'Error', "You should select same exercise")
+        else:
+            QMessageBox.warning(
+                self, 'Error', "You should select Both")
 
 # UC 5
 class WindowReport(QMainWindow, report):

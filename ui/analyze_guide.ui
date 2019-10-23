@@ -90,7 +90,7 @@
      <rect>
       <x>207</x>
       <y>220</y>
-      <width>231</width>
+      <width>261</width>
       <height>391</height>
      </rect>
     </property>
@@ -128,38 +128,6 @@ background-color: rgba(255, 255, 255, 0);</string>
     </property>
     <property name="sortingEnabled">
      <bool>false</bool>
-    </property>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QPushButton" name="arrow">
-    <property name="geometry">
-     <rect>
-      <x>590</x>
-      <y>370</y>
-      <width>107</width>
-      <height>86</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image: url(:/overall/image/arrow.png);
-</string>
-    </property>
-    <property name="text">
-     <string/>
     </property>
    </widget>
    <widget class="QPushButton" name="store">
@@ -235,21 +203,6 @@ background-color: rgba(255, 255, 255, 0);</string>
     <property name="sortingEnabled">
      <bool>false</bool>
     </property>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>New Item</string>
-     </property>
-    </item>
    </widget>
    <zorder>graphicsView</zorder>
    <zorder>label_3</zorder>
@@ -257,7 +210,6 @@ background-color: rgba(255, 255, 255, 0);</string>
    <zorder>label_2</zorder>
    <zorder>label_4</zorder>
    <zorder>user</zorder>
-   <zorder>arrow</zorder>
    <zorder>store</zorder>
    <zorder>applied_trainer</zorder>
   </widget>

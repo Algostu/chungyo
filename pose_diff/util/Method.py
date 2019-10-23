@@ -76,10 +76,7 @@ def find_initial_skeleton(numpy_array, name, stilness=15):
         right_elbow.append(Common.get_angle(frame[5], frame[6], frame[7]))
         left_knee.append(Common.get_angle(frame[8], frame[9], frame[10]))
         right_knee.append(Common.get_angle(frame[11], frame[12], frame[13]))
-    np.save(name+"_left_elbow.npy", left_elbow)
-    np.save(name+"_right_elbow.npy", right_elbow)
-    np.save(name+"_left_knee.npy", left_knee)
-    np.save(name+"_right_knee.npy", right_knee)
+    np.save(name, [left_elbow, right_elbow, left_knee, right_knee])
     # Find 정지된 자세
     stop_len = stilness # 정지된 상태로 있어야 하는 시간이다. (단위는 프레임)
     stop_i = 0 # 정지된 상태가 지속된 시간이다.

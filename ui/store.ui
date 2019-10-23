@@ -67,13 +67,13 @@
      <string/>
     </property>
    </widget>
-   <widget class="QFrame" name="frame1">
+   <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>190</y>
-      <width>531</width>
-      <height>301</height>
+      <x>150</x>
+      <y>120</y>
+      <width>960</width>
+      <height>540</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -161,7 +161,7 @@
    <zorder>label</zorder>
    <zorder>label_2</zorder>
    <zorder>next</zorder>
-   <zorder>frame1</zorder>
+   <zorder>frame</zorder>
    <zorder>label_7</zorder>
    <zorder>progressBar</zorder>
    <zorder>label_8</zorder>

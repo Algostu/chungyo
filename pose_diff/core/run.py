@@ -75,7 +75,7 @@ class Video:
                     screen.display_angle(i)
 
                 # float screen
-                cv2.imshow("imshow", screen.img)
+                # cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
 

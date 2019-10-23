@@ -11,6 +11,12 @@ import shutil
 import time
 
 def main_function(option, *args):
+    base_folder = 'temp'
+    if os.path.exists(base_folder):
+        shutil.rmtree(base_folder)
+    time.sleep(1)
+    os.mkdir(base_folder)
+
     # args = (address_init, address_ex, user_id, exercise_id)
     if option == 1:
         # Usage - store blob data into table
@@ -23,11 +29,6 @@ def main_function(option, *args):
         # make temp folder
         # readBlobData(1, 1, 'temp')
         print(args)
-        base_folder = 'temp'
-        if os.path.exists(base_folder):
-            shutil.rmtree(base_folder)
-        time.sleep(1)
-        os.mkdir(base_folder)
 
         input_init = args[0]
         input_exercise = args[1]
@@ -42,12 +43,15 @@ def main_function(option, *args):
         DB.insert_input_list(args[2], args[3], output_init_numpy, output_init_video, output_ex_numpy, output_ex_video)
 
     elif option == 2:
-        type = ['trainer', 'user']
-        selected = type[1]
-        numpy = np.load('data/%s/exercise/raw/output_numpy/output.npy' % (selected,))
-        (res1, res2) = Method.find_initial_skeleton(numpy, 'data/%s/exercise/exercise' % (selected,), 10)
+        DB.read_from_input_list(args[0], base_folder)
+        numpy = np.load(os.path.join(base_folder, 'init_numpy.npy'))
+        skeleton_numpy = 'skeleon.npy'
+        graph_numpy = 'graph.npy'
+        (res1, res2) = Method.find_initial_skeleton(numpy, os.path.join(base_folder,graph_numpy), 10)
         # print(res1, res2)
-        # np.save('data/%s/init/init.npy' % (selected,), res1)
+        np.save(os.path.join(base_folder, skeleton_numpy), res1)
+        DB.save_skeleton(args[0], os.path.join(base_folder,skeleton_numpy), os.path.join(base_folder,graph_numpy))
+    
     elif option == 3:
         type = ['trainer', 'user']
         frame = [48, 22]
@@ -95,10 +99,14 @@ def main_function(option, *args):
         plot_title = plot_titles,
         title1='applied user exercise', title = 'original user exercise', title2 = 'graph data for main angle')
 
+    # args = (input_id, sample_id)
     elif option == 6:
-        video_name = 'data/result.avi'
-        input1 = 'data/user/exercise/upgraded.npy'
-        input2 = 'data/user/exercise/raw/output_numpy/output.npy'
+        video_name = os.path.join(base_folder, 'output.avi')
+        DB.load_applied_skeleton_file(args[1], base_folder)
+        DB.load_input_list(args[0], base_folder)
+        input1 = os.path.join(base_folder, 'upgraded.npy')
+        input2 = os.path.join(base_folder, 'exercise_numpy.npy')
+
         run.Video(input1, input2, video_name)
 
     elif option == 7:

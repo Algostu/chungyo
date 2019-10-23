@@ -282,27 +282,26 @@ def writeTofile(data, filename):
         file.write(data)
     print("Stored blob data into: ", filename, "\n")
 
-def read_from_input_list(user_id, exercise_id, base_folder):
+def read_from_input_list(input_id, base_folder):
     try:
         sqliteConnection = sqlite3.connect(db)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
 
-        sql_fetch_blob_query = """SELECT * from input_list where user_id = ? and exercise_id = ?"""
-        cursor.execute(sql_fetch_blob_query, (user_id, exercise_id))
+        sql_fetch_blob_query = """SELECT * from input_list where input_id = ?"""
+        cursor.execute(sql_fetch_blob_query, (input_id,))
         record = cursor.fetchall()
         for row in record:
-            print("user_id = ", row[1], "exercise_id = ", row[2])
             init_numpy  = os.path.join(base_folder, 'init_numpy.npy')
             init_video  = os.path.join(base_folder, 'init_video.avi')
             exercise_numpy  = os.path.join(base_folder, 'exercise_numpy.npy')
             exercise_video  = os.path.join(base_folder, 'exercise_video.avi')
 
             print("Storing User numpy and video on disk \n")
-            writeTofile(row[3], init_numpy)
-            writeTofile(row[4], init_video)
-            writeTofile(row[5], exercise_numpy)
-            writeTofile(row[6], exercise_video)
+            writeTofile(row[4], init_numpy)
+            writeTofile(row[5], init_video)
+            writeTofile(row[6], exercise_numpy)
+            writeTofile(row[7], exercise_video)
 
         cursor.close()
 
@@ -441,7 +440,7 @@ def get_math_info_list(user_id):
     return rows # UC 2,3 공통 (Scene 1)
 
 # * 개발 대상
-def save_skeleton(user_id, skeleton_numpy, graph_numpy):
+def save_skeleton(input_id, skeleton_numpy, graph_numpy):
     """
     skeleton을 저장한다.
 
@@ -450,7 +449,7 @@ def save_skeleton(user_id, skeleton_numpy, graph_numpy):
         skeleton_numpy : init_skeleton이 저장된 파일 이름이다.
         graph_numpy : graph_numpy가 하나로 저장된 파일 이름이다.
     How it works
-        skeleton_numpy는 json 형식으로 저장하고 graph_numpy는 Blob 형식으로 저장한다.
+        skeleton_numpy와 graph_nump를 Blob 형식으로 저장한다.
     Return Values
         skeleton_id
 
@@ -462,12 +461,12 @@ def save_skeleton(user_id, skeleton_numpy, graph_numpy):
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
         sqlite_insert_blob_query = """Insert into
-        skeleton_list (user_id, skeleton_numpy, graph_numpy)
+        skeleton_list (input_id, skeleton_numpy, graph_numpy)
         values (?, ?, ?)"""
         skeleton_numpy = convertToBinaryData(skeleton_numpy)
         graph_numpy = convertToBinaryData(graph_numpy)
         # Convert data into tuple format
-        data_tuple = (user_id, skeleton_numpy, graph_numpy)
+        data_tuple = (input_id, skeleton_numpy, graph_numpy)
         cursor.execute(sqlite_insert_blob_query, data_tuple)
         primary_key = cursor.lastrowid
         sqliteConnection.commit()
@@ -479,8 +478,7 @@ def save_skeleton(user_id, skeleton_numpy, graph_numpy):
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
-            print("the sqlite connection is closed")
-            return primary_key # UC 2,3 공통 (Scene 2)
+            print("the sqlite connection is closed") # UC 2,3 공통 (Scene 2)
 
 # * 개발 대상
 def load_skeleton(skeleton_id):
@@ -543,7 +541,7 @@ def load_applied_skeleton_list(user_id):
     LEFT JOIN math_info_extractions ON applied_skeleton_list.standard_id = math_info_extractions.extraction_id
     LEFT JOIN skeleton_list ON math_info_extractions.skeleton_id = skeleton_list.skeleton_id
     LEFT JOIN input_list ON skeleton_list.input_id = input_list.input_id
-    LEFT JOIN user_list ON skeleton_list.user_id = user_list.user_id
+    LEFT JOIN user_list ON input_list.user_id = user_list.user_id
     where
     user_list.user_id = ?"""
 
@@ -555,6 +553,32 @@ def load_applied_skeleton_list(user_id):
     conn.close()
 
     return rows
+
+def load_applied_skeleton_file(applied_sample_id, base_folder):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        sql_fetch_blob_query = """SELECT * from applied_skeleton_list where applied_sample_id = ?"""
+        cursor.execute(sql_fetch_blob_query, (applied_sample_id,))
+        record = cursor.fetchall()
+        for row in record:
+            upgraded_numpy  = os.path.join(base_folder, 'upgraded.npy')
+            upgraded_video  = os.path.join(base_folder, 'upgraded.avi')
+
+            print("Storing User numpy and video on disk \n")
+            writeTofile(row[4], upgraded_numpy)
+            writeTofile(row[5], upgraded_video)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read blob data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("sqlite connection is closed")
 
 # ETC
 def get_exercise_list(exercise_id):
