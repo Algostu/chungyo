@@ -6,3 +6,4 @@ todo.txt
 **/.idea/
 **/.pytest_cache/
 temp/**
+pose_diff/DB/pose_diff.db
