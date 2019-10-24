@@ -5,3 +5,4 @@ openpose/**
 todo.txt
 **/.idea/
 **/.pytest_cache/
+temp/**
