@@ -65,7 +65,7 @@ def make_db():
     input_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     exercise_id INTEGER,
-    create_time DATETIME DEFAULT (datetime('now','localtime')),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     init_numpy BLOB NOT NULL,
     init_video BLOB NOT NULL,
     exercise_numpy BLOB NOT NULL,
@@ -88,7 +88,7 @@ def make_db():
     c.execute("""CREATE TABLE IF NOT EXISTS math_info_extractions(
     extraction_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     skeleton_id INTEGER,
-    create_time DATETIME DEFAULT (datetime('now','localtime')),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     math_info_1 BLOB NOT NULL,
     math_info_2 BLOB NOT NULL,
     FOREIGN KEY(skeleton_id) REFERENCES skeleton_list(skeleton_id) ON DELETE CASCADE)""")
@@ -98,7 +98,7 @@ def make_db():
     skeleton_id INTEGER,
     standard_id INTEGER,
     exercise_id INTEGER NOT NULL,
-    create_time DATETIME DEFAULT (datetime('now','localtime')),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     exercise_numpy BLOB NOT NULL,
     exercise_video BLOB NOT NULL,
     FOREIGN KEY(standard_id) REFERENCES math_info_extractions(extraction_id) ON DELETE CASCADE,
@@ -109,7 +109,7 @@ def make_db():
     diff_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     applied_sample_id INTEGER,
     input_id INTEGER,
-    create_time DATETIME DEFAULT (datetime('now','localtime')),
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     video BLOB NOT NULL,
     FOREIGN KEY(applied_sample_id) REFERENCES applied_skeleton_list(applied_sample_id) ON DELETE CASCADE,
     FOREIGN KEY(input_id) REFERENCES input_list(input_id) ON DELETE CASCADE)""")
@@ -306,7 +306,7 @@ def read_from_input_list(input_id, base_folder):
             exercise_video  = os.path.join(base_folder, 'exercise_video.avi')
 
             print("Storing User numpy and video on disk \n")
-            writeTofile(row[4], init_numpy)
+            writeTofile(row[4], init_numpy) # N
             writeTofile(row[5], init_video)
             writeTofile(row[6], exercise_numpy)
             writeTofile(row[7], exercise_video)

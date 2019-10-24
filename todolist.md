@@ -2,13 +2,13 @@
 1. UC2, 3-Scene 3 표본으로 트레이너의 스켈레톤을 훈련시키는 영상과 원본 영상을 비교한다.
   + 리사이즈된 영상 저장될때 거꾸로 저장되는것 해결 + 디버그용으로 만든 imshow제거
   + math_info를 찾는 과정에서 필요한 그래프 추출
-2. 동영상 저장될때 Processing이라는 문구 출력
 3. UC2, 3-Scene 1 파일 정보 출력하는곳의 UI 수정
 4. UC3-Scene 3 UI 적용
 5. UC4-Scene 2 디버그용으로 imshow하는 부분 제거
 6. MoreInfo UI 적용
   + 각 Tab마다 보여줘야 할 Graph
   + Load Data하는 부분 변경
+7. CURRENT_TIMESTAMP를 localtime으로 변경
 
 
 # Done List
@@ -19,8 +19,9 @@
   + 이미지로 변환하는 방법을 알면 할 수 있다. (승민)
 5. UC2-Scene 3 close 버튼, listWidget 옆으로 보기
 6. UC2-Scene 2,3 그래프 사이에 구분선 넣기 - 취소
-7. UC4-Scene 2 DB에 동영상 저장
-  + CURRENT_TIMESTAMP를 localtime으로 변경
+7. 동영상 저장될때 gif 라벨을 통해서 출력 - 취소
+8. UC4-Scene 2 DB에 동영상 저장
+
 
 # Requirement
 1. numpy==1.16.1 (pick problem)

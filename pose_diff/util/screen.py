@@ -26,7 +26,10 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            center = (int(body_partx), int(body_party))
+            if form == 'Real_time':
+                center = (int(body_partx), 720-int(body_party))
+            else:
+                center = (int(body_partx), int(body_party))
 
             centers[num] = center
             if center == (0,0): #disable Trash value
