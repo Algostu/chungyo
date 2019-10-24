@@ -21,6 +21,7 @@ class Screen:
         centers = {}
         colors = {}
         num = 0
+        score = []
         for i in point:
             body_partx = float(i[0])
             body_party = float(i[1])
@@ -47,16 +48,22 @@ class Screen:
                     continue
 
                 if colors[pair[0]] == 1 or colors[pair[1]] == 1:
+                    score.append(-1)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
                 elif colors[pair[0]] == 2 or colors[pair[1]] == 2:
+                    score.append(0)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
+                    score.append(0)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
-        for a in colors:
-            if a == 1:
-                return -1
-            else:
-                return 0
+
+        val = score.count(-1)
+        if val == 0:
+            return 0
+        else:
+            return -1
+
+
 
     def display_fps(self):
         location_x, location_y = self.width - 140, 60
