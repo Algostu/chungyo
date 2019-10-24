@@ -41,15 +41,15 @@ def make_db():
     change_cwd()
     conn = sqlite3.connect(db)
     c = conn.cursor()
-
+    c.execute("SELECT datetime(CURRENT_TIMESTAMP,'localtime')")
     c.execute("DROP TABLE IF EXISTS user_list")
     c.execute("DROP TABLE IF EXISTS input_list")
     c.execute("DROP TABLE IF EXISTS user_input_video_list")
-    c.execute("DROP TABLE IF EXISTS numpy_input_list")
     c.execute("DROP TABLE IF EXISTS skeleton_list")
     c.execute("DROP TABLE IF EXISTS math_info_extractions")
     c.execute("DROP TABLE IF EXISTS exercise_list")
     c.execute("DROP TABLE IF EXISTS applied_skeleton_list")
+    c.execute("DROP TABLE IF EXISTS diff_list")
 
     c.execute("""CREATE TABLE IF NOT EXISTS user_list(
     user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -65,7 +65,7 @@ def make_db():
     input_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     exercise_id INTEGER,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    create_time DATETIME DEFAULT (datetime('now','localtime')),
     init_numpy BLOB NOT NULL,
     init_video BLOB NOT NULL,
     exercise_numpy BLOB NOT NULL,
@@ -88,7 +88,7 @@ def make_db():
     c.execute("""CREATE TABLE IF NOT EXISTS math_info_extractions(
     extraction_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     skeleton_id INTEGER,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    create_time DATETIME DEFAULT (datetime('now','localtime')),
     math_info_1 BLOB NOT NULL,
     math_info_2 BLOB NOT NULL,
     FOREIGN KEY(skeleton_id) REFERENCES skeleton_list(skeleton_id) ON DELETE CASCADE)""")
@@ -98,13 +98,21 @@ def make_db():
     skeleton_id INTEGER,
     standard_id INTEGER,
     exercise_id INTEGER NOT NULL,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    create_time DATETIME DEFAULT (datetime('now','localtime')),
     exercise_numpy BLOB NOT NULL,
     exercise_video BLOB NOT NULL,
     FOREIGN KEY(standard_id) REFERENCES math_info_extractions(extraction_id) ON DELETE CASCADE,
     FOREIGN KEY(skeleton_id) REFERENCES skeleton_list(skeleton_id) ON DELETE CASCADE,
     FOREIGN KEY(exercise_id) REFERENCES exercise_list(exercise_id) ON DELETE CASCADE)""")
 
+    c.execute("""CREATE TABLE IF NOT EXISTS diff_list(
+    diff_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    applied_sample_id INTEGER,
+    input_id INTEGER,
+    create_time DATETIME DEFAULT (datetime('now','localtime')),
+    video BLOB NOT NULL,
+    FOREIGN KEY(applied_sample_id) REFERENCES applied_skeleton_list(applied_sample_id) ON DELETE CASCADE,
+    FOREIGN KEY(input_id) REFERENCES input_list(input_id) ON DELETE CASCADE)""")
     for exercise in exercise_info:
         c.execute("""INSERT INTO
         exercise_list (exercise_name, keypoints_list)
@@ -599,6 +607,7 @@ def save_applied_sample(skeleton_id, standard_id, exercise_id, exercise_numpy, e
             print("the sqlite connection is closed")
             return primary_key  # UC 3 (Scene 3)
 
+# * 개발 대상 : 개발 완료
 def get_exercise_id(input_id):
     try:
         sqliteConnection = sqlite3.connect(db)
@@ -679,6 +688,30 @@ def load_applied_skeleton_file(applied_sample_id, base_folder):
         if (sqliteConnection):
             sqliteConnection.close()
             print("sqlite connection is closed")
+
+def save_diff(applied_sample_id, input_id, video):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_insert_blob_query = """Insert into
+        diff_list (applied_sample_id, input_id, video)
+        values (?, ?, ?)"""
+        video = convertToBinaryData(video)
+        # Convert data into tuple format
+        data_tuple = (applied_sample_id, input_id, video)
+        cursor.execute(sqlite_insert_blob_query, data_tuple)
+        primary_key = cursor.lastrowid
+        sqliteConnection.commit()
+        print("diffing video inserted successfully as a BLOB into a table")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to insert blob data into sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
 
 # ETC
 def get_exercise_list(exercise_id):

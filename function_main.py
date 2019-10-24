@@ -96,7 +96,7 @@ def main_function(option, *args):
         input1 = os.path.join(base_folder, 'upgraded.npy')
         input2 = os.path.join(base_folder, 'exercise_numpy.npy')
         run.Video(input1, input2, video_name)
-        # Some DB Stuff
+        DB.save_diff(args[1], args[0], video_name)
 
     elif option == 7:
         input2 = 'data/result.avi'

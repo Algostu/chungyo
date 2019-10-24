@@ -458,10 +458,10 @@ class WindowStore(QMainWindow, store):
         self.connectFunction()
         print(input_id, sample_id)
         args = (input_id, sample_id)
+        main_function(6, *args)
         self.Video()
 
     def Video(self):
-        # main_function(6, *args)
         self.frame.setScaledContents(True)
         self.cpt = cv2.VideoCapture('temp/output.avi')
         self.fps = 60
@@ -481,7 +481,7 @@ class WindowStore(QMainWindow, store):
                 img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
                 pix = QPixmap.fromImage(img)
                 self.frame.setPixmap(pix)
-                cv2.waitKey((1/self.fps) * 1000)
+                cv2.waitKey(int((1/self.fps) * 1000))
 
             # progressBar
             self.progressBar.setValue(int(index/length * 100))
