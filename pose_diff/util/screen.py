@@ -17,7 +17,7 @@ class Screen:
         self.img = np.zeros((self.height, self.width, 3), np.uint8)
 
     # points: list, ex) points = [(x,y), (x1,y1), ...]
-    def draw_human(self,point,form):
+    def draw_human(self,point,form,option=0):
         centers = {}
         colors = {}
         num = 0
@@ -26,7 +26,7 @@ class Screen:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            if form == 'Real_time':
+            if option == 1:
                 center = (int(body_partx), 720-int(body_party))
             else:
                 center = (int(body_partx), int(body_party))

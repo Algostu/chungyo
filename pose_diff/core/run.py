@@ -138,7 +138,7 @@ class human_pic:
                 Screen(a, height=720, width=1280))
             for index, screen in enumerate(screens):
                 # draw_human
-                val = screen.draw_human(screen.point,"Real_time")
+                val = screen.draw_human(screen.point,"Real_time", 1)
                 if cv2.waitKey(100) == 27:
                     break
                 # display_things

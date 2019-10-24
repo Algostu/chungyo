@@ -202,9 +202,6 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
                 self, 'Error', "You should select file or Enter Video Info")
             self.close()
 
-        # self.m_label_gif.hide()
-        # self.m_movie_gif.stop()
-
         self.graph()
         self.Video()
 

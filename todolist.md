@@ -10,6 +10,10 @@
   + Load Data하는 부분 변경
 7. CURRENT_TIMESTAMP를 localtime으로 변경
 
+# 승민's TodoList
+***꼭 메인.py의 복사본을 만들어서 사용할것***
+1. diff 할때 graph로 출력할 용도의 numpy를 만들기
+2. 그외 잡다한 것
 
 # Done List
 1. UC2-Scene 2 영상을 출력할때 skeleton을 찾을 경우 copy 영상이 멈춘다.
