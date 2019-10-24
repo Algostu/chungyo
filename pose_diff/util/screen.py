@@ -7,30 +7,25 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 0.6
 
 class Screen:
-    def __init__(self,point,accuracy=None,angle=None,fps=None,times=None,msg=None,height=720,width=1024):
+    def __init__(self,point,angle=None,msg=None,height=720,width=1024):
         self.point = point
-        self.accuracy = accuracy
         self.angle = angle
-        self.fps = fps
-        self.times = times
         self.msg = msg
         self.height = height
         self.width = width
         # Background 설정
         self.img = np.zeros((self.height, self.width, 3), np.uint8)
 
-        pass
-
     # points: list, ex) points = [(x,y), (x1,y1), ...]
     def draw_human(self,point,form):
         centers = {}
         colors = {}
         num = 0
+        score = []
         for i in point:
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입
-            print(i[2])
             center = (int(body_partx), int(body_party))
 
             centers[num] = center
@@ -53,22 +48,22 @@ class Screen:
                     continue
 
                 if colors[pair[0]] == 1 or colors[pair[1]] == 1:
+                    score.append(-1)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,0,255) , 3)
                 elif colors[pair[0]] == 2 or colors[pair[1]] == 2:
+                    score.append(0)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (0,255,0) , 3)
                 else:
+                    score.append(0)
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
-        for a in colors:
-            if a == 1:
-                return -1
-            else:
-                return 0
 
-    def display_accuracy(self):
-        location_x, location_y = self.width - 140, 30
-        location = (location_x, location_y)
-        text = str.format("accuracy %d" % (self.accuracy))
-        cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
+        val = score.count(-1)
+        if val == 0:
+            return 0
+        else:
+            return -1
+
+
 
     def display_fps(self):
         location_x, location_y = self.width - 140, 60
@@ -103,7 +98,6 @@ class Screen:
             pass
         else:
             location = (location_x-50, location_y+30)
-            # text = f'{section} {self.angle[joint]}'
             text = f'{self.angle[joint]}'
             cv2.putText(self.img, text, location, font, fontScale, (255, 255, 255), thickness)
 
