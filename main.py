@@ -458,7 +458,7 @@ class WindowStore(QMainWindow, store):
         self.connectFunction()
         print(input_id, sample_id)
         args = (input_id, sample_id)
-        # main_function(6, *args)
+        main_function(6, *args)
         self.Video()
 
     def Video(self):

@@ -9,10 +9,9 @@
 # DB와 Common의 Exercise 정보가 서로 겹친다. 즉, DB에서 Common에 있는 정보를 가져가든, Common에서 DB에 있는 정보를 가져가든 방식을 바꿔야한다.
 ############################################
 
-import math
+
 import numpy as np
 import enum
-import matplotlib.pyplot as plt
 import math
 
 def check_accuracy(frames, exercise_type):
@@ -123,11 +122,9 @@ def get_math_info(ex_type, static_skeleton, dynamic_skeleton):
         if frames_len_1 != len(body_movement_length[i]):
             print("%d : length numbers are not same" % i)
             frames_len_1 = len(body_movement_length[i])
-            print(frames_len_1)
         if frames_len_2 != len(body_movement_vector[i]):
             print("%d : vector numbers are not same" % i)
             frames_len_2 = len(body_movement_vector[i])
-            print(frames_len_2)
 
     if frames_len_1 == frames_len_2:
         frame_len = frames_len_1
