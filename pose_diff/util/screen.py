@@ -61,7 +61,7 @@ class Screen:
                     cv2.line(self.img, centers[pair[0]], centers[pair[1]], (255,255,255) , 3)
 
         val = score.count(-1)
-        if val == 0:
+        if val < 5:
             return 0
         else:
             return -1

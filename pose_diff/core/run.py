@@ -33,7 +33,6 @@ class Video:
                     print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
             if apply == 'Angle':
                 user, score_range = diffing_angle(trainer,user,exercise)
-
             gap_npy = gap_npy + gap
             cnt = len(usercut)
             length = len(user)
@@ -75,7 +74,7 @@ class Video:
                     screen.display_angle(i)
 
                 # float screen
-                # cv2.imshow("imshow", screen.img)
+                cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
         temp = [score_list,gap_npy]
@@ -181,5 +180,6 @@ if __name__ == '__main__':
     a = './../../temp/upgraded.npy'
     b = "./../../temp/exercise_numpy.npy"
     c = "./../../temp/upgraded.npy"
-    c = np.load(c)
-    human_pic(c,'hi.avi')
+    # c = np.load(c)
+    # human_pic(c,'hi.avi')
+    Video(a,b,'hello')

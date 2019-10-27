@@ -197,7 +197,7 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
 
 def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
-    margin = 20
+    margin = 10
     trainer_angle = get_angle(trainer)
     user_angle = get_angle(user)
     # Error in RED = 1, Success in GREEN = 2
@@ -217,9 +217,11 @@ def angle_difference(trainer,user,exercise):
                     if (trainer_angle[i][idx] == None or user_angle[i][idx] == None):
                         continue
                     if setting_relative_error(trainer_angle[i][idx],user_angle[i][idx]) < margin:
-                        angle_np[i][idx][2] = 0
+                        angle_np[i][idx][2] = 1
                     else:
                         angle_np[i][idx][2] = 2
+                else:
+                    angle_np[i][idx][2] = 0
             i = i+1
     return angle_np
 
@@ -242,11 +244,15 @@ def point_difference(trainer, user, exercise):
                 break
             for idx, part in enumerate(Parts[exercise]):
                 if part >= 0.5:
-                    sum_gap = sum_gap + abs(trainer[i][idx][0]-user[i][idx][0])
-                    if setting_relative_error(trainer[i][idx][0],user[i][idx][0]) < margin and setting_relative_error(trainer[i][idx][1],user[i][idx][1]) < margin:
-                        point_np[i][idx][2] = 0
+                    if trainer[i][idx][0] == 0:
+                        continue
+                    sum_gap = sum_gap + setting_relative_error(trainer[i][idx][0],user[i][idx][0])
+                    if setting_relative_error(trainer[i][idx][0],user[i][idx][0]) > margin:
+                        point_np[i][idx][2] = 1
                     else:
                         point_np[i][idx][2] = 2
+                else:
+                    point_np[i][idx][2] = 0
             i = i + 1
             gap.append(sum_gap)
     return gap, point_np
@@ -260,9 +266,9 @@ def diffing_decreasing(trainer,user,exercise,way,average):
         gap, pointnp = point_difference(trainer,user,exercise)
         for a,b,c in zip(anglenp,pointnp,user):
             for i in range(0,18):
-                if a[i][2] == 1 and b[i][2]==1:
+                if a[i][2] == 1 or b[i][2]==1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
 
@@ -272,9 +278,9 @@ def diffing_decreasing(trainer,user,exercise,way,average):
         gap, pointnp = point_difference(trainer, user, exercise)
         for a, b, c in zip(anglenp, pointnp, user):
             for i in range(0, 18):
-                if a[i][2] == 1 and b[i][2] == 1:
+                if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
 
@@ -283,9 +289,9 @@ def diffing_decreasing(trainer,user,exercise,way,average):
         gap, pointnp = point_difference(trainer, user, exercise)
         for a, b, c in zip(anglenp, pointnp, user):
             for i in range(0, 18):
-                if a[i][2] == 1 and b[i][2] == 1:
+                if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
     return gap, user, trainer
@@ -299,9 +305,9 @@ def diffing_increasing(trainer,user,exercise,way):
         gap, pointnp = point_difference(trainer,user,exercise)
         for a, b, c in zip(anglenp, pointnp, user):
             for i in range(0, 18):
-                if a[i][2] == 1 and b[i][2] == 1:
+                if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
     elif recom =='user':
@@ -310,9 +316,9 @@ def diffing_increasing(trainer,user,exercise,way):
         gap, pointnp = point_difference(trainer, user, exercise)
         for a,b,c in zip(anglenp,pointnp,user):
             for i in range(0,18):
-                if a[i][2] == 1 and b[i][2]==1:
+                if a[i][2] == 1 or b[i][2]==1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
 
@@ -321,9 +327,9 @@ def diffing_increasing(trainer,user,exercise,way):
         gap, pointnp = point_difference(trainer, user, exercise)
         for a, b, c in zip(anglenp, pointnp, user):
             for i in range(0, 18):
-                if a[i][2] == 1 and b[i][2] == 1:
+                if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 and b[i][2] == 2:
+                if a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
     return gap, user,trainer
