@@ -1,18 +1,14 @@
 # ToDo List
 1. 각 UC별로 필요한 그래프 추출 (moreinfo에서 `graph.npy` 파일 불러오기 위해서 넣은 `load_skeleton`제거)
+  + MoreInfo 각 UC 마다 그래프 이름 변경
 2. 각 UC별로 Analyze할때 들어갈 이벤트
 3. CURRENT_TIMESTAMP를 localtime으로 변경
 
-4. MoreInfo 각 UC 마다 그래프 이름 변경
-5. MoreInfo 각 UC 마다 Label 이름 변경
-6. MoreInfo diffing Test
-7. UC 5 UI 적용
-
+4. core function 수정 - 최종 발표용
+5. core function 실행 scenario 
 
 # 승민's TodoList
-***꼭 메인.py의 복사본을 만들어서 사용할것***
-1. diff 할때 graph로 출력할 용도의 numpy를 만들기
-2. 그외 잡다한 것
+
 
 # Done List
 1. UC2-Scene 2 영상을 출력할때 skeleton을 찾을 경우 copy 영상이 멈춘다.
@@ -32,6 +28,7 @@
 12. MoreInfo UI 적용
   + 각 Tab마다 보여줘야 할 Graph
   + Load Data하는 부분 변경
+13. UC 5 UI 적용
 
 # Requirement
 1. numpy==1.16.1 (pick problem)

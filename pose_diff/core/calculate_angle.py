@@ -56,7 +56,7 @@ def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
 
     angle=[]
     for i in range(len(frame)):
-        result_angle=calculate_angle.Calculate_angle(
+        result_angle=Calculate_angle(
         [frame[i][parts[0]][0],frame[i][parts[0]][1]],[frame[i][parts[1]][0],frame[i][parts[1]][1]],[frame[i][parts[2]][0],frame[i][parts[2]][1]])
         if ((frame[i][parts[1]][1] - frame[i][parts[0]][1]) / (frame[i][parts[1]][0] - frame[i][parts[0]][0])) * (frame[i][parts[2]][0] - frame[i][parts[0]][0]) + frame[i][parts[0]][1] < frame[i][parts[2]][1]:
             result_angle = 360 - result_angle

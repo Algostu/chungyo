@@ -1,7 +1,8 @@
 import sys
 import cv2
 import shutil
-
+import os
+import time
 import sqlite3
 import numpy as np
 
@@ -617,9 +618,50 @@ class WindowReport(QMainWindow, report):
         self.show()
         self.user_id =  user_id
         self.connectFunction()
+        rows = DB.get_input_list(self.user_id)
+        if rows != []:
+            self.input_id_list = rows[:]
+            for row in rows:
+                self.user.addItem(f'{row[0]}.{row[1]}')
+
+        rows = DB.load_applied_skeleton_list(self.user_id)
+        if rows != []:
+            self.applied_trainer_list = rows[:]
+            for row in rows:
+                self.applied_trainer.addItem(f'{row[0]}.{row[1]}-{row[2]}')
+        self.input_id = 0
+        self.target_id = 0
 
     def connectFunction(self):
-        self.export_2.clicked.connect(self.close)
+        self.export_2.clicked.connect(self.Store)
+        self.user.itemClicked.connect(self.change_input_id)
+        self.applied_trainer.itemClicked.connect(self.change_target_id)
+
+    def change_input_id(self):
+        index = self.user.currentRow()
+        self.input_id = self.input_id_list[index]
+
+    def change_target_id(self):
+        index = self.applied_trainer.currentRow()
+        self.target_id = self.applied_trainer_list[index]
+
+    def Store(self):
+        if self.input_id !=0 and self.target_id !=0:
+            if self.input_id[1] == self.target_id[2]:
+                # self.window = WindowStore(self.input_id[0], self.target_id[0])
+                args = [
+                self.input_id[0],
+                self.target_id[0]
+                ]
+                main_function(8, *args)
+                self.close()
+            else:
+                QMessageBox.warning(
+                    self, 'Error', "You should select same exercise")
+        else:
+            QMessageBox.warning(
+                self, 'Error', "You should select Both")
+
 
 # Start
 class WindowStart(QMainWindow, start):
@@ -731,7 +773,7 @@ class WindowMoreInfo(QMainWindow, moreinfo):
             DB.read_from_input_list(datas[2], base_folder)
             DB.load_diff(datas[0], base_folder)
             # video
-            self.origin_file = 'temp/init_video.avi'
+            self.origin_file = 'temp/exercise_video.avi'
             self.copy_file = 'temp/diff.avi'
 
         elif index == 3:

@@ -1,7 +1,7 @@
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
 from docx.shared import Inches
-from save_graph import save_graph
+from pose_diff.core.save_graph import save_graph
 
 def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하는 값을 넣으면 원하는 아웃풋이 나오도록 바꾸기
     document=Document()
@@ -16,11 +16,12 @@ def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하�
     head=document.add_heading('운동 분석(User-Trainer)',0)
     head.alignment = WD_ALIGN_PARAGRAPH.CENTER
     document.add_paragraph('겨드랑이 각도(User-RED,Trainer-BLUE)')
-    document.add_picture('왼쪽 겨드랑이.png',width=Inches(3))
-    document.add_picture('오른쪽 겨드랑이.png', width=Inches(3))
+    document.add_picture('왼쪽 겨드랑이.png',width=Inches(6))
+    document.add_picture('오른쪽 겨드랑이.png', width=Inches(6))
+    document.add_page_break()
     document.add_paragraph('팔꿈치 각도(User-RED,Trainer-BLUE)')
-    document.add_picture('왼쪽 팔꿈치.png',width=Inches(3))
-    document.add_picture('오른쪽 팔꿈치.png', width=Inches(3))
+    document.add_picture('왼쪽 팔꿈치.png',width=Inches(6))
+    document.add_picture('오른쪽 팔꿈치.png', width=Inches(6))
     #포멧 또는 % 사용해서 바꾸기
     document.add_page_break()
 
@@ -41,8 +42,8 @@ def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하�
 
 
     document.add_heading('왼손과 오른손의 움직임을 비교하는 그래프이다.\n',level=2)
-    document.add_picture('왼오른 겨드랑이.png', width=Inches(5))
-    document.add_picture('왼오른 팔꿈치.png', width=Inches(5))
+    document.add_picture('왼오른 겨드랑이.png', width=Inches(6))
+    document.add_picture('왼오른 팔꿈치.png', width=Inches(6))
     document.add_page_break()
     document.add_heading('카메라가 정면에 있지 않으면 좌우의 값이 이상하게 나올 수 있습니다..\n\n', level=2)
     document.add_heading('그래프가 위 아래로 다른 경우',level=3)
@@ -51,7 +52,3 @@ def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하�
     document.add_paragraph('카메라가 정면에 있는지 확인해주세요.')
 
     document.save(docx_name)
-
-
-
-

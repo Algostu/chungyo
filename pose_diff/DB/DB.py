@@ -722,7 +722,7 @@ def load_diff(diff_id, base_folder):
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
 
-        sql_fetch_blob_query = """SELECT * from applied_skeleton_list where diff_id = ?"""
+        sql_fetch_blob_query = """SELECT * from diff_list where diff_id = ?"""
         cursor.execute(sql_fetch_blob_query, (diff_id,))
         record = cursor.fetchall()
         for row in record:

@@ -1,6 +1,7 @@
 from pose_diff.util import Method, screen, bc_common
 from pose_diff.interface import Screen, PoseDifference
 from pose_diff.interface import get_result
+from pose_diff.core.save_docx import save_docx
 from pose_diff.DB import DB
 import argparse
 import numpy as np
@@ -114,5 +115,13 @@ def main_function(option, *args):
         plot_title = plot_titles,
         title1='pose difference algorithm', title = 'original user exercise', title2 = 'graph data for main angle')
 
+    elif option == 8:
+        DB.load_applied_skeleton_file(args[1], base_folder)
+        DB.read_from_input_list(args[0], base_folder)
+        # input1 = np.load(os.path.join(base_folder, 'upgraded.npy'))
+        # input2 = np.load(os.path.join(base_folder, 'exercise_numpy.npy'))
+        input1 = os.path.join(base_folder, 'upgraded.npy')
+        input2 = os.path.join(base_folder, 'exercise_numpy.npy')
+        save_docx(input1, input2, 'temp/document.docx')
     elif option == 10:
         PoseDifference.main_ui()
