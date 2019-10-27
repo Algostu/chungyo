@@ -134,6 +134,9 @@ class Real_time:
 
 class human_pic:
     def __init__(self,user_npy, video_name):
+        thickness = 2
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fontScale = 1
         user = user_npy
 
         self.video_name = video_name
@@ -151,15 +154,24 @@ class human_pic:
                     break
                 # display_things
                 # cv2.imshow("imshow", screen.img)
-
                 writer.write(screen.img)
         cv2.destroyAllWindows()
 
 def make_skeleton_image(npy,image_name):
+    thickness = 2
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
     screen  = Screen(npy, height=720, width=1280)
     screen.draw_human(screen.point,"Real_time")
+
+    location_x, location_y = 80, 80
+    location = (location_x, location_y)
+    text = f"Find initial pose successfully!"
+    text2 = f"If you want to close, please push Esc key."
+    cv2.putText(screen.img, text, location, font, fontScale, (255, 255, 255), thickness)
+    cv2.putText(screen.img, text2, (80, 120), font, fontScale, (255, 255, 255), thickness)
     cv2.imwrite(image_name, screen.img)
-    while(1):
+    while(True):
         cv2.imshow("Your Initial Pose",screen.img)
         if cv2.waitKey(100) == 27:
             break
@@ -168,4 +180,6 @@ def make_skeleton_image(npy,image_name):
 if __name__ == '__main__':
     a = './../../temp/upgraded.npy'
     b = "./../../temp/exercise_numpy.npy"
-    Video(a,b,'hi')
+    c = "./../../temp/upgraded.npy"
+    c = np.load(c)
+    human_pic(c,'hi.avi')
