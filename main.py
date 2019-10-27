@@ -1,6 +1,4 @@
 import sys
-import os
-import time
 import cv2
 import shutil
 
@@ -34,6 +32,7 @@ store = uic.loadUiType("ui/store.ui")[0]
 view = uic.loadUiType("ui/view.ui")[0]
 report = uic.loadUiType("ui/report.ui")[0]
 moreinfo = uic.loadUiType("ui/moreinfo.ui")[0]
+loading = uic.loadUiType("ui/loading.ui")[0]
 
 #화면을 띄우는데 사용되는 Class 선언
 class WindowClass(QMainWindow, signin) :
@@ -354,6 +353,7 @@ class WindowResizeTrainer(QMainWindow, resize_trainer):
         main_function(4, *args)
         self.graph()
         self.Video()
+        QMessageBox.about(self,"Chungyo","Finish resize the trainer skeleton to your shape!!\nPlease click 'HOME' button and return main page.")
 
     def graph(self):
         self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
@@ -519,17 +519,18 @@ class WindowStore(QMainWindow, store):
         super().__init__()
         self.setupUi(self)
         self.m_movie_gif = QMovie("ui/image/loading.gif")
+        self.m_movie_gif.setSpeed(350)
         self.frame.setMovie(self.m_movie_gif)
         self.frame.setAlignment(Qt.AlignCenter)
         self.m_movie_gif.start()
         self.bar_msg.setText("Loading...")
         self.show()
         self.connectFunction()
-
         args = (input_id, sample_id)
         main_function(6, *args)
         self.bar_msg.setText("Progress")
         self.Video()
+        QMessageBox.about(self,"Cungyo","Your exercise is stored in our data base.\nPlease click 'NEXT' button and finish your analyze.")
 
     def Video(self):
         self.frame.setScaledContents(True)
@@ -905,6 +906,18 @@ class WindowSignUp(QMainWindow, signup):
         else:
             QMessageBox.warning(
                 self, 'Error', "Enter Again")
+
+class LoadingWindow(QWidget,loading):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.show()
+
+        self.m_movie_gif = QMovie("loading.gif")
+        self.m_movie_gif.setSpeed(350)
+        self.frame.setMovie(self.m_movie_gif)
+        self.frame.setAlignment(Qt.AlignCenter)
+        self.m_movie_gif.start()
 
 if __name__=="__main__":
     app = QApplication(sys.argv)
