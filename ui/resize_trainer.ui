@@ -86,7 +86,7 @@ border-image: url(:/overall/image/back.png);
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="origin">
+      <widget class="QLabel" name="origin_label">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -137,7 +137,7 @@ border-image: url(:/overall/image/back.png);
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="copy">
+      <widget class="QLabel" name="copy_label">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -212,7 +212,7 @@ border-image: url(:/overall/image/back.png);
         <string>Graph</string>
        </property>
       </widget>
-      <widget class="QListWidget" name="graph">
+      <widget class="QListWidget" name="graph_list">
        <property name="geometry">
         <rect>
          <x>-20</x>
@@ -225,7 +225,7 @@ border-image: url(:/overall/image/back.png);
         <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
        </property>
       </widget>
-      <zorder>graph</zorder>
+      <zorder>graph_list</zorder>
       <zorder>label_9</zorder>
      </widget>
     </item>

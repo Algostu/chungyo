@@ -713,6 +713,54 @@ def save_diff(applied_sample_id, input_id, video):
             sqliteConnection.close()
             print("the sqlite connection is closed")
 
+# * 개발 대상
+def load_diff():
+    pass
+
+# MoreInfo
+def load_data_list(user_id, option):
+    data_list = []
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+        sqlite_load_query = ""
+        data_tuple = (user_id,)
+        if option == 0:
+            sqlite_load_query = """Select
+            exercise_list.exercise_name,
+            input_list.input_id,
+            skeleton_list.skeleton_id
+            from
+            input_list
+            left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
+            left join skeleton_list on skeleton_list.input_id = input_list.input_id
+            WHERE
+            input_list.user_id = ?"""
+        elif option == 1:
+            pass
+        elif option == 2:
+            pass
+        elif option == 3:
+            pass
+        else:
+            print("Option is among 0~3")
+
+        cursor.execute(sqlite_load_query, data_tuple)
+        data_list = cursor.fetchall()
+        sqliteConnection.commit()
+        print("load data list successfully as a BLOB into a table")
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to load data list from a table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("the sqlite connection is closed")
+            return data_list
+
+
 # ETC
 def get_exercise_list(exercise_id):
     """

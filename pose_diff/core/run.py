@@ -69,7 +69,7 @@ class Video:
                     screen.display_angle(i)
 
                 # float screen
-                cv2.imshow("imshow", screen.img)
+                # cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
 
@@ -142,7 +142,8 @@ class human_pic:
                 if cv2.waitKey(100) == 27:
                     break
                 # display_things
-                cv2.imshow("imshow", screen.img)
+                # cv2.imshow("imshow", screen.img)
+
                 writer.write(screen.img)
         cv2.destroyAllWindows()
 

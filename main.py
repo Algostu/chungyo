@@ -351,9 +351,71 @@ class WindowResizeTrainer(QMainWindow, resize_trainer):
         self.connectFunction()
         args = (self.skeleton_id, self.extraction_id, input_id)
         main_function(4, *args)
+        self.graph()
+        self.Video()
+
+    def graph(self):
+        self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graph_list.setFlow(QListWidget.LeftToRight)
+        self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.numpy = np.load('temp/graph.npy')
+        mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
+        self.axes = []
+        for idx, mcanvase in enumerate(mcanvases):
+            itemN = QListWidgetItem()
+            itemN.setSizeHint(QSize(380, 380))
+            self.graph_list.addItem(itemN)
+            self.graph_list.setItemWidget(itemN, mcanvase)
+            self.axes.append(mcanvase.figure.subplots())
+            self.axes[idx].set(title = self.graph_title[idx])
+
+    def Video(self):
+        self.origin_label.setScaledContents(True)
+        self.copy_label.setScaledContents(True)
+        self.cpt = cv2.VideoCapture('temp/math_info.avi')
+        self.cpt2 = cv2.VideoCapture('temp/resized.avi')
+        self.frequency = 0.3
+        self.cnt = 0
+        self.start()
+
+    def start(self):
+        cam = 1
+        cam2 = 1
+        index = 0
+        while self.cpt.isOpened() and cam is not None and cam2 is not None:
+            # Video
+            _, cam = self.cpt.read()
+            _, cam2 = self.cpt2.read()
+            if cam is not None and cam2 is not None:
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                cam2 = cv2.cvtColor(cam2, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                img2 = QImage(cam2, cam2.shape[1], cam2.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                pix2 = QPixmap.fromImage(img2)
+                self.origin_label.setPixmap(pix)
+                self.copy_label.setPixmap(pix2)
+
+                cv2.waitKey(100)
+
+            # graph
+            for i in range(len(self.axes)):
+                self.axes[i].clear()
+                self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].plot(self.numpy[i][index:index+50])
+                self.axes[i].figure.canvas.draw()
+
+            index += 1
+        self.cpt.release()
+        self.cpt2.release()
 
     def connectFunction(self):
-        self.home.clicked.connect(self.close)
+        self.home.clicked.connect(self.back_home)
+
+    def back_home(self):
+        self.cpt.release()
+        self.cpt2.release()
+        self.close()
 
 class WindowMakeTrainer(QMainWindow, make_trainer):
     def __init__(self, user_id):
@@ -398,9 +460,10 @@ class WindowMakeTrainer(QMainWindow, make_trainer):
         self.comparison.itemClicked.connect(self.set_extraction_id)
 
     def set_extraction_id(self):
-        self.extraction_id = self.extraction_id_list[self.comparison.currentRow()]
+        index = self.comparison.currentRow()
+        self.extraction_id = self.extraction_id_list[index]
 
-        text = f'Creation Time : \n' \
+        text = f'Creation Time : {self.extraction_id_list[index][2]}\n' \
                f'State : Made\n' \
                f'\nYou can make your own' \
                f'Personal Trainer!,\n' \
@@ -418,9 +481,10 @@ class WindowMakeTrainer(QMainWindow, make_trainer):
                 self.comparison.addItem(f'{row[0]}.{row[1]}')
 
     def set_input_id(self):
-        self.input_id = self.input_id_list[self.yourlist.currentRow()]
+        index = self.yourlist.currentRow()
+        self.input_id = self.input_id_list[index]
 
-        text = f'Creation Time : \n' \
+        text = f'Creation Time : {self.input_id_list[index][2]}\n' \
                f'State : Not Made\n' \
                f'\nIf you want to make your' \
                f'Personal Trainer,\n' \
@@ -453,11 +517,17 @@ class WindowStore(QMainWindow, store):
     def __init__(self, input_id, sample_id):
         super().__init__()
         self.setupUi(self)
+        self.m_movie_gif = QMovie("ui/image/loading.gif")
+        self.frame.setMovie(self.m_movie_gif)
+        self.frame.setAlignment(Qt.AlignCenter)
+        self.m_movie_gif.start()
+        self.bar_msg.setText("Loading...")
         self.show()
         self.connectFunction()
 
         args = (input_id, sample_id)
         main_function(6, *args)
+        self.bar_msg.setText("Progress")
         self.Video()
 
     def Video(self):
@@ -556,6 +626,7 @@ class WindowStart(QMainWindow, start):
         self.setupUi(self)
         self.show()
         self.user_id = user_data[0]
+        self.user_name = user_data[1]
         self.username.appendPlainText(user_data[1])
         self.usertype.appendPlainText(user_data[2])
 
@@ -585,17 +656,112 @@ class WindowStart(QMainWindow, start):
         elif x == 4:
             self.window = WindowReport(self.user_id)
         elif x == 5 :
-            self.window = WindowMoreInfo()
+            self.window = WindowMoreInfo(self.user_id, self.user_name)
 
 class WindowMoreInfo(QMainWindow, moreinfo):
-    def __init__(self):
+    def __init__(self, user_id, user_name):
         super().__init__()
         self.setupUi(self)
         self.show()
         self.connectFunction()
+        self.user_id = user_id
+        self.name_tag.setText(user_name)
+        self.current_tab = 0
+        self.data = 0
+        self.data_id_list = []
+        self.origin_label_list = [self.origin_label1, self.origin_label2, self.origin_label3, self.origin_label4]
+        self.copy_label_list = [self.copy_label1, self.copy_label2, self.copy_label3, self.copy_label4]
+        self.graph_list = [self.graph_list1, self.graph_list2, self.graph_list3, self.graph_list4]
+        self.graphs = 0
+        self.origin = 0
+        self.copy = 0
+
 
     def connectFunction(self):
-        pass
+        self.tab.currentChanged.connect(self.onChange)
+        self.view_list.currentIndexChanged.connect(self.data_id_changed)
+
+    def onChange(self,i):
+        self.current_tab = i
+        self.graphs = self.graph_list[i]
+        self.origin = self.origin_label_list[i]
+        self.copy = self.copy_label_list[i]
+        if i == 0:
+            self.view_list.clear()
+            self.data_id_list = []
+            for row in DB.load_data_list(self.user_id, 0):
+                self.data_id_list.append(row)
+                self.view_list.addItem(row[0]+" "+str(row[1])+"-"+str(row[2])) # N
+
+    def data_id_changed(self):
+        base_folder = 'temp'
+        index = self.view_list.currentIndex()
+        self.data = self.data_id_list[index]
+        if self.current_tab == 0:
+            DB.read_from_input_list(self.data[1], base_folder)
+            DB.load_skeleton(self.data[2], base_folder)
+            self.graph()
+            self.Video()
+
+    def graph(self):
+        self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graphs.setFlow(QListWidget.LeftToRight)
+        self.graphs.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.numpy = np.load('temp/graph.npy')
+        mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
+        self.axes = []
+        for idx, mcanvase in enumerate(mcanvases):
+            itemN = QListWidgetItem()
+            itemN.setSizeHint(QSize(380, 380))
+            self.graphs.addItem(itemN)
+            self.graphs.setItemWidget(itemN, mcanvase)
+            self.axes.append(mcanvase.figure.subplots())
+            self.axes[idx].set(title = self.graph_title[idx])
+
+    def Video(self):
+        self.origin.setScaledContents(True)
+        self.copy.setScaledContents(True)
+        self.cpt = cv2.VideoCapture('temp/init_video.avi')
+        # self.cpt2 = cv2.VideoCapture('temp/')
+        self.frequency = 0.3
+        self.cnt = 0
+        self.start()
+
+    def start(self):
+        cam = 1
+        index = 0
+        while self.cpt.isOpened() and cam is not None:
+            # Video
+            _, cam = self.cpt.read()
+            if cam is not None:
+                cam = cv2.cvtColor(cam, cv2.COLOR_BGR2RGB)
+                img = QImage(cam, cam.shape[1], cam.shape[0], QImage.Format_RGB888)
+                pix = QPixmap.fromImage(img)
+                pix2 = QPixmap.fromImage(img)
+                self.origin.setPixmap(pix)
+                self.copy.setPixmap(pix2)
+                # if self.current_tab == 0 and index < self.found_num:
+                #     self.copy.setPixmap(pix2)
+                # else:
+                #     self.found_label.setStyleSheet('color:green')
+                #     self.found_label.setText('Complete Analyze')
+                #     self.copy.setStyleSheet("border: 7px inset green;")
+                cv2.waitKey(100)
+
+            # graph
+            for i in range(len(self.axes)):
+                self.axes[i].clear()
+                self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].plot(self.numpy[i][index:index+50])
+                self.axes[i].figure.canvas.draw()
+
+            index += 1
+
+        self.cpt.release()
+
+
+
+
 
 class WindowSignUp(QMainWindow, signup):
     def __init__(self):

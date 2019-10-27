@@ -81,7 +81,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="origin_label_2">
+          <widget class="QLabel" name="origin_label1">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -132,7 +132,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="copy_label_2">
+          <widget class="QLabel" name="copy_label1">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -207,7 +207,7 @@
             <string>Graph</string>
            </property>
           </widget>
-          <widget class="QListWidget" name="graph_list_2">
+          <widget class="QListWidget" name="graph_list1">
            <property name="geometry">
             <rect>
              <x>10</x>
@@ -220,7 +220,7 @@
             <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
            </property>
           </widget>
-          <zorder>graph_list_2</zorder>
+          <zorder>graph_list1</zorder>
           <zorder>label_9</zorder>
          </widget>
         </item>
@@ -242,7 +242,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="origin_2">
+          <widget class="QLabel" name="origin_label2">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -293,7 +293,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="copy_2">
+          <widget class="QLabel" name="copy_label2">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -368,7 +368,7 @@
             <string>Graph</string>
            </property>
           </widget>
-          <widget class="QListWidget" name="graph_2">
+          <widget class="QListWidget" name="graph_list2">
            <property name="geometry">
             <rect>
              <x>-20</x>
@@ -381,7 +381,7 @@
             <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
            </property>
           </widget>
-          <zorder>graph_2</zorder>
+          <zorder>graph_list2</zorder>
           <zorder>label_10</zorder>
          </widget>
         </item>
@@ -403,7 +403,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="origin">
+          <widget class="QLabel" name="origin_label3">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -454,7 +454,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="copy">
+          <widget class="QLabel" name="copy_label3">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -529,7 +529,7 @@
             <string>Graph</string>
            </property>
           </widget>
-          <widget class="QListWidget" name="graph_3">
+          <widget class="QListWidget" name="graph_list3">
            <property name="geometry">
             <rect>
              <x>-20</x>
@@ -542,7 +542,7 @@
             <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
            </property>
           </widget>
-          <zorder>graph_3</zorder>
+          <zorder>graph_list3</zorder>
           <zorder>label_19</zorder>
          </widget>
         </item>
@@ -564,7 +564,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="origin_label">
+          <widget class="QLabel" name="origin_label4">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -615,7 +615,7 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <widget class="QLabel" name="copy_label">
+          <widget class="QLabel" name="copy_label4">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -690,7 +690,7 @@
             <string>Graph</string>
            </property>
           </widget>
-          <widget class="QListWidget" name="graph_list">
+          <widget class="QListWidget" name="graph_list4">
            <property name="geometry">
             <rect>
              <x>-20</x>
@@ -703,7 +703,7 @@
             <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
            </property>
           </widget>
-          <zorder>graph_list</zorder>
+          <zorder>graph_list4</zorder>
           <zorder>label_17</zorder>
          </widget>
         </item>
@@ -712,9 +712,28 @@
      </widget>
     </item>
     <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="20,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,20,3">
+      <item>
+       <widget class="QLabel" name="name_tag">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>Arial</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>data</string>
         </property>
