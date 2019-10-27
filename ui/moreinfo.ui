@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1353</width>
+    <width>1335</width>
     <height>855</height>
    </rect>
   </property>
@@ -20,730 +20,193 @@
    <property name="styleSheet">
     <string notr="true">QWidget#centralwidget{border-image: url(:/overall/image/back.png);}</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
-     <widget class="QTabWidget" name="tab">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::TabFocus</enum>
-      </property>
-      <property name="contextMenuPolicy">
-       <enum>Qt::DefaultContextMenu</enum>
-      </property>
-      <property name="statusTip">
-       <string/>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QTabWidget#tabWidget{border-image: url(:/overall/image/back.png);}</string>
-      </property>
-      <property name="tabShape">
-       <enum>QTabWidget::Triangular</enum>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <property name="elideMode">
-       <enum>Qt::ElideNone</enum>
-      </property>
-      <property name="usesScrollButtons">
-       <bool>true</bool>
-      </property>
-      <property name="documentMode">
-       <bool>false</bool>
-      </property>
-      <property name="tabsClosable">
-       <bool>false</bool>
-      </property>
-      <property name="movable">
-       <bool>false</bool>
-      </property>
-      <property name="tabBarAutoHide">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="initial_pose">
-       <property name="styleSheet">
-        <string notr="true">QWidget#initial_pose{border-image: url(:/overall/image/back.png);}</string>
-       </property>
-       <attribute name="title">
-        <string>Initial Pose</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,1,1">
-        <item row="1" column="0">
-         <widget class="QFrame" name="origin_frame_2">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="origin_label1">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_7">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Your Video</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QFrame" name="copy_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="copy_label1">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="found_label">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>271</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Analyzing...</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="2" column="0" colspan="2">
-         <widget class="QFrame" name="graph_frame_2">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="label_9">
-           <property name="geometry">
-            <rect>
-             <x>30</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>19</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Graph</string>
-           </property>
-          </widget>
-          <widget class="QListWidget" name="graph_list1">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>0</y>
-             <width>1311</width>
-             <height>391</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
-           </property>
-          </widget>
-          <zorder>graph_list1</zorder>
-          <zorder>label_9</zorder>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="resize_trainer">
-       <property name="styleSheet">
-        <string notr="true">QWidget#resize_trainer{border-image: url(:/overall/image/back.png);}</string>
-       </property>
-       <attribute name="title">
-        <string>Resize Trainer</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <widget class="QFrame" name="frame_5">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="origin_label2">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_11">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Your Video</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QFrame" name="frame_6">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="copy_label2">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_12">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Analyzing...</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QFrame" name="frame_4">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="label_10">
-           <property name="geometry">
-            <rect>
-             <x>30</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>19</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Graph</string>
-           </property>
-          </widget>
-          <widget class="QListWidget" name="graph_list2">
-           <property name="geometry">
-            <rect>
-             <x>-20</x>
-             <y>0</y>
-             <width>1311</width>
-             <height>391</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
-           </property>
-          </widget>
-          <zorder>graph_list2</zorder>
-          <zorder>label_10</zorder>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="analyze">
-       <property name="styleSheet">
-        <string notr="true">QWidget#analyze{border-image: url(:/overall/image/back.png);}</string>
-       </property>
-       <attribute name="title">
-        <string>Analyze</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="origin_label3">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_20">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Your Video</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QFrame" name="frame_2">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="copy_label3">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_18">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Analyzing...</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QFrame" name="frame_3">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="label_19">
-           <property name="geometry">
-            <rect>
-             <x>30</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>19</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Graph</string>
-           </property>
-          </widget>
-          <widget class="QListWidget" name="graph_list3">
-           <property name="geometry">
-            <rect>
-             <x>-20</x>
-             <y>0</y>
-             <width>1311</width>
-             <height>391</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
-           </property>
-          </widget>
-          <zorder>graph_list3</zorder>
-          <zorder>label_19</zorder>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="improve">
-       <property name="styleSheet">
-        <string notr="true">QWidget#improve{border-image: url(:/overall/image/back.png);}</string>
-       </property>
-       <attribute name="title">
-        <string>Improve Recognization Ratio</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <widget class="QFrame" name="origin_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="origin_label4">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_16">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>20</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Your Video</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QFrame" name="analyze_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="copy_label4">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>640</width>
-             <height>360</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
-</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-          <widget class="QLabel" name="label_15">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>20</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>18</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Analyzing...</string>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QFrame" name="graph_frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-          <widget class="QLabel" name="label_17">
-           <property name="geometry">
-            <rect>
-             <x>30</x>
-             <y>10</y>
-             <width>151</width>
-             <height>36</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <family>Dubai</family>
-             <pointsize>19</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: rgb(255, 255, 255);</string>
-           </property>
-           <property name="text">
-            <string>Graph</string>
-           </property>
-          </widget>
-          <widget class="QListWidget" name="graph_list4">
-           <property name="geometry">
-            <rect>
-             <x>-20</x>
-             <y>0</y>
-             <width>1311</width>
-             <height>391</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
-           </property>
-          </widget>
-          <zorder>graph_list4</zorder>
-          <zorder>label_17</zorder>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="5,20,3">
-      <item>
-       <widget class="QLabel" name="name_tag">
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
-       </widget>
-      </item>
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,10">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <family>Arial</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
         <property name="text">
-         <string>data</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>Type</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="view_list"/>
+       <widget class="QComboBox" name="ucs"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Data LIst</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="ids"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="start_button">
+        <property name="text">
+         <string>Load</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <property name="spacing">
+       <number>3</number>
+      </property>
+      <item row="0" column="1">
+       <widget class="QFrame" name="analyze_frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="copy_label">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>640</width>
+           <height>360</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_8">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>151</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Dubai</family>
+           <pointsize>18</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Analyzing...</string>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QFrame" name="graph_frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="label_9">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>10</y>
+           <width>151</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Dubai</family>
+           <pointsize>19</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Graph</string>
+         </property>
+        </widget>
+        <widget class="QListWidget" name="graph_list">
+         <property name="geometry">
+          <rect>
+           <x>-20</x>
+           <y>0</y>
+           <width>1311</width>
+           <height>391</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);</string>
+         </property>
+        </widget>
+        <zorder>graph_list</zorder>
+        <zorder>label_9</zorder>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QFrame" name="origin_frame">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <widget class="QLabel" name="origin_label">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>640</width>
+           <height>360</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border-image: url(:/overall/image/gray_rectangle.png);
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_7">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>151</width>
+           <height>36</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Dubai</family>
+           <pointsize>18</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(255, 255, 255);</string>
+         </property>
+         <property name="text">
+          <string>Your Video</string>
+         </property>
+        </widget>
+       </widget>
       </item>
      </layout>
     </item>

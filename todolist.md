@@ -1,12 +1,12 @@
 # ToDo List
-1. 각 UC별로 필요한 그래프 추출
+1. 각 UC별로 필요한 그래프 추출 (moreinfo에서 `graph.npy` 파일 불러오기 위해서 넣은 `load_skeleton`제거)
 2. 각 UC별로 Analyze할때 들어갈 이벤트
 3. CURRENT_TIMESTAMP를 localtime으로 변경
 
-4. MoreInfo UI 적용
-  + 각 Tab마다 보여줘야 할 Graph
-  + Load Data하는 부분 변경
-5. UC 5 UI 적용
+4. MoreInfo 각 UC 마다 그래프 이름 변경
+5. MoreInfo 각 UC 마다 Label 이름 변경
+6. MoreInfo diffing Test
+7. UC 5 UI 적용
 
 
 # 승민's TodoList
@@ -29,7 +29,9 @@
   + UC3-Scene 3 UI 적용 (`original_label` : Trainer의 운동, `copy_label` : Resized된 Trainer)
 10. UC2, 3-Scene 1 파일 정보 출력하는곳의 UI 수정
 11. UC4-Scene 2 디버그용으로 imshow하는 부분 제거
-
+12. MoreInfo UI 적용
+  + 각 Tab마다 보여줘야 할 Graph
+  + Load Data하는 부분 변경
 
 # Requirement
 1. numpy==1.16.1 (pick problem)

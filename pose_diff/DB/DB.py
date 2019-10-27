@@ -743,7 +743,7 @@ def load_diff(diff_id, base_folder):
             print("sqlite connection is closed")
 
 # MoreInfo
-def load_data_list(user_id):
+def load_data_list(user_id, option):
     data_list = []
     try:
         sqliteConnection = sqlite3.connect(db)
@@ -754,7 +754,8 @@ def load_data_list(user_id):
         sqlite_load_query = [
         """Select
         skeleton_list.skeleton_id,
-        exercise_list.exercise_name
+        exercise_list.exercise_name,
+        input_list.input_id
         from
         input_list
         left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
@@ -764,7 +765,9 @@ def load_data_list(user_id):
 
         """Select
         applied_skeleton_list.applied_sample_id,
-        exercise_list.exercise_name
+        exercise_list.exercise_name,
+        applied_skeleton_list.standard_id,
+        skeleton_list.skeleton_id
         from
         applied_skeleton_list
         left join exercise_list on exercise_list.exercise_id = applied_skeleton_list.exercise_id
@@ -775,7 +778,8 @@ def load_data_list(user_id):
 
         """Select
         diff_list.diff_id,
-        exercise_list.exercise_name
+        exercise_list.exercise_name,
+        input_list.input_id
         from
         diff_list
         left join input_list on input_list.input_id = diff_list.input_id
@@ -785,7 +789,9 @@ def load_data_list(user_id):
 
         """Select
         math_info_extractions.extraction_id,
-        exercise_list.exercise_name
+        exercise_list.exercise_name,
+        input_list.input_id,
+        skeleton_list.skeleton_id
         from
         math_info_extractions
         left join skeleton_list on skeleton_list.skeleton_id = math_info_extractions.skeleton_id
@@ -795,11 +801,10 @@ def load_data_list(user_id):
         input_list.user_id = ?"""
         ]
 
-        for query in sqlite_load_query:
-            cursor.execute(query, data_tuple)
-            data_list.append(cursor.fetchall())
+        cursor.execute(sqlite_load_query[option], data_tuple)
+        data_list = cursor.fetchall()
         sqliteConnection.commit()
-        print("load data list successfully as a BLOB into a table")
+        print("load data list successfully from a table")
         cursor.close()
 
     except sqlite3.Error as error:
