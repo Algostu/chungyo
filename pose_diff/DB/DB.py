@@ -111,6 +111,7 @@ def make_db():
     input_id INTEGER,
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     video BLOB NOT NULL,
+    graph BLBO NOT NULL,
     FOREIGN KEY(applied_sample_id) REFERENCES applied_skeleton_list(applied_sample_id) ON DELETE CASCADE,
     FOREIGN KEY(input_id) REFERENCES input_list(input_id) ON DELETE CASCADE)""")
     for exercise in exercise_info:
@@ -689,17 +690,18 @@ def load_applied_skeleton_file(applied_sample_id, base_folder):
             sqliteConnection.close()
             print("sqlite connection is closed")
 
-def save_diff(applied_sample_id, input_id, video):
+def save_diff(applied_sample_id, input_id, video, graph):
     try:
         sqliteConnection = sqlite3.connect(db)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
         sqlite_insert_blob_query = """Insert into
-        diff_list (applied_sample_id, input_id, video)
-        values (?, ?, ?)"""
+        diff_list (applied_sample_id, input_id, video, graph)
+        values (?, ?, ?, ?)"""
         video = convertToBinaryData(video)
+        graph = convertToBinaryData(graph)
         # Convert data into tuple format
-        data_tuple = (applied_sample_id, input_id, video)
+        data_tuple = (applied_sample_id, input_id, video, graph)
         cursor.execute(sqlite_insert_blob_query, data_tuple)
         primary_key = cursor.lastrowid
         sqliteConnection.commit()
@@ -714,40 +716,88 @@ def save_diff(applied_sample_id, input_id, video):
             print("the sqlite connection is closed")
 
 # * 개발 대상
-def load_diff():
-    pass
+def load_diff(diff_id, base_folder):
+    try:
+        sqliteConnection = sqlite3.connect(db)
+        cursor = sqliteConnection.cursor()
+        print("Connected to SQLite")
+
+        sql_fetch_blob_query = """SELECT * from applied_skeleton_list where diff_id = ?"""
+        cursor.execute(sql_fetch_blob_query, (diff_id,))
+        record = cursor.fetchall()
+        for row in record:
+            video  = os.path.join(base_folder, 'diff.avi')
+            numpy  = os.path.join(base_folder, 'graph.npy')
+
+            print("Storing User numpy and video on disk \n")
+            writeTofile(row[4], video)
+            writeTofile(row[5], numpy)
+
+        cursor.close()
+
+    except sqlite3.Error as error:
+        print("Failed to read blob data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+            print("sqlite connection is closed")
 
 # MoreInfo
-def load_data_list(user_id, option):
+def load_data_list(user_id):
     data_list = []
     try:
         sqliteConnection = sqlite3.connect(db)
         cursor = sqliteConnection.cursor()
         print("Connected to SQLite")
-        sqlite_load_query = ""
+        sqlite_load_query = []
         data_tuple = (user_id,)
-        if option == 0:
-            sqlite_load_query = """Select
-            exercise_list.exercise_name,
-            input_list.input_id,
-            skeleton_list.skeleton_id
-            from
-            input_list
-            left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
-            left join skeleton_list on skeleton_list.input_id = input_list.input_id
-            WHERE
-            input_list.user_id = ?"""
-        elif option == 1:
-            pass
-        elif option == 2:
-            pass
-        elif option == 3:
-            pass
-        else:
-            print("Option is among 0~3")
+        sqlite_load_query = [
+        """Select
+        skeleton_list.skeleton_id,
+        exercise_list.exercise_name
+        from
+        input_list
+        left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
+        left join skeleton_list on skeleton_list.input_id = input_list.input_id
+        WHERE
+        input_list.user_id = ?""",
 
-        cursor.execute(sqlite_load_query, data_tuple)
-        data_list = cursor.fetchall()
+        """Select
+        applied_skeleton_list.applied_sample_id,
+        exercise_list.exercise_name
+        from
+        applied_skeleton_list
+        left join exercise_list on exercise_list.exercise_id = applied_skeleton_list.exercise_id
+        left join skeleton_list on skeleton_list.skeleton_id = applied_skeleton_list.skeleton_id
+        left join input_list on input_list.input_id = skeleton_list.input_id
+        WHERE
+        input_list.user_id = ?""",
+
+        """Select
+        diff_list.diff_id,
+        exercise_list.exercise_name
+        from
+        diff_list
+        left join input_list on input_list.input_id = diff_list.input_id
+        left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
+        WHERE
+        input_list.user_id = ?""",
+
+        """Select
+        math_info_extractions.extraction_id,
+        exercise_list.exercise_name
+        from
+        math_info_extractions
+        left join skeleton_list on skeleton_list.skeleton_id = math_info_extractions.skeleton_id
+        left join input_list on input_list.input_id = skeleton_list.input_id
+        left join exercise_list on exercise_list.exercise_id = input_list.exercise_id
+        WHERE
+        input_list.user_id = ?"""
+        ]
+
+        for query in sqlite_load_query:
+            cursor.execute(query, data_tuple)
+            data_list.append(cursor.fetchall())
         sqliteConnection.commit()
         print("load data list successfully as a BLOB into a table")
         cursor.close()

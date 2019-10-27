@@ -675,11 +675,16 @@ class WindowMoreInfo(QMainWindow, moreinfo):
         self.graphs = 0
         self.origin = 0
         self.copy = 0
+        self.tabs_data = 0
+        for tab in DB.load_data_list(self.user_id):
+            print(tab)
+
 
 
     def connectFunction(self):
-        self.tab.currentChanged.connect(self.onChange)
-        self.view_list.currentIndexChanged.connect(self.data_id_changed)
+        # self.tab.currentChanged.connect(self.onChange)
+        # self.view_list.currentIndexChanged.connect(self.data_id_changed)
+        pass
 
     def onChange(self,i):
         self.current_tab = i

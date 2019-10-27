@@ -91,12 +91,13 @@ def main_function(option, *args):
     # args = (input_id, sample_id)
     elif option == 6:
         video_name = os.path.join(base_folder, 'output.avi')
+        numpy_name = os.path.join(base_folder, 'graph.npy')
         DB.load_applied_skeleton_file(args[1], base_folder)
         DB.read_from_input_list(args[0], base_folder)
         input1 = os.path.join(base_folder, 'upgraded.npy')
         input2 = os.path.join(base_folder, 'exercise_numpy.npy')
         run.Video(input1, input2, video_name)
-        DB.save_diff(args[1], args[0], video_name)
+        DB.save_diff(args[1], args[0], video_name, numpy_name)
 
     elif option == 7:
         input2 = 'data/result.avi'
