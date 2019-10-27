@@ -17,6 +17,7 @@ class Video:
         writer = cv2.VideoWriter(self.video_name, fourcc, 10, (1280, 720))
 
         score = 0
+        score_list = []
         index = 0
         gap_npy = []
 
@@ -60,9 +61,11 @@ class Video:
                 # display things-score
                 if val == -1:
                     screen.display_score(score)
+                    score_list.append(score)
                 else:
                     score = score + score_range
                     screen.display_score(score)
+                    score_list.append(score)
 
           # display_things-angle
                 angle = screen.get_angle()
@@ -75,7 +78,8 @@ class Video:
                 # cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
-        np.save("../../../temp/gap.npy",gap_npy)
+        temp = [score_list,gap_npy]
+        np.save("temp/graph.npy",temp)
 
     def set_video_name(self,name):
         self.video_name = f'{name}.avi'
