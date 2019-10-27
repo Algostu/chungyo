@@ -18,19 +18,22 @@ class Video:
 
         score = 0
         index = 0
+        gap_npy = []
 
         for Ucut in usercut:
             screens = []
             user = user_full[Ucut[0]:Ucut[1]+1]
             if apply == True:
                 if diffing == 'increase':
-                    user, trainer = diffing_increasing(trainer, user, exercise, way)
+                    gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
                 elif diffing == 'decrease':
-                    user,trainer = diffing_decreasing(trainer,user,exercise,way,average)
+                    gap, user,trainer = diffing_decreasing(trainer,user,exercise,way,average)
                 else:
                     print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
             if apply == 'Angle':
                 user, score_range = diffing_angle(trainer,user,exercise)
+
+            gap_npy = gap_npy + gap
             cnt = len(usercut)
             length = len(user)
             user_angle = get_angle(user)
@@ -72,6 +75,7 @@ class Video:
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
+        np.save("../../../temp/gap.npy",gap_npy)
 
     def set_video_name(self,name):
         self.video_name = f'{name}.avi'
@@ -151,7 +155,7 @@ def make_skeleton_image(npy,image_name):
     screen.draw_human(screen.point,"Real_time")
     cv2.imwrite(image_name, screen.img)
     while(1):
-        cv2.imshow("SKEf",screen.img)
+        cv2.imshow("Your Initial Pose",screen.img)
         if cv2.waitKey(100) == 27:
             break
     cv2.destroyAllWindows()
