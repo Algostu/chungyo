@@ -1,7 +1,9 @@
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx import Document
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Inches
 from pose_diff.core.save_graph import save_graph
+import os
+
 
 def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하는 값을 넣으면 원하는 아웃풋이 나오도록 바꾸기
     document=Document()
@@ -52,3 +54,9 @@ def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하�
     document.add_paragraph('카메라가 정면에 있는지 확인해주세요.')
 
     document.save(docx_name)
+    os.remove('왼오른 겨드랑이.png')
+    os.remove('왼오른 팔꿈치.png')
+    os.remove('왼쪽 겨드랑이.png')
+    os.remove('왼쪽 팔꿈치.png')
+    os.remove('오른쪽 겨드랑이.png')
+    os.remove('오른쪽 팔꿈치.png')

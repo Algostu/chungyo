@@ -11,8 +11,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import uic, QtGui
 
-from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
-from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.figure import Figure
 
 from pose_diff.DB import DB
@@ -30,10 +29,10 @@ make_trainer = uic.loadUiType("ui/make_trainer.ui")[0]
 resize_trainer = uic.loadUiType("ui/resize_trainer.ui")[0]
 analyze_guide = uic.loadUiType("ui/analyze_guide.ui")[0]
 store = uic.loadUiType("ui/store.ui")[0]
-view = uic.loadUiType("ui/view.ui")[0]
 report = uic.loadUiType("ui/report.ui")[0]
 moreinfo = uic.loadUiType("ui/moreinfo.ui")[0]
 loading = uic.loadUiType("ui/loading.ui")[0]
+success = uic.loadUiType("ui/success.ui")[0]
 
 #화면을 띄우는데 사용되는 Class 선언
 class WindowClass(QMainWindow, signin) :
@@ -170,7 +169,10 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
-                self.axes[i].plot(self.numpy[i][index:index+50])
+                if index < 50:
+                    self.axes[i].plot(self.numpy[i][0:index])
+                else:
+                    self.axes[i].plot(self.numpy[i][index - 50:index])
                 self.axes[i].figure.canvas.draw()
 
             index += 1
@@ -253,7 +255,10 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
-                self.axes[i].plot(self.numpy[i][index:index+50])
+                if index < 50:
+                    self.axes[i].plot(self.numpy[i][0:index])
+                else:
+                    self.axes[i].plot(self.numpy[i][index-50:index])
                 self.axes[i].figure.canvas.draw()
 
             index += 1
@@ -404,7 +409,10 @@ class WindowResizeTrainer(QMainWindow, resize_trainer):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
-                self.axes[i].plot(self.numpy[i][index:index+50])
+                if index < 50:
+                    self.axes[i].plot(self.numpy[i][0:index])
+                else:
+                    self.axes[i].plot(self.numpy[i][index - 50:index])
                 self.axes[i].figure.canvas.draw()
 
             index += 1
@@ -648,13 +656,15 @@ class WindowReport(QMainWindow, report):
     def Store(self):
         if self.input_id !=0 and self.target_id !=0:
             if self.input_id[1] == self.target_id[2]:
-                # self.window = WindowStore(self.input_id[0], self.target_id[0])
+
                 args = [
                 self.input_id[0],
                 self.target_id[0]
                 ]
                 main_function(8, *args)
                 self.close()
+                self.window = SuccessWindow()
+
             else:
                 QMessageBox.warning(
                     self, 'Error', "You should select same exercise")
@@ -844,7 +854,10 @@ class WindowMoreInfo(QMainWindow, moreinfo):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
-                self.axes[i].plot(self.numpy[i][index:index+50])
+                if index < 50:
+                    self.axes[i].plot(self.numpy[i][0:index])
+                else:
+                    self.axes[i].plot(self.numpy[i][index - 50:index])
                 self.axes[i].figure.canvas.draw()
 
             index += 1
@@ -960,6 +973,13 @@ class LoadingWindow(QWidget,loading):
         self.frame.setMovie(self.m_movie_gif)
         self.frame.setAlignment(Qt.AlignCenter)
         self.m_movie_gif.start()
+
+class SuccessWindow(QMainWindow,success):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.show()
+        self.out.clicked.connect(self.close)
 
 if __name__=="__main__":
     app = QApplication(sys.argv)
