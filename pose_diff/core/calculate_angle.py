@@ -38,7 +38,6 @@ def get_angle(npyfile):
         angle.append(uangle)
     return angle
 
-<<<<<<< HEAD
 def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
     # body=[]
     # body=('Neck','RShoulder','RElbow','RWrist','LShoulder','LElbow',
@@ -59,35 +58,10 @@ def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
     for i in range(len(frame)):
         result_angle=Calculate_angle(
         [frame[i][parts[0]][0],frame[i][parts[0]][1]],[frame[i][parts[1]][0],frame[i][parts[1]][1]],[frame[i][parts[2]][0],frame[i][parts[2]][1]])
+        if (frame[i][parts[1]][0] - frame[i][parts[0]][0]) == 0:
+            continue
         if ((frame[i][parts[1]][1] - frame[i][parts[0]][1]) / (frame[i][parts[1]][0] - frame[i][parts[0]][0])) * (frame[i][parts[2]][0] - frame[i][parts[0]][0]) + frame[i][parts[0]][1] < frame[i][parts[2]][1]:
             result_angle = 360 - result_angle
         angle.append(result_angle)
 
     return angle
-=======
-# def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
-#     # body=[]
-#     # body=('Neck','RShoulder','RElbow','RWrist','LShoulder','LElbow',
-#     #       'LWrist','RHip','RKnee','RAnkle','LHip','LKnee','LAnkle','REye','LEye','REar','LEar','Background')
-#     parts=[]
-#     frame = np.load(video_name)
-#     if part==1: #left arm
-#         parts=[0,4,5]
-#     elif part==2: #left elbow
-#         parts=[4,5,6]
-#     elif part==3: # R arm-
-#         parts=[0,1,2]
-#     else : # R elbow  part==4 라고 가정
-#         parts=[1,2,3]
-#
-#
-#     angle=[]
-#     for i in range(len(frame)):
-#         result_angle=calculate_angle.Calculate_angle(
-#         [frame[i][parts[0]][0],frame[i][parts[0]][1]],[frame[i][parts[1]][0],frame[i][parts[1]][1]],[frame[i][parts[2]][0],frame[i][parts[2]][1]])
-#         if ((frame[i][parts[1]][1] - frame[i][parts[0]][1]) / (frame[i][parts[1]][0] - frame[i][parts[0]][0])) * (frame[i][parts[2]][0] - frame[i][parts[0]][0]) + frame[i][parts[0]][1] < frame[i][parts[2]][1]:
-#             result_angle = 360 - result_angle
-#         angle.append(result_angle)
-#
-#     return angle
->>>>>>> 8a9985848a8215cdb15bebb08c5d10e289430e71

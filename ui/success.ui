@@ -65,6 +65,22 @@
      <string>successfully stored document.docx into your desktop</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="out">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1261</width>
+      <height>781</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources>

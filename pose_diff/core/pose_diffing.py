@@ -6,6 +6,8 @@ from pose_diff.util.Common import Parts
 from pose_diff.core.calculate_angle import get_angle
 
 def setting_relative_error(trainer_val,user_val):
+    if trainer_val == 0:
+        return 0
     return float(abs(trainer_val-user_val)/trainer_val * 100)
 
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
@@ -244,8 +246,6 @@ def point_difference(trainer, user, exercise):
                 break
             for idx, part in enumerate(Parts[exercise]):
                 if part >= 0.5:
-                    if trainer[i][idx][0] == 0:
-                        continue
                     sum_gap = sum_gap + setting_relative_error(trainer[i][idx][0],user[i][idx][0])
                     if setting_relative_error(trainer[i][idx][0],user[i][idx][0]) > margin:
                         point_np[i][idx][2] = 1
