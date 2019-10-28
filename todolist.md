@@ -5,7 +5,7 @@
 3. CURRENT_TIMESTAMP를 localtime으로 변경
 
 4. core function 수정 - 최종 발표용
-5. core function 실행 scenario 
+5. 기능 테스트 준비
 
 # 승민's TodoList
 
@@ -32,3 +32,4 @@
 
 # Requirement
 1. numpy==1.16.1 (pick problem)
+2. python-docx
