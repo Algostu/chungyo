@@ -238,6 +238,13 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.start()
 
     def start(self):
+        '''
+        Make graph animated
+
+        See What is changed
+            - Create Dot indicating for current index of frames
+            - Replace graph by stillness and height
+        '''
         cam = 1
         index = 0
         while self.cpt.isOpened() and cam is not None:
