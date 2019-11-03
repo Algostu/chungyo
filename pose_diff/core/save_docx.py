@@ -10,7 +10,7 @@ def save_docx(video1,video2,docx_name):
     Make Documentation for users about how it is different from trainer
 
     Todo
-        1. 일단 어떤식으로 동작하는지 파악하기
+        1. 일단 어떤식으로 동작하는지 파악하기...Done
         2-1. 한결: 그래프와 피드백 메시지줄 항목 만들기
         2-1-1. 한결, 승민: 그래프와 피드백 메시지를 일단 하나만만들고 렌더링 같이 해보기
         2-2. 승민: 피드백 양식을 XD로 만들기
