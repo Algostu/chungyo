@@ -225,6 +225,14 @@ def angle_difference(trainer,user,exercise):
     return gap, angle_np
 
 def point_difference(trainer, user, exercise):
+    """
+    For calculate point diffing. This def to set difference using relative error of points in each axis x, y.
+    List parts is stored the difference each parts, and list gap is stored the difference of all points for scoring.
+    :param trainer: trainer's loaded npy
+    :param user: user's loaded npy
+    :param exercise: Thing what you want to diffing.
+    :return: parts, gap, point_np
+    """
     point_np = np.copy(user)
     margin = 4
     gap = []
