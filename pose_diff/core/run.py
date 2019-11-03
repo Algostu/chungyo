@@ -63,7 +63,6 @@ class Video:
                 val = screen.draw_human(screen.point,"Video")
                 if cv2.waitKey(100) == 27:
                     break
-
                 # display_things
                 screen.display_score()
                 screen.display_msg()
@@ -77,7 +76,9 @@ class Video:
                 # float screen
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
+        writer.release()
         cv2.destroyAllWindows()
+
         graph_numpy = [cutframes, scores, gaps]
         a = []
         b = [[] for i in range(6)]
