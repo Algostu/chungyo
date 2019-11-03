@@ -471,7 +471,12 @@ Accuracys = [0.72, 0.72, 0.72]
 Parts = [
 [0] + [ACC_CRE for i in range(1,14)] + [0, 0, 0, 0], # squat side
 [0] + [ACC_CRE for i in range(1,9)] + [0, 0, ACC_CRE, 0, 0, 0, 0, 0, 0], # Pull_up front
-[0] + [ACC_CRE for i in range(1,8)] + [0, 0, 0, 0, 0, 0,  0, 0, 0] # shoulder_press front
+[0] + [ACC_CRE for i in range(1,8)] + [0, 0, 0, 0, 0, 0, 0, 0, 0] # shoulder_press front
+]
+FeedbackParts = [
+    [],
+    [],
+    [0,0] + [ACC_CRE,ACC_CRE,0,ACC_CRE,ACC_CRE,0] + [0 for i in range(9)]
 ]
 View = [
 'side',
