@@ -76,8 +76,21 @@ class Video:
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
-
-        temp = [cutframes, scores, gaps]
+        graph_numpy = [cutframes, scores, gaps]
+        a = []
+        b = [[] for i in range(6)]
+        c = []
+        for i in range(len(graph_numpy[0])):
+            a += graph_numpy[1][i]
+            for j in range(6):
+                b[j] += graph_numpy[2][i][j+2] # left_shoulder
+                # b[1] += graph_numpy[2][i][3] # left_elbow
+                # b[2] += graph_numpy[2][i][4] # left_writst
+                # b[3] += graph_numpy[2][i][5] # left_shoulder
+                # b[4] += graph_numpy[2][i][6] # left_elbow
+                # b[5] += graph_numpy[2][i][7] # left_writst
+            c.append(graph_numpy[0][i])
+        temp = [a, *b, c]
         np.save("temp/graph.npy",temp)
 
     def set_video_name(self,name):
