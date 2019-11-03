@@ -3,6 +3,7 @@ import cv2
 
 from pose_diff.util.Common import CocoColors, CocoPairsRender
 from pose_diff.core.pose_diffing import point_difference, angle_difference
+from pose_diff.core.run import Video
 
 origin_name = 'data/original.npy'
 trained_name = 'data/trained.npy'
@@ -74,7 +75,17 @@ def play_skeleton(point):
     cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    parts = play_point_difference()
+    # a = [[(1,2)],[2],[3],[4]]
+    # b = [[(3,4)],[2],[3],[4]]
+    #
+    # a = np.array(a)
+    # b = np.array(b)
+    # c = np.hstack([a,b])
+    # print(a)
+    # # print(c)
+    #
+    # f = [tuple((0,0)) for i in range(18)]
+    # f = np.array(f)
+    # print(f)
 
-
-    print(parts)
+    Video(trained_name, origin_name, 'hello.avi')

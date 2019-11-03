@@ -25,9 +25,9 @@ class Video:
             user = user_full[Ucut[0]:Ucut[1]+1]
             if apply == True:
                 if diffing == 'increase':
-                    parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
+                    feedback, parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
                 elif diffing == 'decrease':
-                    parts_gap, angle_gap, point_gap, user, trainer = diffing_decreasing(trainer,user,exercise,way,average)
+                    feedback, parts_gap, angle_gap, point_gap, user, trainer = diffing_decreasing(trainer,user,exercise,way,average)
                 else:
                     print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
             if apply == 'Angle':
@@ -45,32 +45,26 @@ class Video:
                     score_angle = ((360 - angle) / 360) * 100 / 2
 
                 score.append(score_angle + score_point)
-            gaps.append(np.array(parts_gap))
-
+            gaps.append(parts_gap)
             scores.append(score)
             length = len(user)
             user_angle = get_angle(user)
-            msg = [i + 1 for i in range(length)]
             height = 720
             width = 1280
-
             # make screen list
             for i in range(length):
                 screens.append(
-                    Screen(user[i], score[i] ,user_angle[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
+                    Screen(user[i], score[i] ,user_angle[i], feedback[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
             for screen in screens:
                 # draw_human
                 val = screen.draw_human(screen.point,"Video")
                 if cv2.waitKey(100) == 27:
                     break
+
                 # display_things
-                index = index + 1
-                screen.display_index(index)
-
-                # display things-score
                 screen.display_score()
-
+                screen.display_msg()
           # display_things-angle
                 angle = screen.get_angle()
                 for i in range(0, 18):
