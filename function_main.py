@@ -48,7 +48,7 @@ def main_function(option, *args):
         numpy = np.load(os.path.join(base_folder, 'init_numpy.npy'))
         skeleton_numpy = 'skeleon.npy'
         graph_numpy = 'graph.npy'
-        (res1, res2) = Method.find_initial_skeleton(numpy, os.path.join(base_folder,graph_numpy), 10)
+        (res1, res2) = Method.find_initial_skeleton(numpy, os.path.join(base_folder,graph_numpy), args[1])
         # print(res1, res2)
         np.save(os.path.join(base_folder, skeleton_numpy), [res1,res2])
         pk = DB.save_skeleton(args[0], os.path.join(base_folder,skeleton_numpy), os.path.join(base_folder,graph_numpy))

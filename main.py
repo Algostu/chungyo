@@ -188,6 +188,12 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
         self.close()
 
 class WindowFindInitialPose(QMainWindow, find_initial_pose):
+    '''
+    Find InitialPose
+
+    Todo
+        when length of number of total frames > 50, apply max frame annotate
+    '''
     def __init__(self, mode=0, input_id = 0, extraction_id = 0):
         super().__init__()
         self.setupUi(self)
@@ -197,8 +203,8 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.show()
         self.connectFunction()
         self.isSkipped = False
-
-        args = (input_id,)
+        self.stillness = 10
+        args = (input_id,self.stillness)
         self.skeleton, self.found_num, self.skeleton_id = main_function(2, *args)
         if self.found_num == -1:
             QMessageBox.warning(
@@ -209,7 +215,7 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.Video()
 
     def graph(self):
-        self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
+        self.graph_title = ['stillness', 'height']
         self.graph_list.setFlow(QListWidget.LeftToRight)
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.numpy = np.load('temp/graph.npy')
@@ -232,6 +238,13 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
         self.start()
 
     def start(self):
+        '''
+        Make graph animated
+
+        See What is changed
+            - Create Dot indicating for current index of frames
+            - Replace graph by stillness and height
+        '''
         cam = 1
         index = 0
         while self.cpt.isOpened() and cam is not None:
@@ -256,9 +269,21 @@ class WindowFindInitialPose(QMainWindow, find_initial_pose):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
                 if index < 50:
-                    self.axes[i].plot(self.numpy[i][0:index])
+                    self.axes[i].plot(self.numpy[i][0:50], 'b')
                 else:
-                    self.axes[i].plot(self.numpy[i][index-50:index])
+                    self.axes[i].plot(self.numpy[i][index-50:index], 'g-')
+                # I
+                if i == 1 and self.found_num < 50:
+                     self.axes[i].annotate(
+                     'max height: %d' % self.found_num,
+                     xy=(self.found_num, self.numpy[i][self.found_num]),
+                     xytext=(self.found_num-10, self.numpy[i][self.found_num]+3),
+                     arrowprops=dict(facecolor='black', shrink=0.05))
+                elif i == 0:
+                    self.axes[i].axhline(y=self.stillness, c='r', ls='--')
+
+                if index < len(self.numpy[i]):
+                    self.axes[i].plot([index], self.numpy[i][index], 'r^')
                 self.axes[i].figure.canvas.draw()
 
             index += 1
