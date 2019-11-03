@@ -16,37 +16,48 @@ class Video:
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         writer = cv2.VideoWriter(self.video_name, fourcc, 10, (1280, 720))
 
-        score = 0
-        score_list = []
-        index = 0
-        gap_npy = []
-
+        cutframes = []
+        scores = []
+        gaps = []
         for Ucut in usercut:
             screens = []
+            score = []
             user = user_full[Ucut[0]:Ucut[1]+1]
             if apply == True:
                 if diffing == 'increase':
-                    gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
+                    parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
                 elif diffing == 'decrease':
-                    gap, user,trainer = diffing_decreasing(trainer,user,exercise,way,average)
+                    parts_gap, angle_gap, point_gap, user, trainer = diffing_decreasing(trainer,user,exercise,way,average)
                 else:
                     print(f'You input wrong diffing like {diffing}. Just you can enter "increase", "decrease" ')
             if apply == 'Angle':
                 user, score_range = diffing_angle(trainer,user,exercise)
-            gap_npy = gap_npy + gap
-            cnt = len(usercut)
+
+            cutframes.append(user)
+            for point, angle in zip(point_gap, angle_gap):
+                if point > 100:
+                    score_point = 0
+                else:
+                    score_point = (100 - point) / 2
+                if angle > 360:
+                    score_angle = 0
+                else:
+                    score_angle = ((360 - angle) / 360) * 100 / 2
+
+                score.append(score_angle + score_point)
+            gaps.append(np.array(parts_gap))
+
+            scores.append(score)
             length = len(user)
             user_angle = get_angle(user)
             msg = [i + 1 for i in range(length)]
             height = 720
             width = 1280
-            score_range = (100/cnt)/length
-
 
             # make screen list
             for i in range(length):
                 screens.append(
-                    Screen(user[i], user_angle[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
+                    Screen(user[i], score[i] ,user_angle[i], msg[i], height, width))  # 추후 수정, 높이 720, 너비 1024
 
             for screen in screens:
                 # draw_human
@@ -58,13 +69,7 @@ class Video:
                 screen.display_index(index)
 
                 # display things-score
-                if val == -1:
-                    screen.display_score(score)
-                    score_list.append(score)
-                else:
-                    score = score + score_range
-                    screen.display_score(score)
-                    score_list.append(score)
+                screen.display_score()
 
           # display_things-angle
                 angle = screen.get_angle()
@@ -77,7 +82,8 @@ class Video:
                 cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         cv2.destroyAllWindows()
-        temp = [score_list,gap_npy]
+
+        temp = [cutframes, scores, gaps]
         np.save("temp/graph.npy",temp)
 
     def set_video_name(self,name):
@@ -175,11 +181,3 @@ def make_skeleton_image(npy,image_name):
         if cv2.waitKey(100) == 27:
             break
     cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-    a = './../../temp/upgraded.npy'
-    b = "./../../temp/exercise_numpy.npy"
-    c = "./../../temp/upgraded.npy"
-    # c = np.load(c)
-    # human_pic(c,'hi.avi')
-    Video(a,b,'hello')

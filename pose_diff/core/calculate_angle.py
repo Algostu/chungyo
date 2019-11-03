@@ -29,12 +29,12 @@ def get_angle(npyfile):
         uangle = [None] * 18
         for index, j in enumerate(AnglePairs):
             pointa = npyfile[b][j[0]]
-            pointa = pointa[:2]
+            pointaa = pointa[:2]
             pointb = npyfile[b][j[1]]
-            pointb = pointb[:2]
+            pointbb = pointb[:2]
             pointc = npyfile[b][j[2]]
-            pointc = pointc[:2]
-            uangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
+            pointcc = pointc[:2]
+            uangle[AnglePart[index]] = (Calculate_angle(pointaa, pointbb, pointcc))
         angle.append(uangle)
     return angle
 
