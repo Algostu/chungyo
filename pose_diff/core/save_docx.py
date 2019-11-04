@@ -5,7 +5,17 @@ from pose_diff.core.save_graph import save_graph
 import os
 
 
-def save_docx(video1,video2,docx_name):   #input 값을 지정해주어 원하는 값을 넣으면 원하는 아웃풋이 나오도록 바꾸기
+def save_docx(video1,video2,docx_name):
+    '''
+    Make Documentation for users about how it is different from trainer
+
+    Todo
+        1. 일단 어떤식으로 동작하는지 파악하기...Done
+        2-1. 한결: 그래프와 피드백 메시지줄 항목 만들기
+        2-1-1. 한결, 승민: 그래프와 피드백 메시지를 일단 하나만만들고 렌더링 같이 해보기
+        2-2. 승민: 피드백 양식을 XD로 만들기
+
+    '''
     document=Document()
 
     save_graph(1,1,video1,video2,'왼쪽 겨드랑이')

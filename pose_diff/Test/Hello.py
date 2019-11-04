@@ -55,5 +55,22 @@ def text():
 
     plt.show()
 
+def soup():
+    # print(soup.prettify())
+    # tag를 접근하는 방법
+    print(soup.title)
+    # tag의 이름을 접근하는 방법
+    print(soup.title.name)
+
+    # tag의 attr을 접근하는 방법
+    # 이 방법 말고 .attr으로 접근해도 된다.
+    # 새로운 attr을 추가 할 수도 있다.
+    print(soup.div['id'])
+    print(soup.find_all('a'))
+    print(soup.find(id='details'))
+    # NavigableString
+    print(soup.title.string)
+    # replace_with를 통해서 바꿀 수 있다.
+    soup.title.string.replace_with("No longer bold")
 if __name__=='__main__':
     text()
