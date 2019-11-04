@@ -5,8 +5,8 @@ import math
 from pose_diff.util.Common import Parts, AnglePart
 from pose_diff.core.calculate_angle import get_angle
 
-def setting_relative_error(trainer_val,user_val):
-    return float(abs(trainer_val-user_val)/trainer_val * 100)
+def setting_relative_error(trainer_val,user_val,formal):
+    return float(abs(trainer_val-user_val)/formal * 100)
 
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
     aver = np.zeros((18,3))
@@ -137,8 +137,8 @@ def frame_decreasing(trainer,user,way,average): #frame resizing
             else:
                 print(f'Wrong way, there are three ways. rounding, round_up, round_down')
     else:
-       recom = "no"
-       resize = "no"
+        recom = "no"
+        resize = "no"
     return recom, resize
 
 def frame_increasing(trainer,user,way): #make bigger the fewer frame
@@ -197,7 +197,7 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
 
 def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
-    margin = 10
+    margin = 4
     gap = []
     trainer_angle = get_angle(trainer)
     user_angle = get_angle(user)
@@ -213,9 +213,10 @@ def angle_difference(trainer,user,exercise):
             sum_gap = 0
             for idx, part in enumerate(AnglePart):
                 if (trainer_angle[pidx][idx] == None or user_angle[pidx][idx] == None):
+                    angle[idx][2] = 0
                     continue
-                sum_gap = sum_gap + setting_relative_error(trainer_angle[pidx][idx],user_angle[pidx][idx])
-                if setting_relative_error(trainer_angle[pidx][idx],user_angle[pidx][idx]) > margin:
+                if setting_relative_error(trainer_angle[pidx][idx],user_angle[pidx][idx],360) > margin:
+                    sum_gap = sum_gap + setting_relative_error(trainer_angle[pidx][idx], user_angle[pidx][idx],360)
                     angle[idx][2] = 1
                 else:
                     angle[idx][2] = 2
@@ -254,10 +255,10 @@ def point_difference(trainer, user, exercise):
                 if part == 0.5:
                     difference = (round(trainer[pidx][idx][0]-user[pidx][idx][0],2),round(trainer[pidx][idx][1] - user[pidx][idx][1],2))
                     parts[idx].append(difference)
-                    sum_gap = sum_gap + setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0])
-                    if (setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0])\
-                        + setting_relative_error(trainer[pidx][idx][1],user[pidx][idx][1]))/2> margin:
-
+                    if (setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0],1280)\
+                        + setting_relative_error(trainer[pidx][idx][1],user[pidx][idx][1],720))/2> margin:
+                        sum_gap = sum_gap + (setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0],1280)\
+                        + setting_relative_error(trainer[pidx][idx][1],user[pidx][idx][1],720))/2
                         if FeedbackParts[exercise][idx] == 0.5:
                             if difference[0] < -30:
                                 feedback.append([idx , f'Bend over your {PART_NAMES[idx]}'])
@@ -267,7 +268,6 @@ def point_difference(trainer, user, exercise):
                                 feedback.append([idx, f'Upper your {PART_NAMES[idx]}'])
                             elif difference[1] > 30:
                                 feedback.append([idx, f'Lower your {PART_NAMES[idx]}'])
-
                         point[idx][2] = 1
                     else:
                         point[idx][2] = 2
@@ -275,7 +275,7 @@ def point_difference(trainer, user, exercise):
                     point[idx][2] = 0
             feedbacks.append(feedback)
             gap.append(sum_gap)
-    return feedbacks,parts, gap, point_np
+    return feedbacks, parts, gap, point_np
 
 def diffing_decreasing(trainer,user,exercise,way,average):
     recom, resize = frame_decreasing(trainer,user,way,average) #recom : 누가 변화했는지, resize : 변화된 npy
@@ -288,9 +288,12 @@ def diffing_decreasing(trainer,user,exercise,way,average):
             for i in range(0,18):
                 if a[i][2] == 1 or b[i][2]==1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
+
 
     elif recom =='user':
         user = resize
@@ -300,9 +303,12 @@ def diffing_decreasing(trainer,user,exercise,way,average):
             for i in range(0, 18):
                 if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
+
 
     else :
         angle_gap, anglenp = angle_difference(trainer, user, exercise)
@@ -311,13 +317,17 @@ def diffing_decreasing(trainer,user,exercise,way,average):
             for i in range(0, 18):
                 if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
+
     return feedback, parts_gap, angle_gap, point_gap, user, trainer
 
 def diffing_increasing(trainer,user,exercise,way):
     recom, resize = frame_increasing(trainer,user,way)
+
     check_times = 0
     if recom == "trainer":
         trainer = resize
@@ -327,9 +337,12 @@ def diffing_increasing(trainer,user,exercise,way):
             for i in range(0, 18):
                 if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
+
     elif recom =='user':
         user = resize
         angle_gap, anglenp = angle_difference(trainer, user, exercise)
@@ -338,9 +351,11 @@ def diffing_increasing(trainer,user,exercise,way):
             for i in range(0,18):
                 if a[i][2] == 1 or b[i][2]==1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
 
     else :
         angle_gap, anglenp = angle_difference(trainer, user, exercise)
@@ -349,9 +364,11 @@ def diffing_increasing(trainer,user,exercise,way):
             for i in range(0, 18):
                 if a[i][2] == 1 or b[i][2] == 1:
                     c[i][2] = 1
-                if a[i][2] == 2 or b[i][2] == 2:
+                elif a[i][2] == 2 or b[i][2] == 2:
                     c[i][2] = 2
                     check_times = check_times + 1
+                else:
+                    c[i][2] = 0
     return feedback, parts_gap, angle_gap, point_gap, user, trainer
 
 # it works well when user frame is more bigger than trainer frame

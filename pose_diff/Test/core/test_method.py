@@ -58,23 +58,33 @@ def test_video2():
         1. cutframes의 개수가 75보다 낮은 것들은 작동하지 않는다. 따라서 제외한다. 왜 작동하지 않는지도 알아내야 한다.
         2. 에러값을 주면 오류가 난다. 원인: run.py score_angle부분에서 에러가 발생한다.
     '''
+    #
+    # base_folder = 'pose_diff/Test/core/test_data2'
+    # input1 = os.path.join(base_folder, 'standard_trainer.npy')
+    # input2 = os.path.join(base_folder, 'standard_trainer.npy')
+    # video_name = os.path.join(base_folder, 'standard_video.avi')
+    # run.Video(input1, input2, video_name)
+
     base_folder = 'pose_diff/Test/core/test_data2'
     graph_numpy = np.load(os.path.join(base_folder, 'graph.npy'))
     recollected_frames = graph_numpy[-1]
-    print('length of video: %d' % len(recollected_frames))
+    # print(recollected_frames)
+    # print('length of video: %d' % len(recollected_frames))
     for idx, part in enumerate(recollected_frames[3:4]):
-        print('%d: %d' % (idx, len(part)))
+        # print('%d: %d' % (idx, len(part)))
         input1 = os.path.join(base_folder, 'standard_trainer.npy')
         input2 = os.path.join(base_folder, 'standard_user.npy')
+
         video_name = os.path.join(base_folder, 'standard_video.avi')
         # for error user
-        part2 = part
-        # for frame in part2:
-        #     alpha = 1
-        #     errors = alpha * np.random.randn(18,2)
-        #     for part, error in zip(frame, errors):
-        #         part[0] += round(error[0],2)
-        #         part[1] += round(error[1],2)
+        part2 = np.copy(part)
+        for frame in part2:
+            alpha = 1
+            errors = alpha * np.random.randn(18,2)
+            for partt, error in zip(frame, errors):
+                partt[0] += round(error[0],2)
+                partt[1] += round(error[1],2)
+
         np.save(input1, part)
         np.save(input2, part2)
         run.Video(input1, input2, video_name)

@@ -2,24 +2,31 @@ import numpy as np
 import cv2
 
 from pose_diff.util.Common import CocoColors, CocoPairsRender
-from pose_diff.core.pose_diffing import point_difference, angle_difference
+from pose_diff.core.pose_diffing import point_difference, angle_difference, diffing_increasing
 from pose_diff.core.run import Video
 
-origin_name = 'data/original.npy'
-trained_name = 'data/trained.npy'
+# origin_name = 'test_data2/standard_user.npy'
+# trained_name = 'test_data2/standard_user.npy'
+origin_name = 'test_data2/standard_user.npy'
+trained_name = 'test_data2/standard_user.npy'
 origin = np.load(origin_name)
 cut_origin = origin[:40]
 trained = np.load(trained_name)
+trained = trained[3:49]
+
+def play_diffing_increasing():
+    feedback, parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trained,origin,2,'round')
+    play_skeleton(user)
 
 def play_point_difference():
-    parts, gap, pointnp = point_difference(trained, cut_origin, 2)
-    # play_skeleton(pointnp)
+    feedback, parts, gap, pointnp = point_difference(trained, origin, 2)
+    play_skeleton(pointnp)
     # print(pointnp[0])
     # print(gap)
-    return parts
+    return gap
 
 def play_angle_difference():
-    gap, anglenp = angle_difference(trained,cut_origin,2)
+    gap, anglenp = angle_difference(trained,origin,2)
     play_skeleton(anglenp)
     return gap
 

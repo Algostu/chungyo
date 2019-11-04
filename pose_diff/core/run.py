@@ -23,6 +23,8 @@ class Video:
             screens = []
             score = []
             user = user_full[Ucut[0]:Ucut[1]+1]
+            # user = user_full
+
             if apply == True:
                 if diffing == 'increase':
                     feedback, parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trainer, user, exercise, way)
@@ -35,8 +37,6 @@ class Video:
 
             cutframes.append(user)
             for point, angle in zip(point_gap, angle_gap):
-                print('point %d' % point)
-                print('angle %d' % angle)
                 if point > 100:
                     score_point = 0
                 else:
@@ -80,6 +80,7 @@ class Video:
         cv2.destroyAllWindows()
 
         graph_numpy = [cutframes, scores, gaps]
+
         a = []
         b = [[] for i in range(6)]
         c = []
