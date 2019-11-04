@@ -575,7 +575,7 @@ div { position: absolute; }
 	width: 720px;
 	height: 300px;
 }
-#detail_graph {
+.detail_graph {
 	top: 69px;
 	/* left: 155px; */
 	left: 20px;
@@ -642,7 +642,7 @@ div { position: absolute; }
 #trainername {
 	top: 12px;
 	left: 13px;
-	width: 77px;
+	width: 100px;
 	height: 32px;
 	font-family: Source Sans Pro;
 	font-size: 20px;
@@ -654,7 +654,7 @@ div { position: absolute; }
 #times {
 	top: 84px;
 	left: 13px;
-	width: 56px;
+	width: 100px;
 	height: 32px;
 	font-family: Source Sans Pro;
 	font-size: 20px;
@@ -666,14 +666,13 @@ div { position: absolute; }
 #exercise {
 	top: 48px;
 	left: 13px;
-	width: 86px;
+	width: 100px;
 	height: 32px;
 	font-family: Source Sans Pro;
 	font-size: 20px;
 	text-align: left;
 	color:#000000;
 }
-
 
 #bar_chart_ek1 {
 	top: 69px;
