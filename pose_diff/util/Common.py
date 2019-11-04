@@ -469,9 +469,14 @@ PART_NAMES = ['nose', 'neck',  'rshoulder', 'relbow', 'rwrist', 'lshoulder', 'le
 ACC_CRE = 0.5
 Accuracys = [0.72, 0.72, 0.72]
 Parts = [
-[ACC_CRE for i in range(14)] + [0, 0, 0, 0], # squat side
-[ACC_CRE for i in range(9)] + [0, 0, ACC_CRE, 0, 0, 0, 0, 0, 0], # Pull_up front
-[ACC_CRE for i in range(9)] + [0, 0, ACC_CRE, 0, 0, 0,  0, 0, 0] # shoulder_press front
+[0] + [ACC_CRE for i in range(1,14)] + [0, 0, 0, 0], # squat side
+[0] + [ACC_CRE for i in range(1,9)] + [0, 0, ACC_CRE, 0, 0, 0, 0, 0, 0], # Pull_up front
+[0] + [ACC_CRE for i in range(1,8)] + [0, 0, 0, 0, 0, 0, 0, 0, 0] # shoulder_press front
+]
+FeedbackParts = [
+    [],
+    [],
+    [0,0] + [ACC_CRE,ACC_CRE,0,ACC_CRE,ACC_CRE,0] + [0 for i in range(9)]
 ]
 View = [
 'side',
@@ -497,7 +502,7 @@ PartPairs = [
 [1, 2, 3], [2,3,4], [1,5,6], [5,6,7]
 ]
 
-AnglePairs = [(1,2,3),(2,3,4),(3,2,8),(8,9,10),(1,5,6),(5,6,7),(6,5,11),(11,12,13)]
+AnglePairs = [(1,2,3),(2,3,4),(2,1,8),(8,9,10),(1,5,6),(5,6,7),(5,1,11),(11,12,13)]
 AnglePart = [2,3,1,9,5,6,1,12]
 
 class CocoPart(enum.Enum):

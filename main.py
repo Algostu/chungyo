@@ -763,7 +763,7 @@ class WindowMoreInfo(QMainWindow, moreinfo):
         self.graph_titles = [
         ['left_elbow', 'right_elbow', 'left_knee', 'right_knee'],
         ['left_elbow', 'right_elbow', 'left_knee', 'right_knee'],
-        ['score', 'difference'],
+        ['score', 'left_shoulder', 'left_elbow', 'left_wrist', 'right_shoulder', 'right_elbow', 'right_wrist'],
         ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
         ]
         self.connectFunction()
@@ -835,6 +835,8 @@ class WindowMoreInfo(QMainWindow, moreinfo):
         self.graph_list.setFlow(QListWidget.LeftToRight)
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.numpy = np.load('temp/graph.npy')
+        if self.ucs.currentIndex() == 2:
+            self.numpy = self.numpy[:-1]
         mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
         self.axes = []
         for idx, mcanvase in enumerate(mcanvases):
@@ -858,6 +860,7 @@ class WindowMoreInfo(QMainWindow, moreinfo):
         cam = 1
         cam2 = 1
         index = 0
+        ucs = self.ucs.currentIndex()
         self.play = True
         while self.play == True and self.cpt.isOpened() and cam is not None and cam2 is not None:
             # Video
@@ -876,14 +879,45 @@ class WindowMoreInfo(QMainWindow, moreinfo):
                 cv2.waitKey(int((1/self.fps) * 1000))
 
             # graph
-            for i in range(len(self.axes)):
-                self.axes[i].clear()
-                self.axes[i].set(title = self.graph_title[i], )
+            if ucs == 2:
+                # score 부분
+                average_score = average_score = sum(self.numpy[0]) / len(self.numpy[0])
+                self.axes[0].clear()
+                self.axes[0].set_ylim([0, 100])
+                self.axes[0].axhline(y = average_score, c='r', ls='--', label='avergae score: %d' % average_score)
+                self.axes[0].set(title = self.graph_title[0], )
+                self.axes[0].legend()
                 if index < 50:
-                    self.axes[i].plot(self.numpy[i][0:index])
+                    self.axes[0].plot(self.numpy[0][0:index])
                 else:
-                    self.axes[i].plot(self.numpy[i][index - 50:index])
-                self.axes[i].figure.canvas.draw()
+                    self.axes[0].plot(self.numpy[0][index - 50:index])
+                self.axes[0].figure.canvas.draw()
+
+                for i in range(1, len(self.axes)):
+                    self.axes[i].clear()
+                    self.axes[i].set(title = self.graph_title[i], )
+                    xs, ys = list(zip(*self.numpy[i]))[0], list(zip(*self.numpy[i]))[1]
+                    x_max = max([abs(x) for x in xs])
+                    y_max = max([abs(y)for y in ys])
+                    self.axes[i].set_xlim([-x_max, x_max])
+                    self.axes[i].set_ylim([-y_max, y_max])
+                    self.axes[i].grid(True)
+                    self.axes[i].axhline(y=0, c='black', ls='--')
+                    self.axes[i].axvline(x=0, c='black', ls='--')
+                    if index < 50:
+                        self.axes[i].scatter(xs[0:50], ys[0:50])
+                    else:
+                        self.axes[i].scatter(xs[0:index], ys[0:index])
+                    self.axes[i].figure.canvas.draw()
+            else:
+                for i in range(len(self.axes)):
+                    self.axes[i].clear()
+                    self.axes[i].set(title = self.graph_title[i], )
+                    if index < 50:
+                        self.axes[i].plot(self.numpy[i][0:index])
+                    else:
+                        self.axes[i].plot(self.numpy[i][index - 50:index])
+                    self.axes[i].figure.canvas.draw()
 
             index += 1
         self.cpt.release()
