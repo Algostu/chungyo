@@ -552,6 +552,36 @@ div { position: absolute; }
 	height: 40px;
 }
 
+#initial_pose_graph {
+	top: 69px;
+	/* left: 155px; */
+	left: 20px;
+	width: 330px;
+	height: 370px;
+}
+
+#best_pose_graph {
+	top: 69px;
+	/* left: 155px; */
+	left: 20px;
+	width: 330px;
+	height: 370px;
+}
+
+#score_graph {
+	top: 69px;
+	/* left: 155px; */
+	left: 20px;
+	width: 720px;
+	height: 300px;
+}
+#detail_graph {
+	top: 69px;
+	/* left: 155px; */
+	left: 20px;
+	width: 330px;
+	height: 260px;
+}
 
 #username {
 	top: 12px;
