@@ -2,6 +2,7 @@ from pose_diff.util import Method, screen, bc_common
 from pose_diff.interface import Screen, PoseDifference
 from pose_diff.interface import get_result
 from pose_diff.core.save_docx import save_docx
+from pose_diff.core import report
 from pose_diff.DB import DB
 import argparse
 import numpy as np
@@ -116,12 +117,20 @@ def main_function(option, *args):
         title1='pose difference algorithm', title = 'original user exercise', title2 = 'graph data for main angle')
 
     elif option == 8:
-        DB.load_applied_skeleton_file(args[1], base_folder)
-        DB.read_from_input_list(args[0], base_folder)
+        # DB.load_applied_skeleton_file(args[1], base_folder)
+        # DB.read_from_input_list(args[0], base_folder)
         # input1 = np.load(os.path.join(base_folder, 'upgraded.npy'))
         # input2 = np.load(os.path.join(base_folder, 'exercise_numpy.npy'))
-        input1 = os.path.join(base_folder, 'upgraded.npy')
-        input2 = os.path.join(base_folder, 'exercise_numpy.npy')
-        save_docx(input1, input2, 'temp/document.docx')
+        user_info = DB.get_user_info_full(args[0])
+        DB.load_skeleton(args[1], base_folder)
+        DB.load_diff(args[2], base_folder)
+        input = os.path.join(base_folder, 'graph.npy')
+        input2 = np.load(os.path.join(base_folder, 'skeleton.npy'))[0]
+        input3 = os.path.join(base_folder, 'skeleton.png')
+
+        # run.make_skeleton_image(input2, input3)
+        report.make_graph(input, base_folder)
+        paragraph = report.make_paragraph(input)
+        report.insert_image_and_pictures(user_info, paragraph)
     elif option == 10:
         PoseDifference.main_ui()

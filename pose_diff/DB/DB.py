@@ -742,6 +742,19 @@ def load_diff(diff_id, base_folder):
             sqliteConnection.close()
             print("sqlite connection is closed")
 
+def get_user_info_full(user_id):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+
+    c.execute("Select * from user_list where user_id = ?", (user_id,))
+
+    rows = c.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return rows
+
 # MoreInfo
 def load_data_list(user_id, option):
     data_list = []
