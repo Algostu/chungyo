@@ -1,6 +1,7 @@
 import os
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
 from pose_diff.core import run
 # from pose_diff.core import save_docx
 from pose_diff.core.report import insert_image_and_pictures

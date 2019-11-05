@@ -10,9 +10,11 @@
 ############################################
 
 
-import numpy as np
 import enum
 import math
+
+import numpy as np
+
 
 def check_accuracy(frames, exercise_type):
     ############################################

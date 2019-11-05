@@ -8,19 +8,20 @@
 # Feature
 #
 
+import glob
+import json
+import os
+import shutil
 # Todo
 #
 ############################################
 import subprocess
-import os
-import glob
-import json
-import shutil
 import time
+
 import numpy as np
-import matplotlib.pyplot as plt
-from pose_diff.util import Common
 from pose_diff.core.run import Video
+from pose_diff.util import Common
+
 
 def parse_person(input_video_loc, output_numpy, output_video):
     """

@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
 from matplotlib.backends.backend_qt5agg import (FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 import sys, time, cv2, numpy as np
