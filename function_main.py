@@ -132,7 +132,7 @@ def main_function(option, *args):
         input3 = os.path.join(base_folder, 'skeleton.png')
         info = user_info[0]+other_info[0]
         print(info)
-        run.make_skeleton_image(input2, input3, 2)
+        # run.make_skeleton_image(input2, input3, 2)
         report.make_graph(input, base_folder)
         paragraph = report.make_paragraph(input)
         report.insert_image_and_pictures(info, paragraph)

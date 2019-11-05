@@ -45,7 +45,7 @@ class Video:
                     score_angle = 0
                 else:
                     score_angle = ((360 - angle) / 360) * 100 / 2
-                
+
                 score.append(score_angle + score_point)
             gaps.append(parts_gap)
             scores.append(score)
@@ -94,7 +94,7 @@ class Video:
                 # b[4] += graph_numpy[2][i][6] # left_elbow
                 # b[5] += graph_numpy[2][i][7] # left_writst
             c.append(graph_numpy[0][i])
-        temp = [a, *b, c]
+        temp = [a, *b, c, scores]
         np.save("temp/graph.npy",temp)
 
     def set_video_name(self,name):

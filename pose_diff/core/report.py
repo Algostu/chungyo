@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import codecs
 import pdfkit
+import math
 from bs4 import BeautifulSoup
 from time import gmtime, strftime
 
@@ -161,6 +162,7 @@ def make_paragraph(graph_location):
     graph_numpy = np.load(graph_location)
     score_numpy = graph_numpy[0]
     gap_numpy =graph_numpy[1:7]
+    divide_score_numpy = graph_numpy[8]
     avg_score = sum(score_numpy) / len(score_numpy)
     if avg_score > 80:
         Grade = 'Outstanding'
@@ -178,8 +180,26 @@ def make_paragraph(graph_location):
         Grade = 'Troll'
         Grade_exp ="you are slower starter. To be more better, try to learn by repeating a part of motion of exercise."
 
+    lows = []
+    for part_score in divide_score_numpy:
+        lows.append(part_score.index(min(part_score)) / len(part_score))
+    weak_part = sum(lows) / len(lows) * 100
+    if weak_part < 25.0:
+        weak = 'you push your arms upper early. It means that 0%~25% of total motion is most weak part of yours'
+    elif weak_part < 50.0:
+        weak = 'you push your arms upper lately. It means that 25%~50% of total motion is most weak part of yours'
+    elif weak_part < 75.0:
+        weak = 'you push your arms lower early. It means that 50%~75% of total motion is most weak part of yours'
+    elif weak_part <= 100.0:
+        weak = 'you push your arms lower lately. It means that 75%~100% of total motion is most weak part of yours'
 
-    score_paragraph = f"Your grade is {Grade}. This means that {Grade_exp}. Worst part of your exercise is between {weak}. So try to focuse more better "
+    sums = []
+    for gaps in gap_numpy:
+        sums.append(sum(list(map(lambda x: math.sqrt(math.pow(x[0], 2)+math.pow(x[1], 2)), gaps))))
+    titles = ['left_shoulder', 'left_elbow', 'left_wrist', 'right_shoulder', 'right_elbow', 'right_wrist']
+    part = titles[sums.index(max(sums))]
+
+    score_paragraph = f"Your grade is {Grade}. This means that {Grade_exp}. Worst part of your exercise is when {weak}. So try to focus on more better at here. Finally, the most wrong part of your body is {part}. please see below graphs for details. This score is just a number. If you keep exercising, it will be changed better."
     result = [
     score_paragraph,
     'Well Done',
