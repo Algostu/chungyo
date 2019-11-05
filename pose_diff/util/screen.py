@@ -7,7 +7,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 fontScale = 1
 
 class Screen:
-    def __init__(self,point,score,angle,msg,height=720,width=1024):
+    def __init__(self,point,score=0,angle=0,msg=0,height=720,width=1024):
         self.point = point
         self.angle = angle
         self.msg = msg

@@ -17,7 +17,7 @@ div { position: absolute; }
 	top: 0px;
 	left: 0px;
 	width: 840px;
-	height: 4873px;
+	height: 5200px;
 	overflow:hidden;
 }
 
@@ -25,12 +25,12 @@ div { position: absolute; }
 	top: 0px;
 	left: 0px;
 	width: 840px;
-	height: 4873px;
+	height: 5100px;
 	background:rgba(240,240,247,255);
 }
 
 #end {
-	top: 4248px;
+	top: 4500px;
 	left: 36px;
 	width: 768px;
 	height: 599px;
@@ -105,7 +105,7 @@ div { position: absolute; }
 	top: 2703px;
 	left: 37px;
 	width: 767px;
-	height: 1457px;
+	height: 1750px;
 }
 
 #details_ek1 {
@@ -123,14 +123,14 @@ div { position: absolute; }
 	top: 70px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
@@ -164,14 +164,14 @@ div { position: absolute; }
 	top: 70px;
 	left: 394px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg_ek1 {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
@@ -202,17 +202,17 @@ div { position: absolute; }
 }
 
 #graph3 {
-	top: 545px;
+	top: 625px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg_ek2 {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
@@ -243,17 +243,17 @@ div { position: absolute; }
 }
 
 #graph4 {
-	top: 545px;
+	top: 625px;
 	left: 394px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg_ek3 {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
@@ -284,17 +284,17 @@ div { position: absolute; }
 }
 
 #graph5 {
-	top: 1020px;
+	top: 1180px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg_ek4 {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
@@ -325,17 +325,17 @@ div { position: absolute; }
 }
 
 #graph6 {
-	top: 1020px;
+	top: 1180px;
 	left: 394px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 }
 
 #bg_ek5 {
 	top: 0px;
 	left: 0px;
 	width: 373px;
-	height: 437px;
+	height: 517px;
 	-ms-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-o-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);
 	-webkit-box-shadow:0px 2px 5px 1px rgba(0,0,0,0.1);

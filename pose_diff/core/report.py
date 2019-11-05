@@ -133,7 +133,8 @@ def make_graph(graph_location, base_folder):
     plt.axhline(y = average_score, c='r', ls='--', label='user avergae score: %d' % average_score)
     plt.axhline(y = 64, c='g', ls='--', label='avergae score: %d' % 64)
     plt.legend()
-    plt.savefig(score_graph_file_name)
+    fig = plt.gcf()
+    fig.savefig(score_graph_file_name)
 
     # graph
     gap_numpy = graph_numpy[1:7]
@@ -196,18 +197,43 @@ def make_paragraph(graph_location):
     sums = []
     for gaps in gap_numpy:
         sums.append(sum(list(map(lambda x: math.sqrt(math.pow(x[0], 2)+math.pow(x[1], 2)), gaps))))
-    titles = ['left_shoulder', 'left_elbow', 'left_wrist', 'right_shoulder', 'right_elbow', 'right_wrist']
+    titles = ['left shoulder', 'left elbow', 'left wrist', 'right shoulder', 'right elbow', 'right wrist']
     part = titles[sums.index(max(sums))]
 
     score_paragraph = f"Your grade is {Grade}. This means that {Grade_exp}. Worst part of your exercise is when {weak}. So try to focus on more better at here. Finally, the most wrong part of your body is {part}. please see below graphs for details. This score is just a number. If you keep exercising, it will be changed better."
+
+    functions = [
+    "anchor points and making itself isolated from interference of other muscle.",
+    "connection point which is critical to move exact range.",
+    "grabbing object tight and shouldn't move itself apart from elbow."
+    ]*2
+    detail_paragraphs = []
+    for gaps, part_name, function in zip(gap_numpy, titles, functions):
+        x_tendency = len(list(filter(lambda x: x[0]>0, gaps))) / len(gaps) * 100
+        y_tendency = len(list(filter(lambda x: x[1]>0, gaps))) / len(gaps) * 100
+        if x_tendency > 66.6:
+            x_tendency = 'right'
+        elif x_tendency > 33.3:
+            x_tendency = ''
+        else:
+            x_tendency = 'left'
+
+        if y_tendency > 66.6:
+            y_tendency = 'upper'
+        elif y_tendency > 33.3:
+            y_tendency = ''
+        else:
+            y_tendency = 'lower'
+
+        if x_tendency == '' and y_tendency == '':
+            tendency = ""
+        else:
+            tendency = f'{part_name} has moved with {x_tendency},{y_tendency} biased.'
+
+        detail_paragraphs.append(f"This graph is about {part_name}'s movement track data. {part_name} is used as {function} Above graph represents difference between trainer's {part_name} movement and user's. As range of x and y are getting wide, the gaps between them are getting bigger. {tendency}")
+
     result = [
     score_paragraph,
-    'Well Done',
-    'Well Done',
-    'Well Done',
-    'Well Done',
-    'Well Done',
-    'Well Done'
+    *detail_paragraphs
     ]
-
     return result
