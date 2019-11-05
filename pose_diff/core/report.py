@@ -38,7 +38,7 @@ def insert_image_and_pictures(user_info, paragraph):
     ]
     html_file_name = 'html/analyze_report.html'
     html_doc = codecs.open(html_file_name, 'r')
-    soup = BeautifulSoup(html_doc, features="lxml")
+    soup = BeautifulSoup(html_doc, features='html.parser', from_encoding='utf-8')
     # data
     score = np.load('temp/graph.npy')[0]
     avg_score = sum(score)/len(score)
@@ -110,7 +110,7 @@ def insert_image_and_pictures(user_info, paragraph):
     with open(result_html_file_name, "w") as file:
         file.write(str(soup))
 
-    pdfkit.from_file(result_html_file_name, result_pdf_file_name, configuration=config)
+    # pdfkit.from_file(result_html_file_name, result_pdf_file_name, configuration=config)
 
 def make_graph(graph_location, base_folder):
     score_graph_file_name = os.path.join(base_folder, 'score.png')
@@ -129,7 +129,8 @@ def make_graph(graph_location, base_folder):
 
     plt.plot(score_numpy)
     plt.ylim([0, 100])
-    plt.axhline(y = average_score, c='r', ls='--', label='avergae score: %d' % average_score)
+    plt.axhline(y = average_score, c='r', ls='--', label='user avergae score: %d' % average_score)
+    plt.axhline(y = 64, c='g', ls='--', label='avergae score: %d' % 64)
     plt.legend()
     plt.savefig(score_graph_file_name)
 
@@ -157,14 +158,36 @@ def make_paragraph(graph_location):
     '''
     return paragraph analyzing numpy files
     '''
+    graph_numpy = np.load(graph_location)
+    score_numpy = graph_numpy[0]
+    gap_numpy =graph_numpy[1:7]
+    avg_score = sum(score_numpy) / len(score_numpy)
+    if avg_score > 80:
+        Grade = 'Outstanding'
+        Grade_exp = "your exercise is as qualified as trainer. Perfect, well done!"
+    elif avg_score > 60:
+        Grade = 'Exceed Expectation'
+        Grade_exp = "your exercise is almost as same as trainer's, but this does not mean to be satisfied with your work. If you work hard, you can achieve more better score. We are sure of it"
+    elif avg_score > 40:
+        Grade = 'Acceptable'
+        Grade_exp = "you manage to repeat after trainer's exercise. So from now, focuse on details and timing during exercising."
+    elif avg_score > 20:
+        Grade = 'Pool'
+        Grade_exp ="you have potential to become pro, but your work is messy now. So please exercise to copy trainer's work."
+    else:
+        Grade = 'Troll'
+        Grade_exp ="you are slower starter. To be more better, try to learn by repeating a part of motion of exercise."
+
+
+    score_paragraph = f"Your grade is {Grade}. This means that {Grade_exp}. Worst part of your exercise is between {weak}. So try to focuse more better "
     result = [
-    '정말 잘했습니다.',
-    '정말 잘했습니다.',
-    '정말 잘했습니다.',
-    '정말 잘했습니다.',
-    '정말 잘했습니다.',
-    '정말 잘했습니다.',
-    '정말 잘했습니다.'
+    score_paragraph,
+    'Well Done',
+    'Well Done',
+    'Well Done',
+    'Well Done',
+    'Well Done',
+    'Well Done'
     ]
 
     return result

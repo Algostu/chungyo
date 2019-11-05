@@ -71,7 +71,7 @@ div { position: absolute; }
 	left: 23px;
 	width: 729px;
 	height: 189px;
-	font-family: Source Sans Pro;
+	font-family: 'Source Sans Pro';
 	font-size: 67px;
 	text-align: left;
 	color:#ffffff;
@@ -83,7 +83,7 @@ div { position: absolute; }
 	left: 23px;
 	width: 684px;
 	height: 101px;
-	font-family: Source Sans Pro;
+	font-family: 'Source Sans Pro';
 	font-size: 36px;
 	text-align: left;
 	color:#ffffff;
@@ -95,7 +95,7 @@ div { position: absolute; }
 	left: 458px;
 	width: 312px;
 	height: 77px;
-	font-family: Source Sans Pro;
+	font-family: 'Source Sans Pro';
 	font-size: 19px;
 	text-align: right;
 	color:#000000;
@@ -765,7 +765,9 @@ div { position: absolute; }
 	left: 22px;
 	width: 247px;
 	height: 70px;
-	font-family: Source Sans Pro;
+	line-height: 70px;
+	font-family: 'Source Sans Pro', sans-serif;
+	letter-spacing: 7px;
 	font-size: 43px;
 	text-align: left;
 	color:#ffffff;
@@ -775,9 +777,10 @@ div { position: absolute; }
 #sublogo {
 	top: 37px;
 	left: 273px;
-	width: 183px;
+	width: 200px;
 	height: 38px;
-	font-family: Source Sans Pro;
+	font-family: 'Source Sans Pro', sans-serif;
+	letter-spacing: 3px;
 	font-size: 23px;
 	text-align: left;
 	color:#ffffff;
@@ -852,8 +855,8 @@ div { position: absolute; }
 	left: 276px;
 	width: 371px;
 	height: 109px;
-	font-family: KoPubDotum;
-	font-size: 84px;
+	font-family:'Cabin', sans-serif;
+	font-size: 75px;
 	text-align: right;
 	color:#16499a;
 }
@@ -864,7 +867,7 @@ div { position: absolute; }
 	left: 616px;
 	width: 146px;
 	height: 74px;
-	font-family: KoPubDotum;
+	font-family: 'Cabin', sans-serif;
 	font-size: 31px;
 	text-align: left;
 	color:#16499a;
