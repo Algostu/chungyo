@@ -22,6 +22,7 @@ class Screen:
         centers = {}
         colors = {}
         score = []
+
         for idx, i in enumerate(point):
             body_partx = float(i[0])
             body_party = float(i[1])

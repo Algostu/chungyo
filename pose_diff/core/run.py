@@ -173,7 +173,7 @@ class human_pic:
                 writer.write(screen.img)
         cv2.destroyAllWindows()
 
-def make_skeleton_image(npy,image_name):
+def make_skeleton_image(npy,image_name, option=1):
     thickness = 2
     font = cv2.FONT_HERSHEY_SIMPLEX
     fontScale = 1
@@ -187,6 +187,8 @@ def make_skeleton_image(npy,image_name):
     cv2.putText(screen.img, text, location, font, fontScale, (255, 255, 255), thickness)
     cv2.putText(screen.img, text2, (80, 120), font, fontScale, (255, 255, 255), thickness)
     cv2.imwrite(image_name, screen.img)
+    if option == 2:
+        return
     while(True):
         cv2.imshow("Your Initial Pose",screen.img)
         if cv2.waitKey(100) == 27:

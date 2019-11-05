@@ -657,7 +657,7 @@ class WindowReport(QMainWindow, report):
             for row in rows:
                 self.user.addItem(f'{row[0]}.{row[1]}')
 
-        rows = DB.load_applied_skeleton_list(self.user_id)
+        rows = DB.load_data_list(self.user_id, 2)
         if rows != []:
             self.applied_trainer_list = rows[:]
             for row in rows:
@@ -680,9 +680,9 @@ class WindowReport(QMainWindow, report):
 
     def Store(self):
         if self.input_id !=0 and self.target_id !=0:
-            if self.input_id[1] == self.target_id[2]:
-
+            if self.input_id[0] == self.target_id[2]:
                 args = [
+                self.user_id,
                 self.input_id[0],
                 self.target_id[0]
                 ]
