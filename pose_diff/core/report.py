@@ -154,7 +154,6 @@ def make_graph(graph_location, base_folder):
         ax.set_title(title)
         plt.savefig(file_name)
 
-    print("Done")
 
 def make_paragraph(graph_location):
     '''

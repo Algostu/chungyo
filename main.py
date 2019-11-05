@@ -595,7 +595,8 @@ class WindowStore(QMainWindow, store):
         self.cpt.release()
 
     def connectFunction(self):
-        self.next.clicked.connect(self.close)
+        # self.next.clicked.connect(self.close)
+        pass
 
 class WindowAnalyzeGuide(QMainWindow, analyze_guide):
     def __init__(self, user_id):

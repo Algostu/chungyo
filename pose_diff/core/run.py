@@ -53,8 +53,8 @@ class Video:
             for screen in screens:
                 # draw_human
                 val = screen.draw_human(screen.point,"Video")
-                if cv2.waitKey(100) == 27:
-                    break
+                # if cv2.waitKey(100) == 27:
+                #     break
                 # display_things
                 screen.display_score()
                 screen.display_msg()
@@ -66,7 +66,7 @@ class Video:
                     screen.display_angle(i)
 
                 # float screen
-                cv2.imshow("imshow", screen.img)
+                # cv2.imshow("imshow", screen.img)
                 writer.write(screen.img)
         writer.release()
         cv2.destroyAllWindows()

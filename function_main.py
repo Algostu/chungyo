@@ -127,11 +127,8 @@ def main_function(option, *args):
         DB.load_diff(args[2], base_folder)
         input = os.path.join(base_folder, 'graph.npy')
         input2 = np.load(os.path.join(base_folder, 'skeleton.npy'))[0]
-        print(input2)
-        print(len(input2))
         input3 = os.path.join(base_folder, 'skeleton.png')
         info = user_info[0]+other_info[0]
-        print(info)
         run.make_skeleton_image(input2, input3, 2)
         report.make_graph(input, base_folder)
         paragraph = report.make_paragraph(input)
