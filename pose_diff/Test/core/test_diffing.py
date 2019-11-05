@@ -4,14 +4,14 @@ from pose_diff.core.pose_diffing import point_difference, angle_difference, diff
 from pose_diff.core.run import Video
 from pose_diff.util.Common import CocoColors, CocoPairsRender
 
+origin_name = 'data/original.npy'
+trained_name = 'data/trained.npy'
 # origin_name = 'test_data2/standard_user.npy'
 # trained_name = 'test_data2/standard_user.npy'
-origin_name = 'test_data2/standard_user.npy'
-trained_name = 'test_data2/standard_user.npy'
 origin = np.load(origin_name)
 cut_origin = origin[:40]
 trained = np.load(trained_name)
-trained = trained[3:49]
+# trained = trained[3:49]
 
 def play_diffing_increasing():
     feedback, parts_gap, angle_gap, point_gap, user, trainer = diffing_increasing(trained,origin,2,'round')
@@ -95,3 +95,4 @@ if __name__ == '__main__':
     # print(f)
 
     Video(trained_name, origin_name, 'hello.avi')
+    # play_point_difference()

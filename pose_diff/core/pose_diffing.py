@@ -8,7 +8,7 @@ from pose_diff.util.Common import Parts, AnglePart
 from pose_diff.core.calculate_angle import get_angle
 
 def setting_relative_error(trainer_val,user_val,formal):
-    return float(abs(trainer_val-user_val)/formal * 100)
+    return float(abs(trainer_val-user_val)/formal)
 
 def average_frames_decreasing(frame, resize, split, cnt1, cnt2, way): #cnt2가 0부터 끝까지 split만큼 증가
     aver = np.zeros((18,3))
@@ -199,7 +199,7 @@ def frame_increasing(trainer,user,way): #make bigger the fewer frame
 
 def angle_difference(trainer,user,exercise):
     angle_np = np.copy(user)
-    margin = 4
+    margin = 0.04
     gap = []
     trainer_angle = get_angle(trainer)
     user_angle = get_angle(user)
@@ -217,13 +217,21 @@ def angle_difference(trainer,user,exercise):
                 if (trainer_angle[pidx][idx] == None or user_angle[pidx][idx] == None):
                     angle[idx][2] = 0
                     continue
-                if setting_relative_error(trainer_angle[pidx][idx],user_angle[pidx][idx],360) > margin:
-                    sum_gap = sum_gap + setting_relative_error(trainer_angle[pidx][idx], user_angle[pidx][idx],360)
+
+                if setting_relative_error(trainer_angle[pidx][idx], user_angle[pidx][idx],360) > 1:
+                    score = 0
+                else:
+                    score = (1-setting_relative_error(trainer_angle[pidx][idx], user_angle[pidx][idx],360)) * 50 / len(
+                        AnglePart)
+                sum_gap = sum_gap + score
+
+                if setting_relative_error(trainer_angle[pidx][idx],user_angle[pidx][idx],36) > margin:
                     angle[idx][2] = 1
                 else:
                     angle[idx][2] = 2
             else:
                 angle[idx][2] = 0
+
             gap.append(sum_gap)
     return gap, angle_np
 
@@ -236,8 +244,9 @@ def point_difference(trainer, user, exercise):
     :param exercise: Thing what you want to diffing.
     :return: parts, gap, point_np
     """
+
     point_np = np.copy(user)
-    margin = 4
+    margin = 0.04
     gap = []
     parts= [[] for i in range(18)]
     feedbacks = []
@@ -255,12 +264,18 @@ def point_difference(trainer, user, exercise):
             sum_gap = 0
             for idx, part in enumerate((Parts[exercise])): #Body_parts
                 if part == 0.5:
+                    if (setting_relative_error(trainer[pidx][idx][0], user[pidx][idx][0], 128)
+                        + setting_relative_error(trainer[pidx][idx][1], user[pidx][idx][1], 72)) / 2 > 1:
+                        score = 0
+                    else:
+                        score = (1-((setting_relative_error(trainer[pidx][idx][0], user[pidx][idx][0], 128)
+                                     + setting_relative_error(trainer[pidx][idx][1], user[pidx][idx][1], 72)) / 2)) * 50 /len(Parts[exercise])
+                    sum_gap = sum_gap + score
+
                     difference = (round(trainer[pidx][idx][0]-user[pidx][idx][0],2),round(trainer[pidx][idx][1] - user[pidx][idx][1],2))
                     parts[idx].append(difference)
                     if (setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0],1280)\
                         + setting_relative_error(trainer[pidx][idx][1],user[pidx][idx][1],720))/2> margin:
-                        sum_gap = sum_gap + (setting_relative_error(trainer[pidx][idx][0],user[pidx][idx][0],1280)\
-                        + setting_relative_error(trainer[pidx][idx][1],user[pidx][idx][1],720))/2
                         if FeedbackParts[exercise][idx] == 0.5:
                             if difference[0] < -30:
                                 feedback.append([idx , f'Bend over your {PART_NAMES[idx]}'])

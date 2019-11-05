@@ -38,16 +38,7 @@ class Video:
 
             cutframes.append(user)
             for point, angle in zip(point_gap, angle_gap):
-                if point > 100:
-                    score_point = 0
-                else:
-                    score_point = (100 - point) / 2
-                if angle > 360:
-                    score_angle = 0
-                else:
-                    score_angle = ((360 - angle) / 360) * 100 / 2
-
-                score.append(score_angle + score_point)
+                score.append(point + angle)
             gaps.append(parts_gap)
             scores.append(score)
             length = len(user)
