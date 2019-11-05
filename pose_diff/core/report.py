@@ -15,13 +15,18 @@ def insert_image_and_pictures(user_info, paragraph):
     html rendering and convert it to pdf
 
     Params
-        user_info, paragraph는 변수로 받는다. 하지만 그림 같은 것은 경로를 고정한다. 현재 고정된 경로는 '../temp/'이다.
+        + user_info, paragraph는 변수로 받는다. 하지만 그림 같은 것은 경로를 고정한다. 현재 고정된 경로는 '../temp/'이다.
+        + avg_score는 직접 계산한다.
     Todo
         1. pdf로 변환시 글씨가 안보이고 페이지가 깨지는 오류가 있다.
     Limit
         1. 각종 basic info들의 길이가 너무 길면 짤린다. (운동이름, 사람 이름)
     '''
     relative_base_folder = os.path.join('..', 'temp')
+    pictures = [
+    os.path.join(relative_base_folder,'skeleton.png'),
+    os.path.join(relative_base_folder,'skeleton.png')
+    ]
     score_graph_file_name = os.path.join(relative_base_folder, 'score.png')
     gap_graph_file_name = [
     os.path.join(relative_base_folder, 'left_shoulder.png'),
@@ -31,19 +36,30 @@ def insert_image_and_pictures(user_info, paragraph):
     os.path.join(relative_base_folder, 'right_lebow.png'),
     os.path.join(relative_base_folder, 'right_wrist.png')
     ]
-
     html_file_name = 'html/analyze_report.html'
     html_doc = codecs.open(html_file_name, 'r')
     soup = BeautifulSoup(html_doc, features="lxml")
     # data
-    print(user_info)
+    score = np.load('temp/graph.npy')[0]
+    avg_score = sum(score)/len(score)
+    if avg_score > 80:
+        Grade = 'Outstanding'
+    elif avg_score > 60:
+        Grade = 'Exceed Expectation'
+    elif avg_score > 40:
+        Grade = 'Acceptable'
+    elif avg_score > 20:
+        Grade = 'Pool'
+    else:
+        Grade = 'Troll'
     user_name = user_info[2]
     tall_weigth = '%d cm / %d kg' % (user_info[5], user_info[4])
-    age_sex = '%d age/ F' % 21
-    trainer = 'hoon'
-    exercise_name = 'shoulderPress'
-    Times = '05m 16s'
-    user_type = 'basic'
+    age_sex = '%d age/ %s' % (21, 'M' if user_info[7] == 'men' else 'F')
+    # 운동의 점수와 함께 유저의 점수를 알려준다.
+    # 추가 정보를 알려준다.
+    trainer = user_info[8]
+    exercise_name = user_info[9]
+    user_type = user_info[1]
     date = strftime("%Y/%m/%d", gmtime())
     test_picture = 'IU.jpg'
 
@@ -55,7 +71,7 @@ def insert_image_and_pictures(user_info, paragraph):
 
     soup.find(id='trainername').string.replace_with(trainer)
     soup.find(id='exercise').string.replace_with(exercise_name)
-    soup.find(id='times').string.replace_with(Times)
+    soup.find(id='times').string.replace_with("Grade: "+Grade)
 
     soup.find(id='affiliation').string.replace_with('Affiliation') # 소속이름
     soup.find(id='user_type').string.replace_with(user_type)
@@ -63,29 +79,29 @@ def insert_image_and_pictures(user_info, paragraph):
 
     # rendering image
     soup.find(id='avatar')['src'] = test_picture
-    soup.find(id='initial_pose_graph')['src'] = test_picture
-    soup.find(id='best_pose_graph')['src'] = test_picture
+    soup.find(id='initial_pose_graph')['src'] = pictures[0]
+    soup.find(id='best_pose_graph')['src'] = pictures[1]
 
     soup.find(id='score_graph')['src'] = score_graph_file_name
-    soup.find(id='divider_ek8').string.replace_with(score_graph_file_name)
+    soup.find(id='divider_ek8').string.replace_with(paragraph[0])
 
     soup.find(id='detail_graph1')['src'] = gap_graph_file_name[0]
-    soup.find(id='divider').string.replace_with(paragraph[0])
+    soup.find(id='divider').string.replace_with(paragraph[1])
 
     soup.find(id='detail_graph2')['src'] = gap_graph_file_name[1]
-    soup.find(id='divider_ek1').string.replace_with(paragraph[1])
+    soup.find(id='divider_ek1').string.replace_with(paragraph[2])
 
     soup.find(id='detail_graph3')['src'] = gap_graph_file_name[2]
-    soup.find(id='divider_ek2').string.replace_with(paragraph[2])
+    soup.find(id='divider_ek2').string.replace_with(paragraph[3])
 
     soup.find(id='detail_graph4')['src'] = gap_graph_file_name[3]
-    soup.find(id='divider_ek3').string.replace_with(paragraph[3])
+    soup.find(id='divider_ek3').string.replace_with(paragraph[4])
 
     soup.find(id='detail_graph5')['src'] = gap_graph_file_name[4]
-    soup.find(id='divider_ek4').string.replace_with(paragraph[4])
+    soup.find(id='divider_ek4').string.replace_with(paragraph[5])
 
     soup.find(id='detail_graph6')['src'] = gap_graph_file_name[5]
-    soup.find(id='divider_ek5').string.replace_with(paragraph[5])
+    soup.find(id='divider_ek5').string.replace_with(paragraph[6])
 
     # save as html and pdf
     result_html_file_name="html/result.html"

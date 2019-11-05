@@ -23,6 +23,7 @@ class Screen:
         num = 0
         score = []
         for i in point:
+            print(i)
             body_partx = float(i[0])
             body_party = float(i[1])
             colors[num] = int(i[2])  # colors list에 i의 color 삽입

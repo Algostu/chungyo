@@ -13,7 +13,7 @@ base_input_video_location = os.path.join('data', 'input_video') # user가 유일
 base_sample_location = os.path.join('data', 'sample') # applied 또한 같이 저장된다
 base_math_info_location = os.path.join('data', 'math_info')
 exercise_info = [
-('shoulder-press', json.dumps([0.5 for i in range(18)])),
+('shoulderPress', json.dumps([0.5 for i in range(18)])),
 ('pull-up', json.dumps([0.5 for i in range(18)])),
 ('squat', json.dumps([0.5 for i in range(18)]))
 ] # Bug fix: common에서 central point와 다른 정보들 수정하기
@@ -715,7 +715,7 @@ def save_diff(applied_sample_id, input_id, video, graph):
             sqliteConnection.close()
             print("the sqlite connection is closed")
 
-# * 개발 대상
+# * 개발 대상 : 개발 완료
 def load_diff(diff_id, base_folder):
     try:
         sqliteConnection = sqlite3.connect(db)
@@ -742,11 +742,33 @@ def load_diff(diff_id, base_folder):
             sqliteConnection.close()
             print("sqlite connection is closed")
 
+# * 개발 대상 : 개발 완료
 def get_user_info_full(user_id):
     conn = sqlite3.connect(db)
     c = conn.cursor()
 
     c.execute("Select * from user_list where user_id = ?", (user_id,))
+
+    rows = c.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return rows
+
+def get_diff_info(diff_id):
+    conn = sqlite3.connect(db)
+    c = conn.cursor()
+
+    c.execute("""Select user_list.user_name, exercise_list.exercise_name from
+    diff_list
+    left join applied_skeleton_list on applied_skeleton_list.applied_sample_id = diff_list.applied_sample_id
+    left join exercise_list on exercise_list.exercise_id = applied_skeleton_list.exercise_id
+    left join math_info_extractions on applied_skeleton_list.standard_id = math_info_extractions.extraction_id
+    left join skeleton_list on skeleton_list.skeleton_id = math_info_extractions.skeleton_id
+    left join input_list on input_list.input_id = skeleton_list.input_id
+    left join user_list on user_list.user_id = input_list.user_id
+    where diff_list.diff_id = ?""", (diff_id,))
 
     rows = c.fetchall()
 
@@ -827,7 +849,6 @@ def load_data_list(user_id, option):
             sqliteConnection.close()
             print("the sqlite connection is closed")
             return data_list
-
 
 # ETC
 def get_exercise_list(exercise_id):
