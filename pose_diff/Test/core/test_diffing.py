@@ -1,9 +1,8 @@
-import numpy as np
 import cv2
-
-from pose_diff.util.Common import CocoColors, CocoPairsRender
+import numpy as np
 from pose_diff.core.pose_diffing import point_difference, angle_difference, diffing_increasing
 from pose_diff.core.run import Video
+from pose_diff.util.Common import CocoColors, CocoPairsRender
 
 # origin_name = 'test_data2/standard_user.npy'
 # trained_name = 'test_data2/standard_user.npy'

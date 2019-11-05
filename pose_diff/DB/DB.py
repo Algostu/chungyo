@@ -1,9 +1,8 @@
-import os
-import sqlite3
-import shutil
-import time
 import json
-from google_drive_downloader import GoogleDriveDownloader as gdd
+import os
+import shutil
+import sqlite3
+import time
 
 db = './pose_diff/DB/pose_diff.db'
 base_root_project_location = 'chungyo'

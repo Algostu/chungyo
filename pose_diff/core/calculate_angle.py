@@ -1,6 +1,8 @@
-import numpy as np
 import math
-from pose_diff.util.Common import AnglePairs,AnglePart
+
+import numpy as np
+from pose_diff.util.Common import AnglePairs, AnglePart
+
 
 def angle_between_vectors_degrees(u, v):
     """Return the angle between two vectors in any dimension space, in degrees."""

@@ -1,6 +1,6 @@
-from pose_diff.util.Common import CocoColors, CocoPairsRender, CocoPart
 import cv2
 import numpy as np
+from pose_diff.util.Common import CocoColors, CocoPairsRender
 
 thickness = 2
 font = cv2.FONT_HERSHEY_SIMPLEX

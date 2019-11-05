@@ -1,9 +1,10 @@
-from pose_diff.util.screen import Screen
-from pose_diff.core.pose_diffing import diffing_decreasing, diffing_increasing, diffing_angle
-from pose_diff.core.calculate_angle import get_angle
-from pose_diff.core.framecut import cut
 import cv2
 import numpy as np
+from pose_diff.core.calculate_angle import get_angle
+from pose_diff.core.framecut import cut
+from pose_diff.core.pose_diffing import diffing_decreasing, diffing_increasing, diffing_angle
+from pose_diff.util.screen import Screen
+
 
 class Video:
     def __init__(self,trainer_npy,user_npy, video_name, exercise=2,diffing='increase',way='round',average=1,apply=True):
@@ -66,7 +67,7 @@ class Video:
                 # display_things
                 screen.display_score()
                 screen.display_msg()
-          # display_things-angle
+                # display_things-angle
                 angle = screen.get_angle()
                 for i in range(0, 18):
                     if angle[i] == None:

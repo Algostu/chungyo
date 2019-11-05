@@ -12,12 +12,13 @@
 #
 ############################################
 import os
-import string
 import random
+import string
+
 import numpy as np
-from enum import Enum
 from pose_diff.DB import DB
 from pose_diff.util import Method
+
 
 def regist_trainer(trainer_id, exercise_id, input_video_loc):
     # openpose를 통해서 분석
