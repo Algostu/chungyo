@@ -1,6 +1,8 @@
-import numpy as np
 import math
-from pose_diff.util.Common import AnglePairs,AnglePart
+
+import numpy as np
+from pose_diff.util.Common import AnglePairs, AnglePart
+
 
 def angle_between_vectors_degrees(u, v):
     """Return the angle between two vectors in any dimension space, in degrees."""
@@ -29,12 +31,12 @@ def get_angle(npyfile):
         uangle = [None] * 18
         for index, j in enumerate(AnglePairs):
             pointa = npyfile[b][j[0]]
-            pointa = pointa[:2]
+            pointaa = pointa[:2]
             pointb = npyfile[b][j[1]]
-            pointb = pointb[:2]
+            pointbb = pointb[:2]
             pointc = npyfile[b][j[2]]
-            pointc = pointc[:2]
-            uangle[AnglePart[index]] = (Calculate_angle(pointa, pointb, pointc))
+            pointcc = pointc[:2]
+            uangle[AnglePart[index]] = (Calculate_angle(pointaa, pointbb, pointcc))
         angle.append(uangle)
     return angle
 
@@ -56,8 +58,10 @@ def get_angle_part(part,video_name):  #video를 skeleton1.npy라 가정한다.
 
     angle=[]
     for i in range(len(frame)):
-        result_angle=calculate_angle.Calculate_angle(
+        result_angle=Calculate_angle(
         [frame[i][parts[0]][0],frame[i][parts[0]][1]],[frame[i][parts[1]][0],frame[i][parts[1]][1]],[frame[i][parts[2]][0],frame[i][parts[2]][1]])
+        if (frame[i][parts[1]][0] - frame[i][parts[0]][0]) == 0:
+            continue
         if ((frame[i][parts[1]][1] - frame[i][parts[0]][1]) / (frame[i][parts[1]][0] - frame[i][parts[0]][0])) * (frame[i][parts[2]][0] - frame[i][parts[0]][0]) + frame[i][parts[0]][1] < frame[i][parts[2]][1]:
             result_angle = 360 - result_angle
         angle.append(result_angle)

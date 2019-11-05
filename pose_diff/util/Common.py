@@ -9,11 +9,12 @@
 # DB와 Common의 Exercise 정보가 서로 겹친다. 즉, DB에서 Common에 있는 정보를 가져가든, Common에서 DB에 있는 정보를 가져가든 방식을 바꿔야한다.
 ############################################
 
-import math
-import numpy as np
+
 import enum
-import matplotlib.pyplot as plt
 import math
+
+import numpy as np
+
 
 def check_accuracy(frames, exercise_type):
     ############################################
@@ -123,11 +124,9 @@ def get_math_info(ex_type, static_skeleton, dynamic_skeleton):
         if frames_len_1 != len(body_movement_length[i]):
             print("%d : length numbers are not same" % i)
             frames_len_1 = len(body_movement_length[i])
-            print(frames_len_1)
         if frames_len_2 != len(body_movement_vector[i]):
             print("%d : vector numbers are not same" % i)
             frames_len_2 = len(body_movement_vector[i])
-            print(frames_len_2)
 
     if frames_len_1 == frames_len_2:
         frame_len = frames_len_1
@@ -472,9 +471,14 @@ PART_NAMES = ['nose', 'neck',  'rshoulder', 'relbow', 'rwrist', 'lshoulder', 'le
 ACC_CRE = 0.5
 Accuracys = [0.72, 0.72, 0.72]
 Parts = [
-[ACC_CRE for i in range(14)] + [0, 0, 0, 0], # squat side
-[ACC_CRE for i in range(9)] + [0, 0, ACC_CRE, 0, 0, 0, 0, 0, 0], # Pull_up front
-[ACC_CRE for i in range(9)] + [0, 0, ACC_CRE, 0, 0, 0,  0, 0, 0] # shoulder_press front
+[0] + [ACC_CRE for i in range(1,14)] + [0, 0, 0, 0], # squat side
+[0] + [ACC_CRE for i in range(1,9)] + [0, 0, ACC_CRE, 0, 0, 0, 0, 0, 0], # Pull_up front
+[0] + [ACC_CRE for i in range(1,8)] + [0, 0, 0, 0, 0, 0, 0, 0, 0] # shoulder_press front
+]
+FeedbackParts = [
+    [],
+    [],
+    [0,0] + [ACC_CRE,ACC_CRE,0,ACC_CRE,ACC_CRE,0] + [0 for i in range(9)]
 ]
 View = [
 'side',
@@ -500,7 +504,7 @@ PartPairs = [
 [1, 2, 3], [2,3,4], [1,5,6], [5,6,7]
 ]
 
-AnglePairs = [(1,2,3),(2,3,4),(3,2,8),(8,9,10),(1,5,6),(5,6,7),(6,5,11),(11,12,13)]
+AnglePairs = [(1,2,3),(2,3,4),(2,1,8),(8,9,10),(1,5,6),(5,6,7),(5,1,11),(11,12,13)]
 AnglePart = [2,3,1,9,5,6,1,12]
 
 class CocoPart(enum.Enum):
