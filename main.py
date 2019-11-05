@@ -837,7 +837,7 @@ class WindowMoreInfo(QMainWindow, moreinfo):
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.numpy = np.load('temp/graph.npy')
         if self.ucs.currentIndex() == 2:
-            self.numpy = self.numpy[:-1]
+            self.numpy = self.numpy[:-2]
         mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
         self.axes = []
         for idx, mcanvase in enumerate(mcanvases):
