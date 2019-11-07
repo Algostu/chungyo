@@ -125,7 +125,7 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
         self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
         self.graph_list.setFlow(QListWidget.LeftToRight)
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.numpy = np.load('temp/graph.npy')
+        self.numpy = np.load('temp/graph2.npy')
         mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
         self.axes = []
         for idx, mcanvase in enumerate(mcanvases):
@@ -390,7 +390,7 @@ class WindowResizeTrainer(QMainWindow, resize_trainer):
         self.graph_title = ['left_elbow', 'right_elbow', 'left_knee', 'right_knee']
         self.graph_list.setFlow(QListWidget.LeftToRight)
         self.graph_list.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.numpy = np.load('temp/graph.npy')
+        self.numpy = np.load('temp/graph2.npy')
         mcanvases = [FigureCanvas(Figure(figsize=(5, 3))) for i in range(len(self.numpy))]
         self.axes = []
         for idx, mcanvase in enumerate(mcanvases):

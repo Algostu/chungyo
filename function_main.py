@@ -49,19 +49,22 @@ def main_function(option, *args):
         numpy = np.load(os.path.join(base_folder, 'init_numpy.npy'))
         skeleton_numpy = 'skeleon.npy'
         graph_numpy = 'graph.npy'
-        (res1, res2) = Method.find_initial_skeleton(numpy, os.path.join(base_folder,graph_numpy), args[1])
+        (res1, res2) = Method.find_initial_skeleton(numpy, base_folder, args[1])
         # print(res1, res2)
         np.save(os.path.join(base_folder, skeleton_numpy), [res1,res2])
         pk = DB.save_skeleton(args[0], os.path.join(base_folder,skeleton_numpy), os.path.join(base_folder,graph_numpy))
         return (res1, res2, pk)
 
     elif option == 3:
-        DB.load_skeleton(args[0], base_folder)
         DB.read_from_input_list(args[1], base_folder)
+        numpy = np.load(os.path.join(base_folder, 'exercise_numpy.npy'))
+        (res1, res2) = Method.find_initial_skeleton(numpy, base_folder)
+        DB.load_skeleton(args[0], base_folder)
         ex_type = 2
         time.sleep(0.5)
         numpy_array = np.load(os.path.join(base_folder, 'exercise_numpy.npy'))
         skeleton = np.load(os.path.join(base_folder, 'skeleton.npy'))[0]
+
         target_skeleton = skeleton
 
         common = bc_common.Common()
@@ -84,6 +87,7 @@ def main_function(option, *args):
 
         common = bc_common.Common()
         resized = common.apply_vector(ex_type, skeleton, math_info)
+        (res1, res2) = Method.find_initial_skeleton(resized, base_folder)
         np.save(os.path.join(base_folder, 'resized.npy'), resized)
         screen = run.human_pic(resized, os.path.join(base_folder, 'resized.avi'))
         DB.save_applied_sample(args[0], args[1], exercise_id, os.path.join(base_folder, 'resized.npy'), os.path.join(base_folder, 'resized.avi'))
