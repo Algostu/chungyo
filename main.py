@@ -170,6 +170,7 @@ class WindowReigsterTrainerBetter(QMainWindow, register_trainer_better):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].set_xlim([0,len(self.numpy[i])])
                 if index < 50:
                     self.axes[i].plot(self.numpy[i][0:index])
                 else:
@@ -435,6 +436,7 @@ class WindowResizeTrainer(QMainWindow, resize_trainer):
             for i in range(len(self.axes)):
                 self.axes[i].clear()
                 self.axes[i].set(title = self.graph_title[i], )
+                self.axes[i].set_xlim([0,len(self.numpy[i])])
                 if index < 50:
                     self.axes[i].plot(self.numpy[i][0:index])
                 else:
