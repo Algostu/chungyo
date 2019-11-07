@@ -13,6 +13,7 @@ from PyQt5 import uic, QtGui
 
 from matplotlib.backends.backend_qt5agg import FigureCanvas
 from matplotlib.figure import Figure
+from google_drive_downloader import GoogleDriveDownloader as gdd
 
 from pose_diff.DB import DB
 from pose_diff.core import run
@@ -1042,6 +1043,12 @@ class SuccessWindow(QMainWindow,success):
         self.out.clicked.connect(self.close)
 
 if __name__=="__main__":
+    db_path = os.path.join('pose_diff', 'DB', 'pose_diff.db')
+    db_exist = os.path.isfile(db_path)
+    if db_exist == False:
+        gdd.download_file_from_google_drive(file_id='1itBfYF_nH9UpjjOjuEi1vjowuNJeUloa',
+                                            dest_path='./pose_diff/DB/pose_diff.db',
+                                            unzip=False)
     app = QApplication(sys.argv)
     myWindow = WindowClass()
     myWindow.show()
