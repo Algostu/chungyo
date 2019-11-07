@@ -12,7 +12,7 @@
   Chunghakdong Gyojungdang is a free and open source project based on Openpose that can make your body more  balanced.
 </p>
 <p align="center">
-  <a href='https://travis-ci.org/I-Love-IU/pose-difference'><img src = "https://travis-ci.org/I-Love-IU/pose-difference.svg?branch=dev"></a>
+  <a href='https://travis-ci.org/I-Love-IU/chungyo'><img src = "https://travis-ci.org/I-Love-IU/chungyo.svg?branch=dev"></a>
 </p>
 
 Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern people.
@@ -24,7 +24,7 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
   [**Go to our homepage**](https://rhcsky.gitbook.io/chungyo/)
   
   
-![result](https://github.com/I-Love-IU/pose-difference/blob/master/docs/final.gif?raw=true)
+//image//
 
 ## 📌 What's In This Document
 
@@ -41,9 +41,11 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 - windows 10
 - python 3.7.4
 - opencv-python 4.1.0
-- numpy >= 1.14.5
+- numpy 1.16
 - matplotlib
-- pyqt
+- pyqt5
+- beautifulsoup4
+- googledrivedownloader
 
 **Dependencies**
 
@@ -68,15 +70,18 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
    You can check download list from [this link](2).
 
 ## 🚀 Let's Get Quick Start
- From here, we introduce hello usage of our project, such as register your video file as trainer used for bases of certain exercises.
- You can get a example result in 5 minutes with these follow steps: (Register Trainer) If you are new to our project, use --sys 10 options,
- which is made for getting result fast.
-
+ From here, we introduce you how to introduce our program.
+ Chungyo designed GUI to provide easy use environment for users.
+ You can get a example result in a few seconds with this code: 
    ```
-   python main.py --sys 10
+   python main.py
    ```
 
-   This command will store trainer's basic skeleton from either video or picture, which will be used for resizing one's exercise motion. We only support video file as input which we pass to openpose for getting info about your body parts.
+   This command will start our first page that sign in. After the sign in, follow  the steps below.
+   1. Upload Video files
+   2. Make Personal Trainer
+   3. Analyze Guide Line
+   4. Comment from Expert
 
    ![Register](https://github.com/I-Love-IU/pose-difference/blob/master/docs/AC_%5B20191011-035747%5D.gif?raw=true)
 
@@ -84,11 +89,31 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 ## 👀 Look at output
 
 You can see details of our output info from [here](https://naver.com)
+//pdf//
 
 ## 📋 How To Use More Detailed
+There are 7 menu for using our program. Let's learn more about each function in detail.
 
-For more information on how to use it, please visit our guestbook's [start page](https://rhcsky.gitbook.io/chungyo/use/how-to-use).
+**1. Upload Video Files**
+    - Upload your workout video and your EssentialForce video.
+    
+**2. Register Trainer**
+    - This menu uploads an exercise video that will be used as a trainer. Only trainers can enter this menu.
 
+**3. Make Personal Trainer**
+    - Based on the physical information of the initialized user and trainer, create a personal trainer of the same size as the user.
+
+**4. Analyze Physically**
+    - The user and trainer are analyzed physically. But, this function is still under development.
+
+**5. Analyze Guide Line**
+    - The user's motion is analyzed by considering the difference in the trainer's coordinate value and angle.
+
+**6. Comment from Expert**
+    - Generate a comprehensive report in html format based on the analyzed information.
+
+**7. More info**
+    - You can view all of the data history that you previously analyzed.
 ---
 
 ## 📝 License
