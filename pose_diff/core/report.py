@@ -1,15 +1,12 @@
-import os
-import numpy as np
-import matplotlib.pyplot as plt
 import codecs
-import pdfkit
 import math
-from bs4 import BeautifulSoup
+import os
 from time import gmtime, strftime
 
+import matplotlib.pyplot as plt
+import numpy as np
+from bs4 import BeautifulSoup
 
-path_wkthmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
-config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 
 def insert_image_and_pictures(user_info, paragraph):
     '''
