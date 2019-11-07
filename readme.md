@@ -21,10 +21,11 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
 - **Put your wallet in** Get personal training even if you don't have any money.
 - **Get a wonderful feedback** Receive various information such as posture, amount of exercise, calories, etc.
 
-  [**Go to our homepage**](https://rhcsky.gitbook.io/chungyo/)
+  [**Go to our wiki!**](https://github.com/I-Love-IU/chungyo/wiki)
   
-  
-//image//
+<span style="display:block;text-align:center">![main](https://user-images.githubusercontent.com/53206234/68396912-af4d2b80-01b5-11ea-85e8-94b12a7d502f.gif)
+</span>
+
 
 ## 📌 What's In This Document
 
@@ -83,13 +84,14 @@ Chunghakdong Gyojungdang(chungyo) is a posture correction program for modern peo
    3. Analyze Guide Line
    4. Comment from Expert
 
-   ![Register](https://github.com/I-Love-IU/pose-difference/blob/master/docs/AC_%5B20191011-035747%5D.gif?raw=true)
+<span style="display:block;text-align:center">![overall](https://user-images.githubusercontent.com/53206234/68394980-2e406500-01b2-11ea-89a9-e0b47a5059ed.gif)</span>
+   
 
 
 ## 👀 Look at output
-
-You can see details of our output info from [here](https://naver.com)
-//pdf//
+We shall provide for a final report.
+<span style="display:block;text-align:center">![report](https://user-images.githubusercontent.com/53206234/68396918-b07e5880-01b5-11ea-87f0-eaf7181b6b9c.gif)
+</span>
 
 ## 📋 How To Use More Detailed
 There are 7 menu for using our program. Let's learn more about each function in detail.
@@ -114,6 +116,7 @@ There are 7 menu for using our program. Let's learn more about each function in 
 
 **7. More info**
     - You can view all of the data history that you previously analyzed.
+
 ---
 
 ## 📝 License
